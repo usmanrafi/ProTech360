@@ -24,12 +24,19 @@ public class Homepage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton gps = (FloatingActionButton) findViewById(R.id.current_location);
+        gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Toast.makeText(Homepage.this,"Current Location",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        FloatingActionButton dir = (FloatingActionButton) findViewById(R.id.get_directions);
+        dir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(Homepage.this,"Get Directions",Toast.LENGTH_SHORT).show();
             }
         });
 
