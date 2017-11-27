@@ -91,7 +91,7 @@ public class Homepage extends AppCompatActivity
         switch (id){
 
             case R.id.nav_connected_devices:
-                Toast.makeText(this,"Connected Devices",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;
             case R.id.nav_trackrooms:
                 Toast.makeText(this,"Track Rooms",Toast.LENGTH_SHORT).show();
@@ -103,13 +103,13 @@ public class Homepage extends AppCompatActivity
                 Toast.makeText(this,"Meetings",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_settings:
-                Toast.makeText(this,"Settings",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
                 break;
             case R.id.nav_about:
-                Toast.makeText(this,"About",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new About()).commit();
                 break;
             case R.id.nav_help:
-                Toast.makeText(this,"Help",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Help()).commit();
                 break;
 
         }
