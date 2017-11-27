@@ -51,6 +51,12 @@ public class Homepage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        if (savedInstanceState == null)
+        {
+            fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
+        }
+
     }
 
     @Override
@@ -90,6 +96,9 @@ public class Homepage extends AppCompatActivity
 
         switch (id){
 
+            case R.id.nav_home:
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
+                break;
             case R.id.nav_connected_devices:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;

@@ -2,9 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Home" />
+    <item
         android:id="@+id/nav_connected_devices"
         android:icon="@drawable/ic_menu_camera"
-        android:title="Connected Devices" />
+        android:title="Connections" />
     <item
         android:id="@+id/nav_trackrooms"
         android:icon="@drawable/ic_menu_gallery"
