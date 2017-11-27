@@ -18,6 +18,7 @@ public class Help extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.help,container,false);
+        ((Homepage) getActivity()).setActionBarTitle("Help");
 
 
 

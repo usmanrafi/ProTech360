@@ -18,6 +18,7 @@ public class ConnectedDevices extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.connected_devices,container,false);
+        ((Homepage) getActivity()).setActionBarTitle("Devices");
 
 
 

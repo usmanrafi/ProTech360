@@ -12,12 +12,13 @@ import android.view.ViewGroup;
  */
 
 public class About extends Fragment {
-    View myView;
+    View myView ;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.about,container,false);
+        ((Homepage) getActivity()).setActionBarTitle("About");
 
 
 

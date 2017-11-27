@@ -19,7 +19,7 @@ public class Alerts extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.alerts,container,false);
-
+        ((Homepage) getActivity()).setActionBarTitle("Alerts");
 
 
         return myView;
