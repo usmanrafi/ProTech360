@@ -17,6 +17,9 @@ import android.widget.Toast;
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    android.app.FragmentManager fragmentManager = getFragmentManager();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -94,7 +97,7 @@ public class Homepage extends AppCompatActivity
                 Toast.makeText(this,"Track Rooms",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_alerts:
-                Toast.makeText(this,"Alerts",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Alerts()).commit();
                 break;
             case R.id.nav_meetings:
                 Toast.makeText(this,"Meetings",Toast.LENGTH_SHORT).show();
