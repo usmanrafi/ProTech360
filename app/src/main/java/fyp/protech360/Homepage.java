@@ -1,8 +1,11 @@
 package fyp.protech360;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,13 +15,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.Toast;
 
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
-
+    boolean toggle = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,5 +122,116 @@ public class Homepage extends AppCompatActivity
         getSupportActionBar().setTitle(title);
     }
 
+    public void editName(View view) {
+        EditText edit = (EditText) findViewById(R.id.editName);
+        ImageView iv = (ImageView) findViewById(R.id.editNameButton);
+        if(!toggle)
+        {
+            iv.setImageResource(R.drawable.done);
+            edit.setEnabled(true);
+            toggle = true;
+        }
+        else
+        {
+            iv.setImageResource(R.drawable.edit);
+            edit.setEnabled(false);
+            Toast.makeText(getApplication(),"Profile Updated",Toast.LENGTH_SHORT).show();
+            toggle = false;
+        }
+
+    }
+
+    public void editMessage(View view) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Edit Emergency Message");
+
+// Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                // Do something with value!
+                Toast.makeText(getApplicationContext(),"Emergency Message Updated",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+                Toast.makeText(getApplicationContext(),"Emergency Message Update Cancelled",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alert.show();
+    }
+
+    public void signOut(View view) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("SignOut");
+        alert.setMessage("Are you sure you want to Sign Out?");
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                // Do something with value!
+                Toast.makeText(getApplicationContext(),"SignOut Successful",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+                Toast.makeText(getApplicationContext(),"SignOut Cancelled",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alert.show();
+    }
+
+    public void deactivateAccount(View view) {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Deactivate Account");
+        alert.setMessage("Are you sure you want to Deactivate your account?");
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                // Do something with value!
+                Toast.makeText(getApplicationContext(),"Account Deactivated",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
+                startActivity(intent);
+                finish();
+
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+                Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        alert.show();
+
+    }
+
+    public void changepassword(View view) {
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new ChangePassword()).commit();
+    }
+
+    public void changePassword(View view) {
+        Toast.makeText(getApplication(),"Password Successfully Changed",Toast.LENGTH_SHORT).show();
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
+    }
 }
 
