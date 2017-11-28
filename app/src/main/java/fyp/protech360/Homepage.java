@@ -27,22 +27,6 @@ public class Homepage extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton gps = (FloatingActionButton) findViewById(R.id.current_location);
-        gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Homepage.this,"Current Location",Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        FloatingActionButton dir = (FloatingActionButton) findViewById(R.id.get_directions);
-        dir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(Homepage.this,"Get Directions",Toast.LENGTH_SHORT).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
