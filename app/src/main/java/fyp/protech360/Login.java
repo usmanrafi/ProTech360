@@ -18,7 +18,6 @@ public class Login extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_login,container,false);
-        getActivity().getActionBar().setTitle("Login");
 
 
 

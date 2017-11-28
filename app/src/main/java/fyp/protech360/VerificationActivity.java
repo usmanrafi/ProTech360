@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 public class VerificationActivity extends Activity {
 
@@ -29,7 +30,7 @@ public class VerificationActivity extends Activity {
     }
 
     public void forgotPassword(View view) {
-
+        fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new ForgotPassword()).commit();
     }
 
     public void signup(View view) {
@@ -38,6 +39,18 @@ public class VerificationActivity extends Activity {
 
     public void GoToLogin(View view) {
         fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new Login()).commit();
+    }
 
+    public void forgotPasswordStepOne(View view) {
+        fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new ForgotPassword2()).commit();
+    }
+
+    public void forgotPasswordStepTwo(View view) {
+        fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new ResetPassword()).commit();
+    }
+
+    public void resetPassword(View view) {
+        Toast.makeText(getApplicationContext(),"Password Reset Successful",Toast.LENGTH_SHORT).show();
+        fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new Login()).commit();
     }
 }
