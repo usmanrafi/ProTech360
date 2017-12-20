@@ -94,6 +94,7 @@ public class Homepage extends AppCompatActivity
                 break;
             case R.id.nav_trackrooms:
                 Toast.makeText(this,"Track Rooms",Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(getApplicationContext(),MapsActivity.class));
                 break;
             case R.id.nav_alerts:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Alerts()).commit();
