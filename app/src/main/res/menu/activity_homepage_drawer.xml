@@ -10,6 +10,10 @@
         android:icon="@drawable/ic_menu_camera"
         android:title="Connections" />
     <item
+        android:id="@+id/nav_conversations"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Conversations" />
+    <item
         android:id="@+id/nav_trackrooms"
         android:icon="@drawable/ic_menu_gallery"
         android:title="Track Rooms" />
@@ -21,6 +25,14 @@
         android:id="@+id/nav_meetings"
         android:icon="@drawable/ic_menu_manage"
         android:title="Meetings" />
+    <item
+        android:id="@+id/nav_reminders"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Reminders" />
+    <item
+        android:id="@+id/nav_scheduled_settings"
+        android:icon="@drawable/ic_menu_manage"
+        android:title="Scheduled Settings" />
     <item
         android:id="@+id/nav_settings"
         android:icon="@drawable/ic_menu_manage"
