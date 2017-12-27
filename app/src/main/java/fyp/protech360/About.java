@@ -20,6 +20,4 @@ public class About extends Fragment {
 
         return myView;
     }
-
-
 }

@@ -3,8 +3,6 @@ package fyp.protech360;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TabHost;
 import android.widget.Toast;
 
 public class Homepage extends AppCompatActivity
@@ -93,22 +90,22 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;
             case R.id.nav_conversations:
-                Toast.makeText(this,"Conversations",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Conversations()).commit();
                 break;
             case R.id.nav_trackrooms:
-                Toast.makeText(this,"Track Rooms",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRooms()).commit();
                 break;
             case R.id.nav_alerts:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Alerts()).commit();
                 break;
             case R.id.nav_meetings:
-                Toast.makeText(this,"Meetings",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
                 break;
             case R.id.nav_reminders:
-                Toast.makeText(this,"Reminders",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
                 break;
             case R.id.nav_scheduled_settings:
-                Toast.makeText(this,"Scheduled Settings",Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduledSettings()).commit();
                 break;
             case R.id.nav_settings:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
