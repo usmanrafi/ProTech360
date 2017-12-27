@@ -19,10 +19,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-/**
- * Created by Aliyan on 11/27/2017.
- */
-
 public class Alerts extends Fragment {
     View myView;
     SearchView searchView;

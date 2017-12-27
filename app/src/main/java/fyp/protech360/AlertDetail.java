@@ -5,10 +5,6 @@ import android.widget.Toast;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-/**
- * Created by Aliyan on 12/6/2017.
- */
-
 public class AlertDetail {
 
     private String message;

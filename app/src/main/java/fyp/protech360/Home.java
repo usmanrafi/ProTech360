@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -24,11 +26,22 @@ public class Home extends Fragment implements OnMapReadyCallback {
     MapView myMapView;
     View myView;
 
+    Button panicButton;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.home, container, false);
         ((Homepage) getActivity()).setActionBarTitle("Home");
+
+        panicButton = (Button)myView.findViewById(R.id.btn_panic);
+
+        panicButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),"Panic button pressed",Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return myView;
     }

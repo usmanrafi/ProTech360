@@ -7,11 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-/**
- * Created by Aliyan on 11/28/2017.
- */
-
 public class ForgotPassword extends Fragment {
     View myView ;
     android.app.FragmentManager fragmentManager = getFragmentManager();

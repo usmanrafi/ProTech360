@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "38135826489",
+    "firebase_url": "https://protech-360.firebaseio.com",
+    "project_id": "protech-360",
+    "storage_bucket": "protech-360.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38135826489:android:78d357e4cd9c5ce0",
+        "android_client_info": {
+          "package_name": "fyp.protech360"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38135826489-j1mulf5bto4q122fbs1k1u5oad14f4mi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fyp.protech360",
+            "certificate_hash": "d1620a171b267ee032909924005e9ff51744ca08"
+          }
+        },
+        {
+          "client_id": "38135826489-abcai93h0ekpvmbomdhqhcp54q5l9keo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKtP1rr3l-IdHKZpTUcU6J6E2-7aPPqXI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38135826489-abcai93h0ekpvmbomdhqhcp54q5l9keo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

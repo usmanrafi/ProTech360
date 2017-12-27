@@ -7,10 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * Created by Aliyan on 11/28/2017.
- */
-
 public class ChangePassword extends Fragment {
     View myView;
 

@@ -13,10 +13,6 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aliyan on 12/6/2017.
- */
-
 public class CustomAdapter extends ArrayAdapter implements Filterable {
         Activity activity;
         ArrayList<AlertDetail> alerts;
