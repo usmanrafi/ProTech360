@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -34,9 +36,20 @@ public class Alerts extends Fragment {
         ((Homepage) getActivity()).setActionBarTitle("Alerts");
         setHasOptionsMenu(true);
         listView = (ListView) myView.findViewById(R.id.alertList);
-
+        listView.setClickable(true);
         listView.setAdapter(alertAdapter);
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                int pos = (int)alertAdapter.getItemId(position);
+                AlertDetail a = (AlertDetail) alerts.get(pos);
+
+                Toast.makeText(getActivity(),a.getMessage(),Toast.LENGTH_SHORT).show();
+                return false;
+            }
+        });
 
         return myView;
     }
@@ -64,11 +77,11 @@ public class Alerts extends Fragment {
 
     public void addList()
     {
-        alerts.add(new AlertDetail("Sajjad has gone out of safety range","6-12-2017","18:11"));
-        alerts.add(new AlertDetail("Usman has gone out of safety range","6-12-2017","15:06"));
-        alerts.add(new AlertDetail("It looks like Zainab is near water, go check it out","6-12-2017","08:56"));
+        alerts.add(new AlertDetail("Sajjad has gone out of safety range","7-12-2017","08:11"));
+        alerts.add(new AlertDetail("Usman has gone out of safety range","7-12-2017","06:06"));
+        alerts.add(new AlertDetail("It looks like Zainab is near water, go check it out","7-12-2017","00:56"));
         alerts.add(new AlertDetail("Waqar has gone out of safety range","6-12-2017","00:10"));
-        alerts.add(new AlertDetail("Maham's speed has changed drastically, keep a check","4-12-2017","23:22"));
+        alerts.add(new AlertDetail("Saad's speed has changed drastically, keep a check","4-12-2017","23:22"));
         alerts.add(new AlertDetail("Osama has gone out of safety range","4-12-2017","19:45"));
         alerts.add(new AlertDetail("Haroon has gone out of safety range","4-12-2017","06:04"));
         alerts.add(new AlertDetail("Sajjad has gone out of safety range","3-12-2017","03:58"));
@@ -76,6 +89,7 @@ public class Alerts extends Fragment {
         alerts.add(new AlertDetail("Saad has gone out of safety range","27-11-2017","15:11"));
         alerts.add(new AlertDetail("Hussam has gone out of safety range","25-11-2017","08:59"));
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

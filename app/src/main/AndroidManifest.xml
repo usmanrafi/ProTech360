@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
@@ -22,6 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".VerificationActivity"
+            android:label="ProTech360">
             android:label="ProTech360"
             android:screenOrientation="portrait">
             <intent-filter>
