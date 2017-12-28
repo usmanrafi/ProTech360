@@ -22,6 +22,8 @@
     </string>
     <string name="title_activity_maps">Map</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="directionsApiKey">AIzaSyBM_FhqVynFRchYcBGzGGk7apdC2QFvtjY</string>
+    <string name="hello_blank_fragment">Blank Fragment</string>
+    <string name="title_activity_trackroom_details">TrackroomDetails</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

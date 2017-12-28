@@ -92,7 +92,7 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;
             case R.id.nav_conversations:
-                fragmentManager.beginTransaction().replace(R.id.content_frame,new Conversations()).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new connectionDetails()).commit();
                 break;
             case R.id.nav_trackrooms:
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRooms()).commit();
