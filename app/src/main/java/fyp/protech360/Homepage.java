@@ -1,5 +1,6 @@
 package fyp.protech360;
 
+import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -102,8 +103,8 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Alerts()).commit();
                 break;
             case R.id.nav_meetings:
-                startActivity(new Intent(this,MeetingDetails.class));
-//                fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
+                //startActivity(new Intent(this,MeetingDetails.class));
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
                 break;
             case R.id.nav_reminders:
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
@@ -116,9 +117,14 @@ public class Homepage extends AppCompatActivity
                 break;
         }
 
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void setFragment(Fragment fragment){
+        fragmentManager.beginTransaction().replace(R.id.content_frame,fragment).commit();
     }
 
     public void setActionBarTitle(String title) {
