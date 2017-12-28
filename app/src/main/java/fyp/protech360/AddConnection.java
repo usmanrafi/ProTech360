@@ -30,6 +30,9 @@ public class AddConnection extends Fragment {
         l1 = (LinearLayout) myView.findViewById(R.id.smartphoneList);
         l2 = (LinearLayout) myView.findViewById(R.id.wearableList);
 
+        l1.setVisibility(View.VISIBLE);
+        l2.setVisibility(View.GONE);
+
         TabLayout tabLayout = (TabLayout) myView.findViewById(R.id.tab);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
