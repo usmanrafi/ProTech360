@@ -102,7 +102,8 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Alerts()).commit();
                 break;
             case R.id.nav_meetings:
-                fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
+                startActivity(new Intent(this,MeetingDetails.class));
+//                fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
                 break;
             case R.id.nav_reminders:
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();

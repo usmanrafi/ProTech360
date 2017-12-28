@@ -21,9 +21,9 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".VerificationActivity"
-            android:label="ProTech360">
             android:label="ProTech360"
             android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +42,14 @@
         <activity
             android:name=".TrackroomDetails"
             android:label="@string/title_activity_trackroom_details"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"
+            />
+        <activity
+            android:name=".MeetingDetails"
+            android:label="MeetingDetails"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>
