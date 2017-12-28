@@ -16,7 +16,6 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Aliyan on 12/6/2017.
@@ -27,7 +26,6 @@ public class CustomAdapter extends ArrayAdapter implements Filterable {
         ArrayList<AlertDetail> alerts;
         ArrayList<AlertDetail> filteredAlerts;
         AlertHolder holder = new AlertHolder();
-        DeviceHolder deviceHolder = new DeviceHolder();
         int resource;
 
         public CustomAdapter(Activity activity, int resource,ArrayList<AlertDetail> alerts) {
@@ -62,7 +60,6 @@ public class CustomAdapter extends ArrayAdapter implements Filterable {
 
         }
 
-        if(resource == R.layout.alert_row) {
             holder.message = (TextView) convertView.findViewById(R.id.alertMessage);
             holder.date = (TextView) convertView.findViewById(R.id.alertTime);
             holder.checked = (CheckBox) convertView.findViewById(R.id.delete_check);
@@ -75,20 +72,11 @@ public class CustomAdapter extends ArrayAdapter implements Filterable {
             } else {
                 holder.date.setText(a.getDate());
             }
-        }
 
-        else if(resource == R.layout.connectionslist_row){
-            deviceHolder.image = (CircleImageView) convertView.findViewById(R.id.contactImageShow);
-            deviceHolder.name = (TextView) convertView.findViewById(R.id.contactNameShow);
-        }
 
         return convertView;
     }
 
-    static class DeviceHolder{
-        CircleImageView image;
-        TextView name;
-    }
 
     static class AlertHolder{
         TextView message;
