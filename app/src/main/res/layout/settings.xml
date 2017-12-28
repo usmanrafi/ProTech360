@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="10dp">
@@ -86,6 +92,28 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:onClick="openAbout"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:paddingTop="10dp"
+            android:onClick="openHelp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingTop="30dp"
         >
@@ -108,6 +136,7 @@
             android:onClick="deactivateAccount"
             android:text="Deactivate Account"/>
 
+
     </LinearLayout>
 
     <LinearLayout
@@ -115,19 +144,22 @@
         android:layout_height="wrap_content"
         android:onClick="signOut"
         android:paddingTop="30dp">
+
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="10dp"
-            android:src="@drawable/logout"/>
+            android:src="@drawable/logout" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Sign Out"/>
+            android:text="Sign Out" />
 
     </LinearLayout>
 
 
-</LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

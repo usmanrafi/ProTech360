@@ -54,6 +54,8 @@ public class Homepage extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
+
     }
 
     @Override
@@ -110,13 +112,6 @@ public class Homepage extends AppCompatActivity
             case R.id.nav_settings:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
                 break;
-            case R.id.nav_about:
-                fragmentManager.beginTransaction().replace(R.id.content_frame,new About()).commit();
-                break;
-            case R.id.nav_help:
-                fragmentManager.beginTransaction().replace(R.id.content_frame,new Help()).commit();
-                break;
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -239,5 +234,14 @@ public class Homepage extends AppCompatActivity
         Toast.makeText(getApplication(),"Password Successfully Changed",Toast.LENGTH_SHORT).show();
         fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
     }
+
+    public void openAbout(View view){
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new About()).commit();
+    }
+
+    public void openHelp(View view){
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new Help()).commit();
+    }
+
 }
 
