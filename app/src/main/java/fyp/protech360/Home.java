@@ -76,12 +76,12 @@ public class Home extends Fragment implements OnMapReadyCallback {
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.5204,74.3587),10));
     }
 
-    private GeoApiContext getGeoContext() {
-        GeoApiContext geoApiContext = new GeoApiContext();
-        return geoApiContext.setQueryRateLimit(3)
-                .setApiKey(getString(R.string.directionsApiKey))
-                .setConnectTimeout(1, TimeUnit.SECONDS)
-                .setReadTimeout(1, TimeUnit.SECONDS)
-                .setWriteTimeout(1, TimeUnit.SECONDS);
-    }
+//    private GeoApiContext getGeoContext() {
+//        GeoApiContext geoApiContext = new GeoApiContext();
+//        return geoApiContext.setQueryRateLimit(3)
+//                .setApiKey(getString(R.string.directionsApiKey))
+//                .setConnectTimeout(1, TimeUnit.SECONDS)
+//                .setReadTimeout(1, TimeUnit.SECONDS)
+//                .setWriteTimeout(1, TimeUnit.SECONDS);
+//    }
 }

@@ -16,6 +16,7 @@ public class VerificationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
 
+
         if (savedInstanceState == null)
         {
             fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new Login()).commit();
