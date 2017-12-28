@@ -247,5 +247,9 @@ public class Homepage extends AppCompatActivity
     public void addDevice(View view) {
         fragmentManager.beginTransaction().replace(R.id.content_frame,new AddConnection()).commit();
     }
+
+    public void addMeeting(View view) {
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new AddMeeting()).commit();
+    }
 }
 
