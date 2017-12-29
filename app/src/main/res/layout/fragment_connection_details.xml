@@ -11,5 +11,15 @@
         android:layout_width="match_parent"
         android:id="@+id/map"
         />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/getDirections"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="16dp"
+        android:layout_marginRight="16dp"
+        android:elevation="8dp"
+        />
     
 </FrameLayout>
