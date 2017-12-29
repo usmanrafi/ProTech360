@@ -26,4 +26,11 @@
     <string name="hello_blank_fragment">Blank Fragment</string>
     <string name="title_activity_trackroom_details">TrackroomDetails</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string-array name="spinner_profiles">
+        <item> General </item>
+        <item> Silent </item>
+        <item> Do Not Track </item>
+        <item> Do Not Disturb </item>
+    </string-array>
 </resources>

@@ -109,7 +109,8 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
                 break;
             case R.id.nav_scheduled_settings:
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduledSettings()).commit();
+                startActivity(new Intent(this,AddScheduledProfile.class));
+//                fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduledSettings()).commit();
                 break;
             case R.id.nav_settings:
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Settings()).commit();
