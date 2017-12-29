@@ -120,11 +120,11 @@
 
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/connAddButton"
-            android:text="Request"/>
+            android:id="@+id/meetingAddButton"
+            android:text="Schedule"/>
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/connCancelButton"
+            android:id="@+id/meetingCancelButton"
             android:text="Cancel"/>
 
     </LinearLayout>

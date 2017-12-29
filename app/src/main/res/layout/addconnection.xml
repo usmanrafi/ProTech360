@@ -221,7 +221,7 @@
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/connAddButton"
-            android:text="Request"/>
+            android:text="Pair"/>
         <Button android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/connCancelButton"

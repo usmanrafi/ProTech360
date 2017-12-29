@@ -106,8 +106,7 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
                 break;
             case R.id.nav_reminders:
-                startActivity(new Intent(this,AddReminder.class));
-//                fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
                 break;
             case R.id.nav_scheduled_settings:
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new ScheduledSettings()).commit();
@@ -257,6 +256,14 @@ public class Homepage extends AppCompatActivity
 
     public void addMeeting(View view) {
         fragmentManager.beginTransaction().replace(R.id.content_frame,new AddMeeting()).commit();
+    }
+
+    public void addRoom(View view){
+        fragmentManager.beginTransaction().replace(R.id.content_frame,new AddTrackRoom()).commit();
+    }
+
+    public void addReminder(View view){
+        startActivity(new Intent(this,AddReminder.class));
     }
 }
 
