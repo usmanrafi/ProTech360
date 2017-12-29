@@ -10,8 +10,10 @@ import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by Aliyan on 12/28/2017.
@@ -20,6 +22,7 @@ import android.widget.ListView;
 public class AddConnection extends Fragment {
     View myView;
     LinearLayout l1, l2;
+    Button b1, b2;
 
     @Nullable
     @Override
@@ -29,6 +32,25 @@ public class AddConnection extends Fragment {
 
         l1 = (LinearLayout) myView.findViewById(R.id.smartphoneList);
         l2 = (LinearLayout) myView.findViewById(R.id.wearableList);
+
+        b1 = (Button) myView.findViewById(R.id.connAddButton);
+        b2 = (Button) myView.findViewById(R.id.connCancelButton);
+
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Pairing request has been sent",Toast.LENGTH_SHORT).show();
+                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+            }
+        });
+
+        b2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(),"Add Connection Cancelled",Toast.LENGTH_SHORT).show();
+                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+            }
+        });
 
         l1.setVisibility(View.VISIBLE);
         l2.setVisibility(View.GONE);
