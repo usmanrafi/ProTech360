@@ -81,20 +81,13 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
         myMap = googleMap;
         myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-        }
+
 
         myMap.setMyLocationEnabled(true);
 
         myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.5204,74.3587),10));
     }
 
-//    private GeoApiContext getGeoContext() {
-//        GeoApiContext geoApiContext = new GeoApiContext();
-//        return geoApiContext.setQueryRateLimit(3)
-//                .setApiKey(getString(R.string.directionsApiKey))
-//                .setConnectTimeout(1, TimeUnit.SECONDS)
-//                .setReadTimeout(1, TimeUnit.SECONDS)
-//                .setWriteTimeout(1, TimeUnit.SECONDS);
-//    }
+
+
 }

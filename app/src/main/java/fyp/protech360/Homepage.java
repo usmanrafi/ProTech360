@@ -1,9 +1,14 @@
 package fyp.protech360;
 
+import android.*;
+import android.Manifest;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,12 +29,21 @@ public class Homepage extends AppCompatActivity
     android.app.FragmentManager fragmentManager = getFragmentManager();
     boolean toggle = false;
 
+    final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
+    final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
+    final int MY_PERMISSIONS_REQUEST_SEND_SMS = 2;
+    final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 3;
+    final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 4;
+    final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        permissions();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -263,5 +277,122 @@ public class Homepage extends AppCompatActivity
     public void addReminder(View view){
         startActivity(new Intent(this,AddReminder.class));
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch(requestCode)
+        {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_RECEIVE_SMS:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+
+            case MY_PERMISSIONS_REQUEST_SEND_SMS:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                {
+                    permissions();
+                }
+                else
+                {
+
+                }
+                return;
+            }
+        }
+
+
+    }
+
+    void permissions()
+    {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+
+        if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
+        }
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},MY_PERMISSIONS_REQUEST_SEND_SMS);
+        }
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.RECEIVE_SMS},MY_PERMISSIONS_REQUEST_RECEIVE_SMS);
+        }
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE);
+        }
+
+        if(ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
+        }
+
+
+    }
+
 }
 
