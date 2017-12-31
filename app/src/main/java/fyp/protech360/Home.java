@@ -39,18 +39,19 @@ public class Home extends Fragment implements OnMapReadyCallback {
         myView = inflater.inflate(R.layout.home, container, false);
         ((Homepage) getActivity()).setActionBarTitle("Home");
 
-        panicButton = (Button)myView.findViewById(R.id.btn_panic);
+        panicButton = (Button) myView.findViewById(R.id.btn_panic);
 
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+
                 myMap.setMyLocationEnabled(true);
                 Location myLocation = myMap.getMyLocation();
                 String Lat = String.valueOf(myLocation.getLatitude());
                 String Long = String.valueOf(myLocation.getLongitude());
-                String Url = "http://maps.google.com?q=";
-                String messageToSend = "ALERT!!! I am in trouble, please help me. My current location is: '" + Url + Lat + "," + Long + "'. Please hurry up! Sent via ProTech360";
+                String Url = "http://www.google.com/maps/place/" + Lat + "," + Long;
+                String messageToSend = "ALERT!!! I am in trouble, please help me. My current location is: " + Url + ". Please hurry up! Sent via ProTech360";
                 String number = "+923354091046";
 
                 SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null,null);
