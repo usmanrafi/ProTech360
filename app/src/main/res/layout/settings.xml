@@ -38,6 +38,35 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Account"
+            android:textSize="20dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="changepassword"
+            android:padding="10dp"
+            android:text="Change Password" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:onClick="deactivateAccount"
+            android:padding="10dp"
+            android:text="Deactivate Account" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingTop="30dp">
         <ImageView
@@ -95,47 +124,46 @@
         android:paddingTop="10dp"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="About"
-            android:onClick="openAbout"
-            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="openAbout"
+        android:paddingTop="30dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_info_black_36dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Help"
-            android:paddingTop="10dp"
-            android:onClick="openHelp"/>
+            android:padding="10dp"
+            android:text="About" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="30dp"
-        >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Account"
-            android:textSize="20dp"/>
+        android:onClick="openHelp"
+        android:paddingTop="30dp">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/ic_help_black_36dp" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:padding="10dp"
-            android:onClick="changepassword"
-            android:text="Change Password"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:onClick="deactivateAccount"
-            android:text="Deactivate Account"/>
-
+            android:text="Help"
+            />
 
     </LinearLayout>
 

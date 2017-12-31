@@ -3,9 +3,11 @@ package fyp.protech360;
 import android.Manifest;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.telephony.SmsManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,16 @@ public class Home extends Fragment implements OnMapReadyCallback {
         panicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                myMap.setMyLocationEnabled(true);
+                Location myLocation = myMap.getMyLocation();
+                String Lat = String.valueOf(myLocation.getLatitude());
+                String Long = String.valueOf(myLocation.getLongitude());
+                String Url = "http://maps.google.com?q=";
+                String messageToSend = "ALERT!!! I am in trouble, please help me. My current location is: '" + Url + Lat + "," + Long + "'. Please hurry up! Sent via ProTech360";
+                String number = "+923354091046";
+
+                SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null,null);
                 Toast.makeText(getActivity(),"Panic button pressed",Toast.LENGTH_SHORT).show();
             }
         });

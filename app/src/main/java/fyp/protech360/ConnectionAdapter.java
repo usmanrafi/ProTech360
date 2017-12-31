@@ -36,6 +36,10 @@ public class ConnectionAdapter extends ArrayAdapter {
 
         }
 
+            if(resource == R.layout.select_participant_row){
+                deviceHolder.box = (CheckBox) convertView.findViewById(R.id.delete_check2);
+            }
+
             deviceHolder.image = (CircleImageView) convertView.findViewById(R.id.contactImageShow);
             deviceHolder.name = (TextView) convertView.findViewById(R.id.contactNameShow);
 
@@ -53,6 +57,7 @@ public class ConnectionAdapter extends ArrayAdapter {
 
     static class DeviceHolder{
         CircleImageView image;
+        CheckBox box;
         TextView name;
     }
 

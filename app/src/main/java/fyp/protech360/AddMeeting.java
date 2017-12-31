@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -18,6 +19,7 @@ import android.widget.Toast;
 public class AddMeeting extends Fragment {
     View myView;
     Button b1,b2;
+    ImageView iv;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,6 +42,15 @@ public class AddMeeting extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Meeting Schedule Cancelled",Toast.LENGTH_SHORT).show();
                 ((Homepage) getActivity()).setFragment(new Meetings());
+            }
+        });
+
+        iv = (ImageView) myView.findViewById(R.id.addParticipantsToMeeting);
+
+        iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((Homepage) getActivity()).setFragment(new SelectParticipant());
             }
         });
 
