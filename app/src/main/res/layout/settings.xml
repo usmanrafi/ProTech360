@@ -4,188 +4,189 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="10dp">
-
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="30dp">
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/side_nav_bar"/>
-        <EditText
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:id="@+id/editName"
-            android:enabled="false"
-            android:text="Syed Sajjad Ali"/>
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:id="@+id/editNameButton"
-            android:src="@drawable/edit"
-            android:onClick="editName"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingTop="30dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="Account"
-            android:textSize="20dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:onClick="changepassword"
-            android:padding="10dp"
-            android:text="Change Password" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:onClick="deactivateAccount"
-            android:padding="10dp"
-            android:text="Deactivate Account" />
-
-
-    </LinearLayout>
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingTop="30dp">
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/trackme"/>
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:text="Track Me"/>
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/donotdisturb"/>
-        <TextView
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:text="Do Not Disturb"/>
-        <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="editMessage">
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/edit"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:text="Edit Emergency Message"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="10dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="openAbout"
-        android:paddingTop="30dp">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_info_black_36dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="About" />
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/side_nav_bar"
+                />
+            <EditText
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:id="@+id/editName"
+                android:enabled="false"
+                android:text="Syed Sajjad Ali"/>
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:id="@+id/editNameButton"
+                android:src="@drawable/edit"
+                android:onClick="editName"/>
+        </LinearLayout>
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="openHelp"
-        android:paddingTop="30dp">
-
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/ic_help_black_36dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Help"
-            />
+            android:orientation="vertical"
+            android:paddingTop="30dp">
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Account"
+                android:textSize="20dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="signOut"
-        android:paddingTop="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:onClick="changepassword"
+                android:padding="10dp"
+                android:text="Change Password" />
 
-        <ImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:padding="10dp"
-            android:src="@drawable/logout" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:onClick="deactivateAccount"
+                android:padding="10dp"
+                android:text="Deactivate Account" />
 
-        <TextView
-            android:layout_width="wrap_content"
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:text="Sign Out" />
+            android:orientation="horizontal"
+            android:paddingTop="30dp">
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/trackme"/>-->
+            <TextView
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="Track Me"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/donotdisturb"/>-->
+            <TextView
+                android:layout_width="250dp"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="Do Not Disturb"/>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="editMessage">
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/edit"/>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="10dp"
+                android:text="Edit Emergency Message"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openAbout"
+            android:paddingTop="30dp">
+
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/ic_info_black_36dp" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="About" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="openHelp"
+            android:paddingTop="30dp">
+
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/ic_help_black_36dp" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Help"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="signOut"
+            android:paddingTop="30dp">
+
+            <!--<ImageView-->
+                <!--android:layout_width="50dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:padding="10dp"-->
+                <!--android:src="@drawable/logout" />-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Sign Out" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
