@@ -116,7 +116,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:padding="10dp"
-                android:text="Edit Emergency Message"/>
+                android:text="Edit Emergency Details"
+                />
         </LinearLayout>
 
         <LinearLayout

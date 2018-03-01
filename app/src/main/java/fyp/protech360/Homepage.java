@@ -6,10 +6,12 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.InputType;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -21,7 +23,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -164,24 +169,47 @@ public class Homepage extends AppCompatActivity
     public void editMessage(View view) {
         AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
-        alert.setTitle("Edit Emergency Message");
+        alert.setTitle("Edit Emergency Details");
 
-// Set an EditText view to get user input
-        final EditText input = new EditText(this);
-        alert.setView(input);
+        // Setting the Dialog view
+
+        final EditText text = new EditText(this);
+        text.setHint("Emergency Message");
+        text.setMaxLines(1);
+
+        final EditText num1 = new EditText(this);
+        final EditText num2 = new EditText(this);
+        final EditText num3 = new EditText(this);
+
+        num1.setHint("Emergency Contact 1");
+        num2.setHint("Emergency Contact 2");
+        num3.setHint("Emergency Contact 3");
+
+        num1.setInputType(InputType.TYPE_CLASS_PHONE);
+        num2.setInputType(InputType.TYPE_CLASS_PHONE);
+        num3.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        final LinearLayout box = new LinearLayout(this);
+        box.setOrientation(LinearLayout.VERTICAL);
+        box.addView(text);
+        box.addView(num1);
+        box.addView(num2);
+        box.addView(num3);
+
+        alert.setView(box);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 // Do something with value!
-                Toast.makeText(getApplicationContext(),"Emergency Message Updated",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Emergency Details Updated",Toast.LENGTH_SHORT).show();
             }
         });
 
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 // Canceled.
-                Toast.makeText(getApplicationContext(),"Emergency Message Update Cancelled",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Emergency Details Update Cancelled",Toast.LENGTH_SHORT).show();
             }
         });
 
