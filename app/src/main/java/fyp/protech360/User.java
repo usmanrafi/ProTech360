@@ -5,11 +5,13 @@ import android.graphics.Bitmap;
 
 public class User {
 
-    String name;
-    String PhoneNumber;
-    String Email;
-    String password;
-    Bitmap image;
+    private String name;
+    private String PhoneNumber;
+    private String Email;
+    private String password;
+    private Bitmap image;
+
+    private EmergencyDetails emergencyDetails;
 
     User(String name, String PhoneNumber, String Email, String password, Bitmap image)
     {
@@ -20,13 +22,28 @@ public class User {
         this.image = image;
     }
 
-    String getName()
+    User(String name, String PhoneNumber, String Email, String password, Bitmap image, EmergencyDetails det)
     {
-        return name;
+        this.name = name;
+        this.PhoneNumber = PhoneNumber;
+        this.Email = Email;
+        this.password = password;
+        this.image = image;
+        this.emergencyDetails = det;
     }
 
-    Bitmap getImage()
+    public String getName()
     {
-        return image;
+        return this.name;
+    }
+
+    public Bitmap getImage(){
+        return this.image;
+    }
+
+    public EmergencyDetails getEmergencyDetails(){return this.emergencyDetails;}
+
+    public void setEmergencyDetails(EmergencyDetails det){
+        this.emergencyDetails = det;
     }
 }
