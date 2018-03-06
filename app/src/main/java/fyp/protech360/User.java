@@ -2,9 +2,6 @@ package fyp.protech360;
 
 import android.graphics.Bitmap;
 
-/**
- * Created by Aliyan on 12/28/2017.
- */
 
 public class User {
 
