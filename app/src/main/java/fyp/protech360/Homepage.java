@@ -207,11 +207,21 @@ public class Homepage extends AppCompatActivity
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
+
+                String n1 = num1.getText().toString();
+                String n2 = num2.getText().toString();
+                String n3 = num3.getText().toString();
+
+                if(n1.length() != 13)
+                    n1 = null;
+                if(n2.length() != 13)
+                    n2 = null;
+                if(n3.length() != 13)
+                    n3 = null;
+
                 Global.currentUser.setEmergencyDetails(new EmergencyDetails(
                         text.getText().toString(),
-                        num1.getText().toString(),
-                        num2.getText().toString(),
-                        num3.getText().toString()
+                        n1, n2, n3
                 ));
 
 

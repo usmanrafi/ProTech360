@@ -53,19 +53,22 @@ public class Home extends Fragment implements OnMapReadyCallback {
                     String Lat = String.valueOf(myLocation.getLatitude());
                     String Long = String.valueOf(myLocation.getLongitude());
                     String Url = "http://www.google.com/maps/place/" + Lat + "," + Long;
-                    String messageToSend = "ALERT!!! I am in trouble, please help me.\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
+//                    String messageToSend = "ALERT!!! I am in trouble, please help me.\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
 
-                    String number = "+923154144453";
-                    SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
+                    String messageToSend = Global.currentUser.getEmergencyDetails().getMessage()+
+                            "\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
 
-                    number = "+923354091046";
-                    SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
+                    String[] numbers = Global.currentUser.getEmergencyDetails().getNumbers();
 
-                    number = "+923444996663";
-                    SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
+                    if(numbers[0] != null)
+                        SmsManager.getDefault().sendTextMessage(numbers[0], null, messageToSend, null, null);
 
-                    number = "+923248988663";
-                    SmsManager.getDefault().sendTextMessage(number, null, messageToSend, null, null);
+                    if(numbers[1] != null)
+                        SmsManager.getDefault().sendTextMessage(numbers[1], null, messageToSend, null, null);
+
+                    if(numbers[2] != null)
+                        SmsManager.getDefault().sendTextMessage(numbers[2], null, messageToSend, null, null);
+
                 }
                 Toast.makeText(getActivity(),"Panic button pressed",Toast.LENGTH_SHORT).show();
             }
