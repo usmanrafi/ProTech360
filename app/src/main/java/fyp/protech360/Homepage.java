@@ -164,6 +164,7 @@ public class Homepage extends AppCompatActivity
         {
             iv.setImageResource(R.drawable.edit);
             edit.setEnabled(false);
+            Global.currentUser.setName(edit.getText().toString());
             Toast.makeText(getApplication(),"Profile Updated",Toast.LENGTH_SHORT).show();
             toggle = false;
         }

@@ -26,7 +26,7 @@
                 android:padding="10dp"
                 android:id="@+id/editName"
                 android:enabled="false"
-                android:text="Syed Sajjad Ali"/>
+                />
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"

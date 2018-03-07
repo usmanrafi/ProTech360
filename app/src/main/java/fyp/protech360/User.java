@@ -37,6 +37,10 @@ public class User {
         return this.name;
     }
 
+    public void setName(String name){
+        this.name = name;
+    }
+
     public Bitmap getImage(){
         return this.image;
     }
