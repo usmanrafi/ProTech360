@@ -13,21 +13,19 @@ public class User {
 
     private EmergencyDetails emergencyDetails;
 
-    User(String name, String PhoneNumber, String Email, String password, Bitmap image)
+    User(String name, String PhoneNumber, String Email, Bitmap image)
     {
         this.name = name;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
-        this.password = password;
         this.image = image;
     }
 
-    User(String name, String PhoneNumber, String Email, String password, Bitmap image, EmergencyDetails det)
+    User(String name, String PhoneNumber, String Email, Bitmap image, EmergencyDetails det)
     {
         this.name = name;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
-        this.password = password;
         this.image = image;
         this.emergencyDetails = det;
     }
