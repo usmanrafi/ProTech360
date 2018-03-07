@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -64,6 +65,9 @@ public class Homepage extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
 
+
+        Global.currentUser = new User("Usman", "+92", "foo@gmail.com", "foo", null,
+                new EmergencyDetails("Help!", "+923154144453",null,null));
     }
 
     @Override
@@ -174,12 +178,13 @@ public class Homepage extends AppCompatActivity
         // Setting the Dialog view
 
         final EditText text = new EditText(this);
-        text.setHint("Emergency Message");
+        text.setHint(Global.currentUser.getEmergencyDetails().getMessage());
         text.setMaxLines(1);
 
         final EditText num1 = new EditText(this);
         final EditText num2 = new EditText(this);
         final EditText num3 = new EditText(this);
+
 
         num1.setHint("Emergency Contact 1");
         num2.setHint("Emergency Contact 2");

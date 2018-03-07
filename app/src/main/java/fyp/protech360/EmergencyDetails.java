@@ -50,6 +50,12 @@ public class EmergencyDetails {
         return true;
     }
 
+    public void setNumbers(String[] nums){
+        this.num1 = nums[0];
+        this.num2 = nums[1];
+        this.num3 = nums[2];
+    }
+
     public void sendPanicAlert(String latitude, String longitude){
 
         String Url = "http://www.google.com/maps/place/" + latitude + "," + longitude;
