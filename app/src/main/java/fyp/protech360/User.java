@@ -8,7 +8,6 @@ public class User {
     private String name;
     private String PhoneNumber;
     private String Email;
-    private String password;
     private Bitmap image;
 
     private EmergencyDetails emergencyDetails;
