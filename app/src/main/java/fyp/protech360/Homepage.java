@@ -178,17 +178,17 @@ public class Homepage extends AppCompatActivity
         // Setting the Dialog view
 
         final EditText text = new EditText(this);
-        text.setHint(Global.currentUser.getEmergencyDetails().getMessage());
+        text.setText(Global.currentUser.getEmergencyDetails().getMessage());
         text.setMaxLines(1);
 
         final EditText num1 = new EditText(this);
         final EditText num2 = new EditText(this);
         final EditText num3 = new EditText(this);
 
-
-        num1.setHint("Emergency Contact 1");
-        num2.setHint("Emergency Contact 2");
-        num3.setHint("Emergency Contact 3");
+        String[] nums = Global.currentUser.getEmergencyDetails().getNumbers();
+        num1.setText(nums[0]);
+        num2.setText(nums[1]);
+        num3.setText(nums[2]);
 
         num1.setInputType(InputType.TYPE_CLASS_PHONE);
         num2.setInputType(InputType.TYPE_CLASS_PHONE);
@@ -206,7 +206,16 @@ public class Homepage extends AppCompatActivity
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                // Do something with value!
+                Global.currentUser.setEmergencyDetails(new EmergencyDetails(
+                        text.getText().toString(),
+                        num1.getText().toString(),
+                        num2.getText().toString(),
+                        num3.getText().toString()
+                ));
+
+
+
+
                 Toast.makeText(getApplicationContext(),"Emergency Details Updated",Toast.LENGTH_SHORT).show();
             }
         });
