@@ -1,5 +1,6 @@
 package fyp.protech360;
 
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,14 +10,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
-
+import android.widget.ToggleButton;
 
 
 public class TimeBasedProfiles extends Fragment{
 
     View myView;
     Spinner spinner;
+
+    ToggleButton toggleButton;
 
     Button submit;
     AudioManager am;
@@ -31,6 +35,10 @@ public class TimeBasedProfiles extends Fragment{
 
         spinner = myView.findViewById(R.id.profile_spinner);
         submit = myView.findViewById(R.id.submitTimeBasedProfiles);
+        toggleButton = myView.findViewById(R.id.timeBasedProfilesToggle);
+
+        am = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
+
 
         if(spinner != null){
             String[] list = getResources().getStringArray(R.array.spinner_profiles);
@@ -41,6 +49,16 @@ public class TimeBasedProfiles extends Fragment{
             @Override
             public void onClick(View view) {
                 am.setRingerMode(0);
+            }
+        });
+
+        toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b)
+                    am.setRingerMode(0);
+                else
+                    am.setRingerMode(2);
             }
         });
         return myView;

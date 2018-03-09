@@ -26,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -66,7 +67,7 @@ public class Homepage extends AppCompatActivity
         }
 
 
-        Global.currentUser = new User("Usman", "+92", "foo@gmail.com", "foo", null,
+        Global.currentUser = new User("Usman", "+92", "foo@gmail.com", null,
                 new EmergencyDetails("Help!", "+923154144453",null,null));
     }
 
@@ -446,6 +447,5 @@ public class Homepage extends AppCompatActivity
 
 
     }
-
 }
 

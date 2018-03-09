@@ -57,17 +57,17 @@ public class SelectParticipant extends Fragment {
 
     public void addList()
     {
-        connections.add(new User("Asharib Nadeem","7-12-2017","08:11","e",null));
-        connections.add(new User("Haroon Ahmed","7-12-2017","06:06","e",null));
-        connections.add(new User("Kashif Ahmed","7-12-2017","00:56","e",null));
-        connections.add(new User("Osama Haroon","6-12-2017","00:10","e",null));
-        connections.add(new User("Saad Mujeeb","4-12-2017","23:22","e",null));
-        connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45","e",null));
-        connections.add(new User("Syeda Zainab Bukhari","4-12-2017","06:04","e",null));
-        connections.add(new User("Tahir Ali","3-12-2017","03:58","e",null));
-        connections.add(new User("Usama Aslam","29-11-2017","18:11","e",null));
-        connections.add(new User("Usman Mohammad Rafi","27-11-2017","15:11","e",null));
-        connections.add(new User("Zainab Saif","25-11-2017","08:59","e",null));
+        connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
+        connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));
+        connections.add(new User("Kashif Ahmed","7-12-2017","00:56",null));
+        connections.add(new User("Osama Haroon","6-12-2017","00:10",null));
+        connections.add(new User("Saad Mujeeb","4-12-2017","23:22",null));
+        connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45",null));
+        connections.add(new User("Syeda Zainab Bukhari","4-12-2017","06:04",null));
+        connections.add(new User("Tahir Ali","3-12-2017","03:58",null));
+        connections.add(new User("Usama Aslam","29-11-2017","18:11",null));
+        connections.add(new User("Usman Mohammad Rafi","27-11-2017","15:11",null));
+        connections.add(new User("Zainab Saif","25-11-2017","08:59",null));
     }
 
 }
