@@ -2,33 +2,38 @@ package fyp.protech360;
 
 import java.util.ArrayList;
 
-/**
- * Created by Aliyan on 12/29/2017.
- */
-
 public class Room {
 
-    private String Title;
+    private String title;
     private ArrayList<User> members;
     private ArrayList<User> admins;
 
-    Room(String Title, ArrayList<User> members, ArrayList<User> admins){
-        this.Title = Title;
-        this.members = members;
+    Room(){
+        this.title = "Room";
+        this.members = new ArrayList<>();
+        this.admins = new ArrayList<>();
     }
 
-    public void addAdmin(User user)
-    {
+    Room(String title, ArrayList<User> members, ArrayList<User> admins){
+        this.title = title;
+        this.members = members;
+        this.admins = admins;
+    }
+
+    public void addAdmin(User user){
         admins.add(user);
     }
 
-    public void addUser(User user)
-    {
+    public void addUser(User user){
         members.add(user);
     }
 
-    String getTitle(){
-        return Title;
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public String getTitle(){
+        return this.title;
     }
 
 }
