@@ -26,6 +26,10 @@
     <string name="hello_blank_fragment">Blank Fragment</string>
     <string name="title_activity_trackroom_details">TrackroomDetails</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="time_based_reminders_et_title">Title</string>
+    <string name="time_based_reminders_tv_time">Time</string>
+    <string name="time_based_reminders_tv_date">Date</string>
+    <string name="time_based_reminders_bt_confirm">Confirm</string>
 
     <string-array name="spinner_profiles">
         <item> General </item>

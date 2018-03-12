@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".VerificationActivity"
+            android:name=".UI.VerificationActivity"
             android:label="ProTech360"
             android:screenOrientation="portrait">
 
@@ -33,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Homepage"
+            android:name=".UI.Homepage"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -42,23 +42,23 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".TrackroomDetails"
+            android:name=".UI.TrackroomDetails"
             android:label="@string/title_activity_trackroom_details"
             android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
             />
         <activity
-            android:name=".MeetingDetails"
+            android:name=".UI.MeetingDetails"
             android:label="MeetingDetails"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AddReminder"
+            android:name=".UI.AddReminder"
             android:label="AddReminder"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".AddScheduledProfile"
+            android:name=".UI.AddScheduledProfile"
             android:label="AddScheduledProfile"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"/>

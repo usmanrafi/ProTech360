@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_login"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fyp.protech360.SignUp"
+    tools:context="fyp.protech360.UI.SignUp"
     android:background="@android:color/white">
 
     <LinearLayout

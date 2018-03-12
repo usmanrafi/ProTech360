@@ -1,14 +1,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fyp.protech360.AddReminder">
+    tools:context="fyp.protech360.UI.AddReminder">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -30,7 +29,7 @@
                     android:id="@+id/meetingSubject"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Title"
+                    android:hint="@string/time_based_reminders_et_title"
                     android:inputType="text"
                     android:maxLines="1" />
 
@@ -41,10 +40,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Time"
-                android:textSize="30dp" />
+                android:text="@string/time_based_reminders_tv_time"
+                android:textSize="30sp"
+                android:layout_marginLeft="20dp" />
 
             <TimePicker
                 android:id="@+id/timePicker"
@@ -59,8 +59,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
-                android:text="Date"
-                android:textSize="30dp" />
+                android:text="@string/time_based_reminders_tv_date"
+                android:textSize="30sp"
+                android:layout_marginStart="20dp" />
 
 
             <DatePicker
@@ -68,16 +69,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:datePickerMode="spinner"/>
+                android:datePickerMode="spinner"
+                tools:targetApi="lollipop" />
 
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="10dp"
             android:layout_weight="1"
             android:background="@color/colorPrimaryDark"
-            android:text="Confirm" />
+            android:text="@string/time_based_reminders_bt_confirm" />
 
     </LinearLayout>
 
