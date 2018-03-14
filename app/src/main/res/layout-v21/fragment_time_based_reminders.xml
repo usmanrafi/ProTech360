@@ -3,7 +3,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fyp.protech360.UI.AddReminder">
+    tools:context="fyp.protech360.ui.AddReminder">
 
     <LinearLayout
         android:layout_width="match_parent"
