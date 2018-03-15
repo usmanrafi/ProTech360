@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -43,40 +44,42 @@ public class TimeBasedReminders extends Fragment{
 
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
-//        mButton.setOnClickListener(new View.OnClickListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-//            @Override
-//            public void onClick(View view) {
-//
-//                Calendar calendar = Calendar.getInstance();
-//
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//                    calendar.set(
-//                            mDatePicker.getYear(),
-//                            mDatePicker.getMonth(),
-//                            mDatePicker.getDayOfMonth(),
-//                            mtimePicker.getHour(),
-//                            mtimePicker.getMinute(),
-//                            0
-//                    );
-//                }
-//                else{
-//                    calendar.set(
-//                            mDatePicker.getYear(),
-//                            mDatePicker.getMonth(),
-//                            mDatePicker.getDayOfMonth(),
-//                            mtimePicker.getCurrentHour(),
-//                            mtimePicker.getCurrentMinute(),
-//                            0
-//                    );
-//                }
-//
-//                Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
-//                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
-//
-//                mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
-//            }
-//        });
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View view) {
+
+                Calendar calendar = Calendar.getInstance();
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    calendar.set(
+                            mDatePicker.getYear(),
+                            mDatePicker.getMonth(),
+                            mDatePicker.getDayOfMonth(),
+                            mtimePicker.getHour(),
+                            mtimePicker.getMinute(),
+                            0
+                    );
+                }
+                else{
+                    calendar.set(
+                            mDatePicker.getYear(),
+                            mDatePicker.getMonth(),
+                            mDatePicker.getDayOfMonth(),
+                            mtimePicker.getCurrentHour(),
+                            mtimePicker.getCurrentMinute(),
+                            0
+                    );
+                }
+
+                Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),0,intent,0);
+
+                mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+
+                Toast.makeText(getContext(), "Alarm set!", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return myView;
     }
