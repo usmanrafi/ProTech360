@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import java.util.Calendar;
 
 import fyp.protech360.R;
 import fyp.protech360.services.TimeBasedReminderReceiver;
+import fyp.protech360.utils.Global;
 
 
 public class TimeBasedReminders extends Fragment{
@@ -33,6 +35,7 @@ public class TimeBasedReminders extends Fragment{
     private TimePicker mtimePicker;
     private DatePicker mDatePicker;
     private Button mButton;
+    private EditText mEditText;     // Reminder Text
 
     private AlarmManager mAlarmManager;
 
@@ -41,9 +44,11 @@ public class TimeBasedReminders extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_time_based_reminders, container, false);
 
+        mEditText = myView.findViewById(R.id.reminderTitle);
         mtimePicker = myView.findViewById(R.id.timePicker);
         mDatePicker = myView.findViewById(R.id.datePicker);
         mButton = myView.findViewById(R.id.confirmTimeBasedReminder);
+
 
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
@@ -74,9 +79,10 @@ public class TimeBasedReminders extends Fragment{
                             0
                     );
                 }
-
+//                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),255,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
 
                 mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
 

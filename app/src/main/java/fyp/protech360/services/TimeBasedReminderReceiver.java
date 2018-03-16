@@ -12,6 +12,8 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 import android.widget.Toast;
 
+import fyp.protech360.utils.Global;
+
 public class TimeBasedReminderReceiver extends BroadcastReceiver {
 
     @Override
@@ -25,11 +27,13 @@ public class TimeBasedReminderReceiver extends BroadcastReceiver {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
                 .setSmallIcon(android.R.drawable.ic_lock_lock)
                 .setContentTitle("ProTech360")
+//                .setContentText(Global.reminderTitles.get(Global.timeBasedReminderReceiverID))
                 .setContentText("Reminder")
                 .setTicker("Reminder : Foobar")
                 .setAutoCancel(true);
 
-        notificationManager.notify(255,builder.build());
+//        notificationManager.notify(Global.timeBasedReminderReceiverID++,builder.build());
+        notificationManager.notify(Global.timeBasedReminderID, builder.build());
 
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         MediaPlayer mp = MediaPlayer.create(context, alert);
