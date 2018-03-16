@@ -79,7 +79,7 @@ public class TimeBasedReminders extends Fragment{
                             0
                     );
                 }
-//                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
+                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 

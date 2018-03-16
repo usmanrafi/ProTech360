@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import fyp.protech360.utils.Global;
@@ -24,16 +25,17 @@ public class TimeBasedReminderReceiver extends BroadcastReceiver {
 
         // Intent --> Intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+        notificationManager.notify(Global.timeBasedReminderReceiverID, new NotificationCompat.Builder(context)
                 .setSmallIcon(android.R.drawable.ic_lock_lock)
                 .setContentTitle("ProTech360")
-//                .setContentText(Global.reminderTitles.get(Global.timeBasedReminderReceiverID))
-                .setContentText("Reminder")
-                .setTicker("Reminder : Foobar")
-                .setAutoCancel(true);
+                .setContentText(Global.reminderTitles.get(Global.timeBasedReminderReceiverID))
+                .setTicker("Reminder")
+                .setAutoCancel(true)
+                .build()
+        );
 
-//        notificationManager.notify(Global.timeBasedReminderReceiverID++,builder.build());
-        notificationManager.notify(Global.timeBasedReminderID, builder.build());
+        Log.d("Usman_TimeBasedRem",Global.reminderTitles.get(Global.timeBasedReminderReceiverID));
+        Global.timeBasedReminderReceiverID++;
 
         Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         MediaPlayer mp = MediaPlayer.create(context, alert);
