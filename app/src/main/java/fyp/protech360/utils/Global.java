@@ -7,4 +7,5 @@ import fyp.protech360.classes.User;
 public class Global {
 
     public static User currentUser;
+
 }
