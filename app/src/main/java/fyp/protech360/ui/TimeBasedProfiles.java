@@ -104,13 +104,15 @@ public class TimeBasedProfiles extends Fragment{
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), code,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-        mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+        }
 
         Toast.makeText(getContext(), "Profile set!", Toast.LENGTH_SHORT).show();
     }
 
     public int getSpinnerCode() {
-        int code = 0;
+        int code;
 
         String setting = (String) spinner.getSelectedItem();
 
