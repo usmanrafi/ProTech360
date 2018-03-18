@@ -66,6 +66,7 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <receiver android:name=".services.TimeBasedReminderReceiver"/>
+        <receiver android:name=".services.TimeBasedProfileReceiver"/>
 
     </application>
 

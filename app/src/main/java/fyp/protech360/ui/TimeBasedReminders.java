@@ -49,7 +49,6 @@ public class TimeBasedReminders extends Fragment{
         mDatePicker = myView.findViewById(R.id.datePicker);
         mButton = myView.findViewById(R.id.confirmTimeBasedReminder);
 
-
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
         mButton.setOnClickListener(new View.OnClickListener() {

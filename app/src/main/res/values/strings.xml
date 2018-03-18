@@ -34,6 +34,7 @@
     <string-array name="spinner_profiles">
         <item> General </item>
         <item> Silent </item>
+        <item> Mute </item>
         <item> Do Not Track </item>
         <item> Do Not Disturb </item>
     </string-array>
