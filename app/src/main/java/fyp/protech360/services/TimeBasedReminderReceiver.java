@@ -36,7 +36,7 @@ public class TimeBasedReminderReceiver extends BroadcastReceiver {
         Log.d("Usman_TimeBasedRem",Global.reminderTitles.get(Global.timeBasedReminderReceiverID));
         Global.timeBasedReminderReceiverID++;
 
-        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri alert = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         MediaPlayer mp = MediaPlayer.create(context, alert);
         mp.setVolume(100,100);
         mp.start();
