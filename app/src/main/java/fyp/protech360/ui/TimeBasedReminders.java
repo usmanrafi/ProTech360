@@ -6,8 +6,10 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
@@ -51,6 +53,8 @@ public class TimeBasedReminders extends Fragment{
 
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
+        final SharedPreferences.Editor editor = getActivity().getPreferences(Context.MODE_PRIVATE).edit();
+
         mButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -78,14 +82,19 @@ public class TimeBasedReminders extends Fragment{
                             0
                     );
                 }
-                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
+//                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+                String text = mEditText.getText().toString().trim();
+                Long ms = calendar.getTimeInMillis();
+
+                editor.putString("Time_"+String.valueOf(ms), text);
+                editor.commit();
 
                 mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
 
-                Toast.makeText(getContext(), "Alarm set!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Alarm set! " + String.valueOf(ms) , Toast.LENGTH_SHORT).show();
             }
         });
 
