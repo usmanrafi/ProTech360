@@ -1,19 +1,15 @@
 package fyp.protech360.ui;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +79,6 @@ public class TimeBasedReminders extends Fragment{
                             0
                     );
                 }
-//                Global.reminderTitles.add(Global.timeBasedReminderID, mEditText.getText().toString().trim());
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 

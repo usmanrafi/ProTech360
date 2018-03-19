@@ -13,7 +13,6 @@ public class Global {
     // ID to uniquely identify reminder alarms
     public static int timeBasedReminderID;
     public static int timeBasedReminderReceiverID;
-    public static ArrayList<String> reminderTitles;
 
     // IDs to uniquely identify scheduled reminders;
 
@@ -33,6 +32,5 @@ public class Global {
     static {
         timeBasedReminderID = 0;
         timeBasedReminderReceiverID = 0;
-        reminderTitles = new ArrayList<>();
     }
 }
