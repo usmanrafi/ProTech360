@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -98,6 +99,9 @@ public class TimeBasedProfiles extends Fragment{
             );
         }
 
+        final SharedPreferences.Editor editor = getActivity().getSharedPreferences("TimeBasedReminders",
+                Context.MODE_PRIVATE).edit();
+
         Intent intent = new Intent(getActivity(), TimeBasedProfileReceiver.class);
 
         int code = getSpinnerCode();
@@ -105,7 +109,13 @@ public class TimeBasedProfiles extends Fragment{
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), code,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
+            Long ms = calendar.getTimeInMillis();
+
+            editor.putInt("Prof_"+String.valueOf(ms).substring(0,9), code);
+            editor.apply();
+
+
+            mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, ms,pendingIntent);
         }
 
         Toast.makeText(getContext(), "Profile set!", Toast.LENGTH_SHORT).show();
