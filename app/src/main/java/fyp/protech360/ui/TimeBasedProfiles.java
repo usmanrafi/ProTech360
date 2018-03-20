@@ -99,7 +99,7 @@ public class TimeBasedProfiles extends Fragment{
             );
         }
 
-        final SharedPreferences.Editor editor = getActivity().getSharedPreferences("TimeBasedReminders",
+        final SharedPreferences.Editor editor = getActivity().getSharedPreferences("TimeBasedProfiles",
                 Context.MODE_PRIVATE).edit();
 
         Intent intent = new Intent(getActivity(), TimeBasedProfileReceiver.class);
@@ -112,7 +112,7 @@ public class TimeBasedProfiles extends Fragment{
             Long ms = calendar.getTimeInMillis();
 
             editor.putInt("Prof_"+String.valueOf(ms).substring(0,9), code);
-            editor.apply();
+            editor.commit();
 
 
             mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, ms,pendingIntent);
