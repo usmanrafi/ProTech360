@@ -31,6 +31,23 @@ public class User {
         this.emergencyDetails = det;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj == null)
+            return false;
+
+        if(!(obj instanceof User))
+            return false;
+
+        if(((User) obj).getEmail().equalsIgnoreCase(this.Email))
+            return true;
+
+        if(((User) obj).getPhoneNumber().equals(this.PhoneNumber))
+            return true;
+
+        return false;
+    }
+
     public String getName()
     {
         return this.name;
@@ -42,6 +59,14 @@ public class User {
 
     public Bitmap getImage(){
         return this.image;
+    }
+
+    public String getEmail() {
+        return Email;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
     }
 
     public EmergencyDetails getEmergencyDetails(){return this.emergencyDetails;}
