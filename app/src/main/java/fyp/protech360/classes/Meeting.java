@@ -18,17 +18,48 @@ public class Meeting {
         this.location = location;
     }
 
+    public Meeting(String name, User admin, LatLng location){
+        this.name = name;
+        this.location = location;
+        this.participants = new ArrayList<>();
+        this.admins = new ArrayList<>();
+        this.admins.add(admin);
+    }
+
     public void addParticipant(User user){
-        this.participants.add(user);
+        if(!(this.isParticipant(user)))
+            this.participants.add(user);
     }
 
     public void makeAdmin(User user){
-        this.participants.remove(user);
-        this.admins.add(user);
+        if(!(this.isAdmin(user))) {
+            this.participants.remove(user);
+            this.admins.add(user);
+        }
+    }
+
+    public boolean isAdmin(User user){
+        for(User u : this.admins)
+            if(user.equals(u))
+                return true;
+
+        return false;
+    }
+
+    public boolean isParticipant(User user){
+        for(User u : this.participants)
+            if(user.equals(u))
+                return true;
+
+        return false;
     }
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
     }
 
     public ArrayList<User> getParticipants() {
