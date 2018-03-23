@@ -27,12 +27,12 @@ public class Meeting {
     }
 
     public void addParticipant(User user){
-        if(!(this.isParticipant(user)))
+        if(!(this.isParticipant(user)) && !(this.isAdmin(user)))
             this.participants.add(user);
     }
 
     public void makeAdmin(User user){
-        if(!(this.isAdmin(user))) {
+        if(!(this.isAdmin(user)) && this.isParticipant(user)) {
             this.participants.remove(user);
             this.admins.add(user);
         }

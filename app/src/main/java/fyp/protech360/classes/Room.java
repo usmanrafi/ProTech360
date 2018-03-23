@@ -20,12 +20,40 @@ public class Room {
         this.admins = admins;
     }
 
-    public void addAdmin(User user){
-        admins.add(user);
+    public Room(String title, User admin){
+        this.title = title;
+        this.members = new ArrayList<>();
+        this.admins = new ArrayList<>();
+
+        this.admins.add(admin);
+    }
+
+    public void makeAdmin(User user){
+        if(!(this.isAdmin(user)) && this.isMember(user)){
+            this.admins.add(user);
+            this.members.remove(user);
+        }
     }
 
     public void addUser(User user){
-        members.add(user);
+        if(!(this.isMember(user)) && !(this.isAdmin(user)))
+            this.members.add(user);
+    }
+
+    public boolean isAdmin(User user){
+        for(User u : this.admins)
+            if(user.equals(u))
+                return true;
+
+        return false;
+    }
+
+    public boolean isMember(User user){
+        for(User u : this.members)
+            if(user.equals(u))
+                return true;
+
+        return false;
     }
 
     public void setTitle(String title){
@@ -36,4 +64,11 @@ public class Room {
         return this.title;
     }
 
+    public ArrayList<User> getMembers() {
+        return this.members;
+    }
+
+    public ArrayList<User> getAdmins() {
+        return this.admins;
+    }
 }
