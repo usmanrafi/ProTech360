@@ -2,6 +2,8 @@ package fyp.protech360.classes;
 
 import android.graphics.Bitmap;
 
+import java.util.ArrayList;
+
 
 public class User {
 
@@ -12,6 +14,9 @@ public class User {
 
     private EmergencyDetails emergencyDetails;
 
+    private ArrayList<Meeting> meetings;
+    private ArrayList<Room> rooms;
+
     public User(){}
 
     public User(String name, String PhoneNumber, String Email, Bitmap image)
@@ -20,6 +25,9 @@ public class User {
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
         this.image = image;
+
+        this.meetings = new ArrayList<>();
+        this.rooms = new ArrayList<>();
     }
 
     public User(String name, String PhoneNumber, String Email, Bitmap image, EmergencyDetails det)
@@ -29,6 +37,9 @@ public class User {
         this.Email = Email;
         this.image = image;
         this.emergencyDetails = det;
+
+        this.meetings = new ArrayList<>();
+        this.rooms = new ArrayList<>();
     }
 
     @Override
@@ -73,5 +84,21 @@ public class User {
 
     public void setEmergencyDetails(EmergencyDetails det){
         this.emergencyDetails = det;
+    }
+
+    public ArrayList<Meeting> getMeetings() {
+        return this.meetings;
+    }
+
+    public void setMeetings(ArrayList<Meeting> meetings) {
+        this.meetings = meetings;
+    }
+
+    public ArrayList<Room> getRooms() {
+        return this.rooms;
+    }
+
+    public void setRooms(ArrayList<Room> rooms) {
+        this.rooms = rooms;
     }
 }
