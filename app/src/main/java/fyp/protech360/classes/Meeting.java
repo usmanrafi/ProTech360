@@ -3,8 +3,11 @@ package fyp.protech360.classes;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class Meeting {
+
+    private UUID uuid;
 
     private String name;
     private ArrayList<User> participants;
@@ -12,6 +15,8 @@ public class Meeting {
     private LatLng location;
 
     public Meeting(String name, ArrayList<User> participants, ArrayList<User> admins, LatLng location) {
+        this.uuid = UUID.randomUUID();
+
         this.name = name;
         this.participants = participants;
         this.admins = admins;
@@ -19,6 +24,8 @@ public class Meeting {
     }
 
     public Meeting(String name, User admin, LatLng location){
+        this.uuid = UUID.randomUUID();
+
         this.name = name;
         this.location = location;
         this.participants = new ArrayList<>();
@@ -52,6 +59,14 @@ public class Meeting {
                 return true;
 
         return false;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName() {
