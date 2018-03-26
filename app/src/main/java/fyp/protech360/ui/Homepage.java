@@ -41,6 +41,7 @@ public class Homepage extends AppCompatActivity
     final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 3;
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 4;
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
+    DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +219,7 @@ public class Homepage extends AppCompatActivity
                     n2 = null;
                 if(n3.length() != 13)
                     n3 = null;
+
 
                 Global.currentUser.setEmergencyDetails(new EmergencyDetails(
                         text.getText().toString(),

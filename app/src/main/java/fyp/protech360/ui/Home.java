@@ -4,6 +4,8 @@ import android.Manifest;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -24,6 +26,7 @@ import com.google.android.gms.maps.model.LatLng;
 import fyp.protech360.R;
 import fyp.protech360.utils.Global;
 
+import android.content.Context;
 
 public class Home extends Fragment implements OnMapReadyCallback {
 
@@ -38,6 +41,36 @@ public class Home extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.home, container, false);
         ((Homepage) getActivity()).setActionBarTitle("Home");
+
+        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        LocationListener l = new LocationListener() {
+
+            private Location lastLoc = null;
+
+            @Override
+            public void onLocationChanged(Location location) {
+                
+                Toast.makeText(getActivity(), "Speed: " + location.getSpeed() + " Altitude: " + location.getAltitude(), Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+
+        lm.requestLocationUpdates("gps", 500, 10, l);
+
 
         panicButton = (Button) myView.findViewById(R.id.btn_panic);
 
