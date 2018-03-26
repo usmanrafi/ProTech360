@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import fyp.protech360.DatabaseHelper;
 import fyp.protech360.classes.EmergencyDetails;
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
