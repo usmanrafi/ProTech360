@@ -5,10 +5,6 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-/**
- * Created by Aliyan on 3/12/2018.
- */
-
 public interface IBaseGPSListener extends LocationListener,GpsStatus.Listener {
     @Override
     public void onGpsStatusChanged(int event);

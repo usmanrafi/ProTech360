@@ -3,10 +3,12 @@ package fyp.protech360.classes;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class User {
 
+    private UUID uuid;
     private String name;
     private String PhoneNumber;
     private String Email;
@@ -17,10 +19,13 @@ public class User {
     private ArrayList<Meeting> meetings;
     private ArrayList<Room> rooms;
 
+    private ArrayList<User> connections;
+
     public User(){}
 
-    public User(String name, String PhoneNumber, String Email, Bitmap image)
+    public User(UUID uuid, String name, String PhoneNumber, String Email, Bitmap image)
     {
+        this.uuid = uuid;
         this.name = name;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
@@ -28,10 +33,13 @@ public class User {
 
         this.meetings = new ArrayList<>();
         this.rooms = new ArrayList<>();
+
+        this.connections = new ArrayList<>();
     }
 
-    public User(String name, String PhoneNumber, String Email, Bitmap image, EmergencyDetails det)
+    public User(UUID uuid, String name, String PhoneNumber, String Email, Bitmap image, EmergencyDetails det)
     {
+        this.uuid = uuid;
         this.name = name;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
@@ -40,6 +48,8 @@ public class User {
 
         this.meetings = new ArrayList<>();
         this.rooms = new ArrayList<>();
+
+        this.connections = new ArrayList<>();
     }
 
     @Override
@@ -50,6 +60,9 @@ public class User {
         if(!(obj instanceof User))
             return false;
 
+        if(((User) obj).getUuid().equals(this.uuid))
+            return true;
+
         if(((User) obj).getEmail().equalsIgnoreCase(this.Email))
             return true;
 
@@ -57,6 +70,14 @@ public class User {
             return true;
 
         return false;
+    }
+
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
     }
 
     public String getName()
@@ -100,5 +121,20 @@ public class User {
 
     public void setRooms(ArrayList<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public void addConnection(User user){
+        boolean alreadyExists = false;
+
+        for(User u: connections)
+            if(u.getUuid().equals(this.uuid))
+                alreadyExists = true;
+
+        if(!alreadyExists)
+            this.connections.add(user);
+    }
+
+    public ArrayList<User> getConnections() {
+        return connections;
     }
 }
