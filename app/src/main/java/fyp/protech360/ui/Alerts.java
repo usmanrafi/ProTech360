@@ -79,7 +79,9 @@ public class Alerts extends Fragment {
 
     public void addList()
     {
-        alerts.add(new AlertDetail("Sajjad has gone out of safety range","7-12-2017","08:11"));
+        //Add list of alerts from FIREBASE/Local DB here
+
+        /*alerts.add(new AlertDetail("Sajjad has gone out of safety range","7-12-2017","08:11"));
         alerts.add(new AlertDetail("Usman has gone out of safety range","7-12-2017","06:06"));
         alerts.add(new AlertDetail("It looks like Zainab is near water, go check it out","7-12-2017","00:56"));
         alerts.add(new AlertDetail("Waqar has gone out of safety range","6-12-2017","00:10"));
@@ -89,7 +91,7 @@ public class Alerts extends Fragment {
         alerts.add(new AlertDetail("Sajjad has gone out of safety range","3-12-2017","03:58"));
         alerts.add(new AlertDetail("Rana has gone out of safety range","29-11-2017","18:11"));
         alerts.add(new AlertDetail("Saad has gone out of safety range","27-11-2017","15:11"));
-        alerts.add(new AlertDetail("Hussam has gone out of safety range","25-11-2017","08:59"));
+        alerts.add(new AlertDetail("Hussam has gone out of safety range","25-11-2017","08:59"));*/
     }
 
 

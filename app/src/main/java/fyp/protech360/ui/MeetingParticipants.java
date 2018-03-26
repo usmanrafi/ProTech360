@@ -47,11 +47,13 @@ public class MeetingParticipants extends Fragment{
 
     public void addList()
     {
-        connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
-        connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));
-        connections.add(new User("Kashif Ahmed","7-12-2017","00:56",null));
-        connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45",null));
-        connections.add(new User("Zainab Saif","25-11-2017","08:59",null));
+        //Add list of user in a particular meeting from FIREBASE here
+
+        //connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
+        //connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));
+        //connections.add(new User("Kashif Ahmed","7-12-2017","00:56",null));
+        //connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45",null));
+        //connections.add(new User("Zainab Saif","25-11-2017","08:59",null));
     }
 
 
