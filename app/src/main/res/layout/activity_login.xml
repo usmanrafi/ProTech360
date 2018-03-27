@@ -27,9 +27,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mobile Number"
-                android:id="@+id/loginNumber"
-                android:inputType="phone"
+                android:hint="Email"
+                android:id="@+id/loginEmail"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"/>
 
         </android.support.design.widget.TextInputLayout>

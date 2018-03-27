@@ -7,7 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import fyp.protech360.R;
 
@@ -21,10 +25,22 @@ public class VerificationActivity extends Activity {
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 4;
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
 
+    private EditText mEmail;
+    private EditText mPassword;
+
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
+
+        mEmail = findViewById(R.id.loginEmail);
+        mPassword = findViewById(R.id.loginPassword);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+
         permissions();
 
 
@@ -36,6 +52,31 @@ public class VerificationActivity extends Activity {
     }
 
     public void login(View view) {
+
+        String email = mEmail.getText().toString().trim();
+        String pass = mPassword.getText().toString().trim();
+
+
+        mFirebaseAuth.signInWithEmailAndPassword(email, pass);
+
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if (mFirebaseUser != null) {
+            if (mFirebaseUser.isEmailVerified()) {
+                Intent i = new Intent(getApplicationContext(), Homepage.class);
+                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+//               TODO: getLoggedInUser();
+                startActivity(i);
+                finish();
+            } else {
+                Toast.makeText(this, "Please verify Email", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else
+            Toast.makeText(this, "Error in signing in", Toast.LENGTH_SHORT).show();
+    
+
         Intent intent = new Intent(getApplicationContext(),Homepage.class);
         startActivity(intent);
         finish();

@@ -24,7 +24,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.UUID;
 
@@ -48,6 +51,10 @@ public class Homepage extends AppCompatActivity
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
     DatabaseHelper dbHelper;
 
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private FirebaseDatabase mFirebaseDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +63,14 @@ public class Homepage extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         permissions();
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser == null || !(mFirebaseUser.isEmailVerified())) {
+            startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+            finish();
+        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
