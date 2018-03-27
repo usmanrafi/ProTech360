@@ -11,6 +11,7 @@ import android.widget.Toast;
 public class TimeBasedProfileReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+
         AudioManager mAudioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("TimeBasedProfiles", Context.MODE_PRIVATE);

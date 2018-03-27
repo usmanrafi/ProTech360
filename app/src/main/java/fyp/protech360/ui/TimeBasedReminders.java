@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,8 +31,7 @@ public class TimeBasedReminders extends Fragment{
 
     View myView;
 
-    private TimePicker mtimePicker;
-    private DatePicker mDatePicker;
+    NumberPicker n1,n2,n3, n4, n5;
     private Button mButton;
     private EditText mEditText;     // Reminder Text
 
@@ -42,10 +42,15 @@ public class TimeBasedReminders extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_time_based_reminders, container, false);
 
+        n1 = myView.findViewById(R.id.datePicker);
+        n2 = myView.findViewById(R.id.monthPicker);
+        n3 = myView.findViewById(R.id.yearPicker);
+        n4 = myView.findViewById(R.id.hourPicker);
+        n5 = myView.findViewById(R.id.minutePicker);
         mEditText = myView.findViewById(R.id.reminderTitle);
-        mtimePicker = myView.findViewById(R.id.timePicker);
-        mDatePicker = myView.findViewById(R.id.datePicker);
         mButton = myView.findViewById(R.id.confirmTimeBasedReminder);
+
+        initializeValues();
 
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
@@ -58,27 +63,10 @@ public class TimeBasedReminders extends Fragment{
             public void onClick(View view) {
 
                 Calendar calendar = Calendar.getInstance();
+                calendar.set(
+                        n3.getValue(),n2.getValue()-1,n1.getValue(),n4.getValue(),n5.getValue(),0
+                    );
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    calendar.set(
-                            mDatePicker.getYear(),
-                            mDatePicker.getMonth(),
-                            mDatePicker.getDayOfMonth(),
-                            mtimePicker.getHour(),
-                            mtimePicker.getMinute(),
-                            0
-                    );
-                }
-                else{
-                    calendar.set(
-                            mDatePicker.getYear(),
-                            mDatePicker.getMonth(),
-                            mDatePicker.getDayOfMonth(),
-                            mtimePicker.getCurrentHour(),
-                            mtimePicker.getCurrentMinute(),
-                            0
-                    );
-                }
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -95,6 +83,67 @@ public class TimeBasedReminders extends Fragment{
         });
 
         return myView;
+    }
+
+    private void initializeValues() {
+
+        Calendar cal = Calendar.getInstance();
+        n1.setMinValue(1);
+        n2.setMinValue(1);
+        n3.setMinValue(cal.get(Calendar.YEAR));
+        n4.setMinValue(00);
+        n5.setMinValue(00);
+        n3.setMaxValue(2058);
+        n1.setMaxValue(31);
+        n2.setMaxValue(12);
+        n4.setMaxValue(23);
+        n5.setMaxValue(59);
+
+        n2.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if(newVal == 1 || newVal == 3 || newVal == 5 || newVal == 7 || newVal == 8 || newVal == 10 || newVal == 12)
+                    n1.setMaxValue(31);
+                else if(newVal == 4 || newVal == 6 || newVal == 9 || newVal == 11)
+                    n1.setMaxValue(30);
+                else {
+                    if(n3.getValue() % 4 == 0 )
+                        n1.setMaxValue(29);
+                    else
+                        n1.setMaxValue(28);
+                }
+                n1.setValue(1);
+            }
+        });
+
+        n3.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+
+
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                if(newVal % 4 == 0 && n2.getValue() == 2)
+                    n1.setMaxValue(29);
+                else if(newVal % 4 != 0 && n2.getValue() == 2)
+                    n1.setMaxValue(28);
+            }
+        });
+
+
+
+        n1.setValue(cal.get(cal.DAY_OF_MONTH));
+        n2.setValue(cal.get(cal.MONTH)+1);
+        n3.setValue(cal.get(cal.YEAR));
+        n4.setValue(cal.get(cal.HOUR_OF_DAY));
+        n5.setValue(cal.get(cal.MINUTE));
+
+        n1.setWrapSelectorWheel(true);
+        n2.setWrapSelectorWheel(true);
+        n3.setWrapSelectorWheel(true);
+        n4.setWrapSelectorWheel(true);
+        n5.setWrapSelectorWheel(true);
+
+
+
     }
 
 }
