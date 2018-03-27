@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuthException;
+
 import java.util.UUID;
 
 import fyp.protech360.dal.DatabaseHelper;
