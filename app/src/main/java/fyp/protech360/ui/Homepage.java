@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import java.util.UUID;
+
 import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.classes.EmergencyDetails;
 import fyp.protech360.R;
@@ -68,7 +70,7 @@ public class Homepage extends AppCompatActivity
         }
 
 
-        Global.currentUser = new User("Usman", "+92", "foo@gmail.com", null,
+        Global.currentUser = new User(UUID.randomUUID(),"Usman", "+92", "foo@gmail.com", null,
                 new EmergencyDetails("Help!", "+923154144453",null,null));
     }
 
