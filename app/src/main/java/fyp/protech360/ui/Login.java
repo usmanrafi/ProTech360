@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,9 @@ public class Login extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d("Usman_Login","onCreateView of Login.java");
+
+        myView = inflater.inflate(R.layout.activity_login,container,false);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -41,7 +45,6 @@ public class Login extends Fragment {
             getActivity().finish();
         }
 
-        myView = inflater.inflate(R.layout.activity_login,container,false);
 
 
         mEmail = myView.findViewById(R.id.loginEmail);

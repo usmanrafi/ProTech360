@@ -32,6 +32,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
+import fyp.protech360.utils.Global;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -71,11 +72,20 @@ public class SignUp extends Fragment {
             tilNumber.setError("Field required");
             return false;
         }
-        else if(text.matches(Patterns.PHONE.pattern()))
-            return true;
+        else if(text.length() != 13){
+            tilNumber.setError("Number should be of the format +92xxxxxxxxxx");
+            return false;
+        }
 
-        tilNumber.setError("Invalid Number");
-        return false;
+        for (int i = 1; i < 13 ; ++i) {
+
+            if (text.charAt(i) < '0' || text.charAt(i) > '9'){
+                tilNumber.setError("Invalid Number");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean areValidPasswords(TextInputLayout tilPassword, TextInputLayout tilConfirmPassword) {
@@ -210,16 +220,21 @@ public class SignUp extends Fragment {
                                 Toast.makeText(getActivity(), "User registered! Please verify email!", Toast.LENGTH_LONG).show();
 
                                 // TODO: Add user
-//                                User user = new User(UUID.fromString(mFirebaseAuth.getCurrentUser().getUid()),
-//                                        mName.getEditText().getText().toString().trim(),
-//                                        mNumber.getEditText().getText().toString().trim(),
-//                                        mEmail.getEditText().getText().toString().trim(),
-//                                        null
+                                User user = new User(mFirebaseAuth.getCurrentUser().getUid(),
+                                        mName.getEditText().getText().toString().trim(),
+                                        mNumber.getEditText().getText().toString().trim(),
+                                        mEmail.getEditText().getText().toString().trim(),
+                                        null
 //                                        Bitmap.createBitmap(photo);
-//                                );
-//
-//                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-//                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user);
+                                );
+
+                                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
+                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        mFirebaseAuth.signOut();
+                                    }
+                                });
 
 
                                 Intent intent = new Intent(getActivity(), VerificationActivity.class);

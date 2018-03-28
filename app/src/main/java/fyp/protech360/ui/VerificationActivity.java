@@ -25,7 +25,6 @@ public class VerificationActivity extends Activity {
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 4;
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
