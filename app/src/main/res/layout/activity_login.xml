@@ -58,7 +58,6 @@
             android:id="@+id/loginBtn"
             android:textStyle="bold"
             style="?android:textAppearanceSmall"
-            android:onClick="login"
             android:layout_marginTop="15dp"
             android:layout_gravity="center"
             android:textColor="@android:color/white"/>
