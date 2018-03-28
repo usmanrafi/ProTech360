@@ -40,7 +40,7 @@ public class SignUp extends Fragment {
     android.app.FragmentManager fragmentManager = getFragmentManager();
     private CircleImageView photo;
 
-    private TextInputLayout mName;
+    /*private TextInputLayout mName;
     private TextInputLayout mNumber;
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
@@ -104,7 +104,7 @@ public class SignUp extends Fragment {
         }
 
         return isValid;
-    }
+    }*/
 
 
 
@@ -113,15 +113,15 @@ public class SignUp extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.signup, container, false);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
+        //mFirebaseAuth = FirebaseAuth.getInstance();
 
         photo = (CircleImageView) myView.findViewById(R.id.userImage);
 
-        mName = myView.findViewById(R.id.til_name);
+        /*mName = myView.findViewById(R.id.til_name);
         mNumber = myView.findViewById(R.id.til_number);
         mEmail = myView.findViewById(R.id.til_email);
         mPassword = myView.findViewById(R.id.til_password);
-        mConfirmPassword = myView.findViewById(R.id.til_confirm_password);
+        mConfirmPassword = myView.findViewById(R.id.til_confirm_password);*/
 
         photo.setOnClickListener(new View.OnClickListener() {
 
@@ -159,7 +159,7 @@ public class SignUp extends Fragment {
     }
 
     public void register(View view) {
-        boolean isValidInfo = true;
+        /*boolean isValidInfo = true;
 
         if(mName.getEditText().getText().toString().isEmpty()){
             mName.setError("Field required");
@@ -205,19 +205,19 @@ public class SignUp extends Fragment {
                                 );
 
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user);
+                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user);*/
 
 
-                                Intent intent = new Intent(getActivity(), VerificationActivity.class);
+                                Intent intent = new Intent(getActivity(), Homepage.class);
                                 startActivity(intent);
                                 getActivity().finish();
-                            } else {
-                                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                            //} else {
+                              //  Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                            //}
+                      //  }
+                    //});
 
-            dialog.dismiss();
-        }
+            //dialog.dismiss();
+    //    }
     }
 }

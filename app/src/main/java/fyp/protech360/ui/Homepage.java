@@ -64,13 +64,13 @@ public class Homepage extends AppCompatActivity
 
         permissions();
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        //mFirebaseAuth = FirebaseAuth.getInstance();
+        //mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
-        if(mFirebaseUser == null || !(mFirebaseUser.isEmailVerified())) {
-            startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
-            finish();
-        }
+        //if(mFirebaseUser == null || !(mFirebaseUser.isEmailVerified())) {
+        //    startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
+        //    finish();
+        //}
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

@@ -114,15 +114,12 @@ public class TimeBasedProfiles extends Fragment{
         switch (setting){
             case "General":
                 code = toggleButton.isChecked() ? Global.PROFILE_GENERAL_ON : Global.PROFILE_GENERAL_OFF;
-                Toast.makeText(getActivity(),"a",Toast.LENGTH_LONG).show();
                 break;
             case "Silent":
                 code = toggleButton.isChecked() ? Global.PROFILE_SILENT_ON: Global.PROFILE_SILENT_OFF;
-                Toast.makeText(getActivity(),"aa",Toast.LENGTH_LONG).show();
                 break;
             case "Mute":
                 code = toggleButton.isChecked() ? Global.PROFILE_MUTE_ON: Global.PROFILE_MUTE_OFF;
-                Toast.makeText(getActivity(),"aaa",Toast.LENGTH_LONG).show();
                 break;
             case "Do Not Track":
                 code = toggleButton.isChecked() ? Global.PROFILE_DONOTTRACK_ON: Global.PROFILE_DONOTTRACK_OFF;

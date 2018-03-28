@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:layout_gravity="center_horizontal"
@@ -50,14 +50,18 @@
 
 
 
-        <Button android:layout_width="wrap_content"
+        <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/roomAddButton"
-            android:text="Create"/>
-        <Button android:layout_width="wrap_content"
+            android:text="Create"
+            android:layout_weight="1"
+            android:backgroundTint="#00FF00"/>
+        <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/roomCancelButton"
-            android:text="Cancel"/>
+            android:text="Cancel"
+            android:layout_weight="1"
+            android:backgroundTint="#FF0000"/>
 
     </LinearLayout>
 

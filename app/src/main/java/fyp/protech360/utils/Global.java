@@ -13,6 +13,8 @@ public class Global {
     // ID to uniquely identify reminder alarms
     public static int timeBasedReminderID;
     public static int timeBasedReminderReceiverID;
+    public static int locationBasedReminderID;
+    public static int locationBasedReminderReceiverID;
 
     // IDs to uniquely identify scheduled reminders;
 
@@ -31,6 +33,8 @@ public class Global {
 
     static {
         timeBasedReminderID = 0;
+        locationBasedReminderID = 0;
         timeBasedReminderReceiverID = 0;
+        locationBasedReminderReceiverID = 0;
     }
 }

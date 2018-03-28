@@ -41,7 +41,8 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"
+            />
 
         <activity
             android:name=".ui.TrackroomDetails"
@@ -67,7 +68,8 @@
 
         <receiver android:name=".services.TimeBasedReminderReceiver"/>
         <receiver android:name=".services.TimeBasedProfileReceiver"/>
-
+        <service android:name=".services.LocationBasedProfileService"/>
+        <service android:name=".services.LocationBasedReminderService"/>
     </application>
 
 </manifest>

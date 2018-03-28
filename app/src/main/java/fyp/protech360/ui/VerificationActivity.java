@@ -36,10 +36,10 @@ public class VerificationActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_verification);
 
-        mEmail = findViewById(R.id.loginEmail);
-        mPassword = findViewById(R.id.loginPassword);
+       // mEmail = findViewById(R.id.loginEmail);
+       // mPassword = findViewById(R.id.loginPassword);
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
+       // mFirebaseAuth = FirebaseAuth.getInstance();
 
         permissions();
 
@@ -53,30 +53,36 @@ public class VerificationActivity extends Activity {
 
     public void login(View view) {
 
-        String email = mEmail.getText().toString().trim();
-        String pass = mPassword.getText().toString().trim();
+        //String email = mEmail.getText().toString().trim();
+       // String pass = mPassword.getText().toString().trim();
 
 
-        mFirebaseAuth.signInWithEmailAndPassword(email, pass);
+        //mFirebaseAuth.signInWithEmailAndPassword(email, pass);
 
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        /*mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         if (mFirebaseUser != null) {
             if (mFirebaseUser.isEmailVerified()) {
-                Intent i = new Intent(getApplicationContext(), Homepage.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                *///Intent i = new Intent(getApplicationContext(), Homepage.class);
+                //i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
 //               TODO: getLoggedInUser();
-                startActivity(i);
-                finish();
-            } else {
-                Toast.makeText(this, "Please verify Email", Toast.LENGTH_SHORT).show();
-            }
-        }
-        else
-            Toast.makeText(this, "Error in signing in", Toast.LENGTH_SHORT).show();
+               // startActivity(i);
+               // finish();
+            //} else {
+              //  Toast.makeText(this, "Please verify Email", Toast.LENGTH_SHORT).show();
+            //}
+        //}
+        //else
+          //  Toast.makeText(this, "Error in signing in", Toast.LENGTH_SHORT).show();
     
 
+        Intent intent = new Intent(getApplicationContext(),Homepage.class);
+        startActivity(intent);
+        finish();
+    }
+
+    public void register(View view){
         Intent intent = new Intent(getApplicationContext(),Homepage.class);
         startActivity(intent);
         finish();

@@ -212,20 +212,24 @@
 
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal">
 
-        <Button android:layout_width="wrap_content"
+        <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/connAddButton"
-            android:text="Pair"/>
-        <Button android:layout_width="wrap_content"
+            android:text="Pair"
+            android:backgroundTint="#00FF00"
+            android:layout_weight="1"/>
+        <Button android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/connCancelButton"
-            android:text="Cancel"/>
+            android:text="Cancel"
+            android:backgroundTint="#FF0000"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 
