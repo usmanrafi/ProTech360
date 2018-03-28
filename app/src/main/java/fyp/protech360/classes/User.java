@@ -3,15 +3,14 @@ package fyp.protech360.classes;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 public class User {
 
-    private UUID uuid;
+    private String uuid;
     private String name;
-    private String PhoneNumber;
-    private String Email;
+    private String phoneNumber;
+    private String email;
     private Bitmap image;
 
     private EmergencyDetails emergencyDetails;
@@ -23,12 +22,12 @@ public class User {
 
     public User(){}
 
-    public User(UUID uuid, String name, String PhoneNumber, String Email, Bitmap image)
+    public User(String uuid, String name, String phoneNumber, String email, Bitmap image)
     {
         this.uuid = uuid;
         this.name = name;
-        this.PhoneNumber = PhoneNumber;
-        this.Email = Email;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
         this.image = image;
 
         this.meetings = new ArrayList<>();
@@ -37,12 +36,12 @@ public class User {
         this.connections = new ArrayList<>();
     }
 
-    public User(UUID uuid, String name, String PhoneNumber, String Email, Bitmap image, EmergencyDetails det)
+    public User(String uuid, String name, String phoneNumber, String email, Bitmap image, EmergencyDetails det)
     {
         this.uuid = uuid;
         this.name = name;
-        this.PhoneNumber = PhoneNumber;
-        this.Email = Email;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
         this.image = image;
         this.emergencyDetails = det;
 
@@ -63,20 +62,20 @@ public class User {
         if(((User) obj).getUuid().equals(this.uuid))
             return true;
 
-        if(((User) obj).getEmail().equalsIgnoreCase(this.Email))
+        if(((User) obj).getEmail().equalsIgnoreCase(this.email))
             return true;
 
-        if(((User) obj).getPhoneNumber().equals(this.PhoneNumber))
+        if(((User) obj).getPhoneNumber().equals(this.phoneNumber))
             return true;
 
         return false;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
@@ -94,11 +93,11 @@ public class User {
     }
 
     public String getEmail() {
-        return Email;
+        return this.email;
     }
 
     public String getPhoneNumber() {
-        return PhoneNumber;
+        return this.phoneNumber;
     }
 
     public EmergencyDetails getEmergencyDetails(){return this.emergencyDetails;}

@@ -16,6 +16,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,6 +32,7 @@ import java.util.UUID;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
+import fyp.protech360.utils.Global;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -40,11 +42,13 @@ public class SignUp extends Fragment {
     android.app.FragmentManager fragmentManager = getFragmentManager();
     private CircleImageView photo;
 
-    /*private TextInputLayout mName;
+    private TextInputLayout mName;
     private TextInputLayout mNumber;
     private TextInputLayout mEmail;
     private TextInputLayout mPassword;
     private TextInputLayout mConfirmPassword;
+
+    private Button mButton;
 
     private FirebaseAuth mFirebaseAuth;
 
@@ -68,11 +72,20 @@ public class SignUp extends Fragment {
             tilNumber.setError("Field required");
             return false;
         }
-        else if(text.matches(Patterns.PHONE.pattern()))
-            return true;
+        else if(text.length() != 13){
+            tilNumber.setError("Number should be of the format +92xxxxxxxxxx");
+            return false;
+        }
 
-        tilNumber.setError("Invalid Number");
-        return false;
+        for (int i = 1; i < 13 ; ++i) {
+
+            if (text.charAt(i) < '0' || text.charAt(i) > '9'){
+                tilNumber.setError("Invalid Number");
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private boolean areValidPasswords(TextInputLayout tilPassword, TextInputLayout tilConfirmPassword) {
@@ -104,7 +117,7 @@ public class SignUp extends Fragment {
         }
 
         return isValid;
-    }*/
+    }
 
 
 
@@ -113,15 +126,17 @@ public class SignUp extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.signup, container, false);
 
-        //mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseAuth = FirebaseAuth.getInstance();
 
         photo = (CircleImageView) myView.findViewById(R.id.userImage);
 
-        /*mName = myView.findViewById(R.id.til_name);
+        mName = myView.findViewById(R.id.til_name);
         mNumber = myView.findViewById(R.id.til_number);
         mEmail = myView.findViewById(R.id.til_email);
         mPassword = myView.findViewById(R.id.til_password);
-        mConfirmPassword = myView.findViewById(R.id.til_confirm_password);*/
+        mConfirmPassword = myView.findViewById(R.id.til_confirm_password);
+
+        mButton = myView.findViewById(R.id.signupBtn);
 
         photo.setOnClickListener(new View.OnClickListener() {
 
@@ -132,6 +147,14 @@ public class SignUp extends Fragment {
             }
         });
 
+
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                register();
+
+            }
+        });
         return myView;
     }
 
@@ -156,10 +179,11 @@ public class SignUp extends Fragment {
 
     public void GoToLogin(View view) {
         startActivity(new Intent(getActivity(),VerificationActivity.class));
+        getActivity().finish();
     }
 
-    public void register(View view) {
-        /*boolean isValidInfo = true;
+    public void register() {
+        boolean isValidInfo = true;
 
         if(mName.getEditText().getText().toString().isEmpty()){
             mName.setError("Field required");
@@ -196,28 +220,33 @@ public class SignUp extends Fragment {
                                 Toast.makeText(getActivity(), "User registered! Please verify email!", Toast.LENGTH_LONG).show();
 
                                 // TODO: Add user
-                                User user = new User(UUID.fromString(mFirebaseAuth.getCurrentUser().getUid()),
+                                User user = new User(mFirebaseAuth.getCurrentUser().getUid(),
                                         mName.getEditText().getText().toString().trim(),
                                         mNumber.getEditText().getText().toString().trim(),
                                         mEmail.getEditText().getText().toString().trim(),
                                         null
-//                                            Bitmap.createBitmap(photo);
+//                                        Bitmap.createBitmap(photo);
                                 );
 
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
-                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user);*/
+                                ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        mFirebaseAuth.signOut();
+                                    }
+                                });
 
 
-                                Intent intent = new Intent(getActivity(), Homepage.class);
+                                Intent intent = new Intent(getActivity(), VerificationActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
-                            //} else {
-                              //  Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
-                            //}
-                      //  }
-                    //});
+                            } else {
+                                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
 
-            //dialog.dismiss();
-    //    }
+            dialog.dismiss();
+        }
     }
 }

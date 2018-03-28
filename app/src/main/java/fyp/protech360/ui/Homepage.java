@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -57,6 +58,8 @@ public class Homepage extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("Usman_Homepage","onCreate of Homepage.java");
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -85,10 +88,6 @@ public class Homepage extends AppCompatActivity
         {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
-
-
-        Global.currentUser = new User(UUID.randomUUID(),"Usman", "+92", "foo@gmail.com", null,
-                new EmergencyDetails("Help!", "+923154144453",null,null));
     }
 
     @Override
@@ -272,12 +271,12 @@ public class Homepage extends AppCompatActivity
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                // Do something with value!
+                mFirebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(),"SignOut Successful",Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 
