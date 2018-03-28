@@ -85,10 +85,6 @@ public class Homepage extends AppCompatActivity
         {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
-
-
-        Global.currentUser = new User(UUID.randomUUID(),"Usman", "+92", "foo@gmail.com", null,
-                new EmergencyDetails("Help!", "+923154144453",null,null));
     }
 
     @Override
@@ -272,12 +268,12 @@ public class Homepage extends AppCompatActivity
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
 
-                // Do something with value!
+                mFirebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(),"SignOut Successful",Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
                 startActivity(intent);
                 finish();
-
             }
         });
 

@@ -41,11 +41,6 @@ public class VerificationActivity extends Activity {
 
     }
 
-    public void login(View view) {
-
-
-    }
-
     public void forgotPassword(View view) {
         fragmentManager.beginTransaction().replace(R.id.content_frame_verification,new ForgotPassword()).commit();
     }

@@ -32,14 +32,21 @@ public class Login extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        if(mFirebaseUser != null){
+            startActivity(new Intent(getActivity().getApplicationContext(), Homepage.class));
+            getActivity().finish();
+        }
+
         myView = inflater.inflate(R.layout.activity_login,container,false);
 
 
         mEmail = myView.findViewById(R.id.loginEmail);
         mPassword = myView.findViewById(R.id.loginPassword);
         mButton = myView.findViewById(R.id.loginBtn);
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override

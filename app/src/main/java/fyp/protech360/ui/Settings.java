@@ -24,7 +24,7 @@ public class Settings extends Fragment {
 
         name = myView.findViewById(R.id.editName);
 
-        name.setText(Global.currentUser.getName());
+        //name.setText(Global.currentUser.getName());
         return myView;
     }
 }
