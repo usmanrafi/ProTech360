@@ -45,11 +45,11 @@ public class Login extends Fragment {
             getActivity().finish();
         }
 
-
-
         mEmail = myView.findViewById(R.id.loginEmail);
         mPassword = myView.findViewById(R.id.loginPassword);
         mButton = myView.findViewById(R.id.loginBtn);
+
+        myView.clearFocus();
 
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
