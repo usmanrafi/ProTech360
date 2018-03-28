@@ -3,12 +3,11 @@ package fyp.protech360.classes;
 import android.graphics.Bitmap;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 
 public class User {
 
-    private UUID uuid;
+    private String uuid;
     private String name;
     private String phoneNumber;
     private String email;
@@ -23,7 +22,7 @@ public class User {
 
     public User(){}
 
-    public User(UUID uuid, String name, String phoneNumber, String email, Bitmap image)
+    public User(String uuid, String name, String phoneNumber, String email, Bitmap image)
     {
         this.uuid = uuid;
         this.name = name;
@@ -37,7 +36,7 @@ public class User {
         this.connections = new ArrayList<>();
     }
 
-    public User(UUID uuid, String name, String phoneNumber, String email, Bitmap image, EmergencyDetails det)
+    public User(String uuid, String name, String phoneNumber, String email, Bitmap image, EmergencyDetails det)
     {
         this.uuid = uuid;
         this.name = name;
@@ -72,11 +71,11 @@ public class User {
         return false;
     }
 
-    public UUID getUuid() {
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 

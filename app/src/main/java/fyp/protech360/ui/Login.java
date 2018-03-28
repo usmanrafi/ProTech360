@@ -52,6 +52,7 @@ public class Login extends Fragment {
 
                 mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+
                 if (mFirebaseUser != null) {
                     if (mFirebaseUser.isEmailVerified()) {
                         Intent i = new Intent(getActivity(), Homepage.class);
