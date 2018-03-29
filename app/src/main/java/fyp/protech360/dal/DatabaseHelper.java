@@ -7,6 +7,8 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import fyp.protech360.classes.EmergencyDetails;
+
 public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "ProTech360.db";
     public static final String TABLE_EMERGENCY_DETAILS = "emergency_details";
@@ -57,7 +59,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean insertData(String message,String num1, String num2, String num3) {
+    public boolean insertEmergencyDetails(String message,String num1, String num2, String num3) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_ID,1);
@@ -69,10 +71,22 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         return (result != -1);
     }
 
-    public Cursor getEmergencyData(String userID) {
+    public Cursor getEmergencyData() {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.query(TABLE_EMERGENCY_DETAILS,new String[]{COL_MESSAGE,COL_NUM1,COL_NUM2,COL_NUM3,COL_ID},null,null,null,null,null);
         return res;
+    }
+
+    public EmergencyDetails getEmergencyDetails(){
+        Cursor cursor = getEmergencyData();
+
+        cursor.moveToFirst();
+        String num1 = cursor.getString(cursor.getColumnIndex(COL_NUM1));
+        String num2 = cursor.getString(cursor.getColumnIndex(COL_NUM2));
+        String num3 = cursor.getString(cursor.getColumnIndex(COL_NUM3));
+        String message = cursor.getString(cursor.getColumnIndex(COL_MESSAGE));
+
+        return new EmergencyDetails(message, num1, num2, num3);
     }
 
 }
