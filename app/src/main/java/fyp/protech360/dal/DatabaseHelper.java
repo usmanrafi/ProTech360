@@ -26,7 +26,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_UID = "UserID";
 
 
-    private DatabaseHelper dbHelper = null;
+    private static DatabaseHelper dbHelper = null;
 
     private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
