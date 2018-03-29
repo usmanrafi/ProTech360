@@ -23,8 +23,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -142,6 +144,7 @@ public class SignUp extends Fragment {
 
         mButton = myView.findViewById(R.id.signupBtn);
 
+        //Get Photo
         photo.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -151,7 +154,7 @@ public class SignUp extends Fragment {
             }
         });
 
-
+        //When Register Button is Pressed
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +165,7 @@ public class SignUp extends Fragment {
         return myView;
     }
 
+    //Get Photo from Gallery
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -184,11 +188,13 @@ public class SignUp extends Fragment {
         }
     }
 
+    //Go to Login
     public void GoToLogin(View view) {
         startActivity(new Intent(getActivity(),VerificationActivity.class));
         getActivity().finish();
     }
 
+    //Registration function
     public void register() {
         boolean isValidInfo = true;
 
@@ -201,10 +207,11 @@ public class SignUp extends Fragment {
             && isValidNumber(mNumber) && isValidInfo) {
 
 
-            final ProgressDialog dialog = new ProgressDialog(getActivity());
+            /*final ProgressDialog dialog = new ProgressDialog(getActivity());
             dialog.setMessage("Registering User...");
-            dialog.show();
+            dialog.show();*/
 
+            //Register User and Send Verification Email
             mFirebaseAuth.createUserWithEmailAndPassword(mEmail.getEditText().getText().toString().trim(),
                     mPassword.getEditText().getText().toString().trim())
                     .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -234,28 +241,30 @@ public class SignUp extends Fragment {
                                         encoded
                               );
 
+                                //Add User to Firebase
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
                                 ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Log.i("abc","lks");
+                                        Log.i("Sajjad_Ali","Usernode Inserted");
                                     }
                                 });
 
-                                DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                                        .getReference("Emergency Details").child(mFirebaseAuth.getCurrentUser().getUid());
-                                dbRef.setValue(user.getEmergencyDetails());
+
+//                                DatabaseReference dbRef = FirebaseDatabase.getInstance()
+//                                        .getReference("Emergency Details").child(mFirebaseAuth.getCurrentUser().getUid());
+//                                dbRef.setValue(user.getEmergencyDetails());
 
                                 Intent intent = new Intent(getActivity(), VerificationActivity.class);
                                 startActivity(intent);
                                 getActivity().finish();
                             } else {
-                                Toast.makeText(getActivity(), "Error!", Toast.LENGTH_SHORT).show();
+                                FirebaseNetworkException e = (FirebaseNetworkException) task.getException();
+                                Log.d("Sajjad", e.getMessage());
                             }
                         }
                     });
 
-            dialog.dismiss();
         }
     }
 }

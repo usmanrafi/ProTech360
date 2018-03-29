@@ -53,7 +53,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
             @Override
             public void onLocationChanged(Location location) {
                 
-                Toast.makeText(getActivity(), "Speed: " + location.getSpeed() + " Altitude: " + location.getAltitude(), Toast.LENGTH_LONG).show();
+               // Toast.makeText(getActivity(), "Speed: " + location.getSpeed() + " Altitude: " + location.getAltitude(), Toast.LENGTH_LONG).show();
             }
 
             @Override

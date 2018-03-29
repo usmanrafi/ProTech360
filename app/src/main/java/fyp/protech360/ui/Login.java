@@ -68,8 +68,6 @@ public class Login extends Fragment {
             }
             else {
                 getLoggedInUser();
-                startActivity(new Intent(getActivity().getApplicationContext(), Homepage.class));
-                getActivity().finish();
             }
         }
 
@@ -106,7 +104,7 @@ public class Login extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Global.currentUser = dataSnapshot.getValue(User.class);
-                Log.d("Usman_Login", "Current User updated");
+                Log.d("Usman_Login", "Current User updated"+Global.currentUser.getName());
             }
 
             @Override
@@ -114,6 +112,9 @@ public class Login extends Fragment {
 
             }
         });
+
+        startActivity(new Intent(getActivity().getApplicationContext(), Homepage.class));
+        getActivity().finish();
 
         //DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
         //Global.currentUser.setEmergencyDetails(dbHelper.getEmergencyDetails());
@@ -137,8 +138,11 @@ public class Login extends Fragment {
                                         public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                                             User info = dataSnapshot.child(uid).getValue(User.class);
                                             databaseHelper.insertUserDetails(info.getUuid(),info.getName(),info.getEmail(),info.getImage());
-
+                                            Log.d("Sajjad_Ali","Database Drawer added");
                                             Global.currentUser = info;
+                                            EmergencyDetails details = Global.currentUser.getEmergencyDetails();
+                                            String[] arr = {details.getNum1(),details.getNum2(),details.getNum3()};
+                                            databaseHelper.insertEmergencyDetails(details.getMessage(),arr[0],arr[1],arr[2]);
                                         }
 
                                         @Override
@@ -150,30 +154,9 @@ public class Login extends Fragment {
 
                                     Intent i = new Intent(getActivity(), Homepage.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                                    db = FirebaseDatabase.getInstance()
-                                            .getReference("Emergency Details");
-                                    db.addListenerForSingleValueEvent(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            EmergencyDetails details = dataSnapshot.child(
-                                                    mFirebaseUser.getUid()).getValue(EmergencyDetails.class);
-
-                                            Global.currentUser.setEmergencyDetails(details);
-                                            DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
-                                            String[] arr = {details.getNum1(),details.getNum2(),details.getNum3()};
-                                            dbHelper.insertEmergencyDetails(details.getMessage(),arr[0],arr[1],arr[2]);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
-
                                     startActivity(i);
                                     getActivity().finish();
+
                                 } else {
                                     mFirebaseAuth.signOut();
                                     Toast.makeText(getActivity(), "Please verify Email", Toast.LENGTH_SHORT).show();

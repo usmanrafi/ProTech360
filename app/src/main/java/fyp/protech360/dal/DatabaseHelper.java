@@ -59,7 +59,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_NAME,Name);
         contentValues.put(COL_EMAIL,Email);
         contentValues.put(COL_IMAGE,Image);
-        long result = db.insert(TABLE_USER_DETAILS,null,contentValues);
+        long result = db.insert(TABLE_USER_DETAILS,"0",contentValues);
         return (result != -1);
     }
 

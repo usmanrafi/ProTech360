@@ -237,15 +237,17 @@ public class Homepage extends AppCompatActivity
 
         // Setting the Dialog view
 
+        EmergencyDetails details = Global.currentUser.getEmergencyDetails();
+
         final EditText text = new EditText(this);
-        text.setText(Global.currentUser.getEmergencyDetails().getMessage());
+        text.setText(details.getMessage());
         text.setMaxLines(1);
 
         final EditText num1 = new EditText(this);
         final EditText num2 = new EditText(this);
         final EditText num3 = new EditText(this);
 
-        String[] nums = {Global.currentUser.getEmergencyDetails().getNum1(),Global.currentUser.getEmergencyDetails().getNum2(),Global.currentUser.getEmergencyDetails().getNum3()};
+        String[] nums = {details.getNum1(),details.getNum2(),details.getNum3()};
         num1.setText(nums[0]);
         num2.setText(nums[1]);
         num3.setText(nums[2]);
@@ -271,11 +273,12 @@ public class Homepage extends AppCompatActivity
                 String n2 = num2.getText().toString();
                 String n3 = num3.getText().toString();
 
-                if(n1.length() != 13)
+                Log.d("Sajjad_Ali",n1);
+                if(n1.length() != 11 && n1.length() != 13)
                     n1 = null;
-                if(n2.length() != 13)
+                if(n2.length() != 11 && n2.length() != 13)
                     n2 = null;
-                if(n3.length() != 13)
+                if(n3.length() != 11 && n3.length() != 13)
                     n3 = null;
 
 
@@ -284,11 +287,16 @@ public class Homepage extends AppCompatActivity
                         n1, n2, n3
                 ));
 
+
                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
                 dbHelper.insertEmergencyDetails(text.getText().toString(), n1, n2, n3);
 
+                DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                        .getReference("Users").child(Global.currentUser.getUuid()).child("emergencyDetails");
+                dbRef.setValue(Global.currentUser.getEmergencyDetails());
 
 
+                Log.d("Sajjad_Ali","Emergency Details Done " + n1);
                 Toast.makeText(getApplicationContext(),"Emergency Details Updated",Toast.LENGTH_SHORT).show();
             }
         });
@@ -315,9 +323,6 @@ public class Homepage extends AppCompatActivity
                 mFirebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(),"SignOut Successful",Toast.LENGTH_SHORT).show();
 
-                DatabaseReference dbRef = FirebaseDatabase.getInstance()
-                        .getReference("Emergency Details").child(Global.currentUser.getUuid());
-                dbRef.setValue(Global.currentUser.getEmergencyDetails());
 
                 Global.currentUser = null;
 
