@@ -281,7 +281,8 @@ public class Homepage extends AppCompatActivity
                         n1, n2, n3
                 ));
 
-                DatabaseHelper dbHelper = DatabaseHelper.getInstance();
+                DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
+                dbHelper.insertEmergencyDetails(text.getText().toString(), n1, n2, n3);
 
 
 

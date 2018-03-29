@@ -21,9 +21,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
@@ -51,7 +53,7 @@ public class Login extends Fragment {
 
         myView = inflater.inflate(R.layout.activity_login,container,false);
 
-        databaseHelper = new DatabaseHelper(getActivity());
+        databaseHelper = DatabaseHelper.getInstance(getActivity());
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
@@ -61,6 +63,7 @@ public class Login extends Fragment {
                 mFirebaseAuth.signOut();
             }
             else {
+                getLoggedInUser();
                 startActivity(new Intent(getActivity().getApplicationContext(), Homepage.class));
                 getActivity().finish();
             }
@@ -90,6 +93,23 @@ public class Login extends Fragment {
 
 
         return myView;
+    }
+
+    public void getLoggedInUser() {
+
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Global.currentUser = dataSnapshot.getValue(User.class);
+                Log.d("Usman_Login", "Current User updated");
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void authenticate(String e, String p) {
