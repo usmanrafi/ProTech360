@@ -7,7 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "ProTech360.db";
     public static final String TABLE_EMERGENCY_DETAILS = "emergency_details";
     public static final String COL_NUM1 = "Num1";
@@ -16,24 +16,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_MESSAGE = "Message";
     public static final String COL_ID = "ID";
 
+    public static final String TABLE_USER_DETAILS = "user_details";
+    public static final String COL_NAME = "Name";
+    public static final String COL_EMAIL = "Email";
+    public static final String COL_IMAGE = "Image";
+    public static final String COL_UID = "UserID";
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
-        super(context, name, factory, version);
-    }
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_EMERGENCY_DETAILS +" (" + COL_NUM1 + " TEXT," + COL_NUM2 + " TEXT," + COL_NUM3+ " TEXT," + COL_MESSAGE + " TEXT,"+ COL_ID +" INT, PRIMARY KEY("+COL_ID+"))");
+        db.execSQL("create table " + TABLE_USER_DETAILS +" (" + COL_UID + " TEXT," + COL_NAME + " TEXT," + COL_EMAIL +  " TEXT," + COL_IMAGE +  " TEXT, PRIMARY KEY("+COL_UID+"))");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EMERGENCY_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_USER_DETAILS);
         onCreate(db);
+    }
+
+    public boolean insertUserDetails(String UserID,String Name,String Email,String Image){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_UID,UserID);
+        contentValues.put(COL_NAME,Name);
+        contentValues.put(COL_EMAIL,Email);
+        contentValues.put(COL_IMAGE,Image);
+        long result = db.insert(TABLE_USER_DETAILS,null,contentValues);
+        return (result != -1);
+    }
+
+    public Cursor getUserData(String UserID){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.query(TABLE_USER_DETAILS,new String[]{COL_NAME,COL_EMAIL,COL_IMAGE},COL_UID + " = ?",new String[]{UserID},null,null,null);
+        return res;
     }
 
     public boolean insertData(String message,String num1, String num2, String num3) {

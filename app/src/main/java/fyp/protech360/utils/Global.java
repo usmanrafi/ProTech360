@@ -2,14 +2,18 @@ package fyp.protech360.utils;
 
 // A class to cater global variables
 
+import android.provider.ContactsContract;
+
 import java.util.ArrayList;
 
 import fyp.protech360.classes.User;
+import fyp.protech360.dal.DatabaseHelper;
 
 public class Global {
 
     public static User currentUser;
 
+    public static DatabaseHelper dbHelper;
     // ID to uniquely identify reminder alarms
     public static int timeBasedReminderID;
     public static int timeBasedReminderReceiverID;

@@ -11,7 +11,7 @@ public class User {
     private String name;
     private String phoneNumber;
     private String email;
-    private Bitmap image;
+    private String image;
 
     private EmergencyDetails emergencyDetails;
 
@@ -22,7 +22,7 @@ public class User {
 
     public User(){}
 
-    public User(String uuid, String name, String phoneNumber, String email, Bitmap image)
+    public User(String uuid, String name, String phoneNumber, String email, String image)
     {
         this.uuid = uuid;
         this.name = name;
@@ -36,7 +36,8 @@ public class User {
         this.connections = new ArrayList<>();
     }
 
-    public User(String uuid, String name, String phoneNumber, String email, Bitmap image, EmergencyDetails det)
+
+    public User(String uuid, String name, String phoneNumber, String email, String image, EmergencyDetails det)
     {
         this.uuid = uuid;
         this.name = name;
@@ -88,7 +89,7 @@ public class User {
         this.name = name;
     }
 
-    public Bitmap getImage(){
+    public String getImage(){
         return this.image;
     }
 

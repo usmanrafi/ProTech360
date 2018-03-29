@@ -5,11 +5,15 @@ import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -23,6 +27,7 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,8 +35,11 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.classes.EmergencyDetails;
 import fyp.protech360.R;
@@ -43,6 +51,7 @@ public class Homepage extends AppCompatActivity
 
     android.app.FragmentManager fragmentManager = getFragmentManager();
     boolean toggle = false;
+    DatabaseHelper databaseHelper;
 
     final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
     final int MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION = 1;
@@ -50,8 +59,10 @@ public class Homepage extends AppCompatActivity
     final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 3;
     final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 4;
     final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 5;
-    DatabaseHelper dbHelper;
 
+    private TextView name;
+    private TextView email;
+    private CircleImageView image;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private FirebaseDatabase mFirebaseDatabase;
@@ -64,11 +75,12 @@ public class Homepage extends AppCompatActivity
         setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        databaseHelper = new DatabaseHelper(this);
 
         permissions();
 
-        //mFirebaseAuth = FirebaseAuth.getInstance();
-        //mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         //if(mFirebaseUser == null || !(mFirebaseUser.isEmailVerified())) {
         //    startActivity(new Intent(getApplicationContext(), VerificationActivity.class));
@@ -77,16 +89,39 @@ public class Homepage extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                loadProfile();
+            }
+        };
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View header = navigationView.getHeaderView(0);
+        name = (TextView) header.findViewById(R.id.username);
+        email = (TextView) header.findViewById(R.id.usernumber);
+        image = (CircleImageView) header.findViewById(R.id.imageView);
 
         if (savedInstanceState == null)
         {
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
+        }
+    }
+
+    private void loadProfile() {
+        Cursor res = databaseHelper.getUserData(mFirebaseUser.getUid());
+        while (res.moveToNext()){
+            name.setText(res.getString(0));
+            email.setText(res.getString(1));
+            byte[] decodedString = Base64.decode(res.getString(2), Base64.DEFAULT);
+            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            image.setImageBitmap(decodedByte);
         }
     }
 

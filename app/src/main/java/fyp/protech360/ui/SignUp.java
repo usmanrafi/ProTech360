@@ -12,6 +12,8 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
+import android.util.Base64;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +29,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -41,7 +44,8 @@ public class SignUp extends Fragment {
     View myView;
     android.app.FragmentManager fragmentManager = getFragmentManager();
     private CircleImageView photo;
-
+    private Bitmap bmp;
+    private String encoded;
     private TextInputLayout mName;
     private TextInputLayout mNumber;
     private TextInputLayout mEmail;
@@ -169,11 +173,14 @@ public class SignUp extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-            Bitmap bmp;
             bmp = BitmapFactory.decodeFile(picturePath);
             bmp = Bitmap.createScaledBitmap(bmp, 200, 200, false);
-
             photo.setImageBitmap(bmp);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+            byte[] byteArray = byteArrayOutputStream .toByteArray();
+            encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
+
         }
     }
 
@@ -224,15 +231,14 @@ public class SignUp extends Fragment {
                                         mName.getEditText().getText().toString().trim(),
                                         mNumber.getEditText().getText().toString().trim(),
                                         mEmail.getEditText().getText().toString().trim(),
-                                        null
-//                                        Bitmap.createBitmap(photo);
-                                );
+                                        encoded
+                              );
 
                                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Users");
                                 ref.child(mFirebaseAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        mFirebaseAuth.signOut();
+                                        Log.i("abc","lks");
                                     }
                                 });
 

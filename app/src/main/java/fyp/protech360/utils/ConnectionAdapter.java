@@ -45,7 +45,7 @@ public class ConnectionAdapter extends ArrayAdapter {
             User user = users.get(position);
             deviceHolder.name.setText(user.getName());
             if(user.getImage() != null) {
-                deviceHolder.image.setImageBitmap(user.getImage());
+                //deviceHolder.image.setImageBitmap(user.getImage());
             }
 
         return convertView;
