@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 
 import fyp.protech360.classes.EmergencyDetails;
 
@@ -25,8 +26,17 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_UID = "UserID";
 
 
-    public DatabaseHelper(Context context) {
+    private DatabaseHelper dbHelper = null;
+
+    private DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
+    }
+
+    public DatabaseHelper getInstance(Context context){
+        if(dbHelper == null)
+            dbHelper = new DatabaseHelper(context);
+
+        return dbHelper;
     }
 
     @Override
