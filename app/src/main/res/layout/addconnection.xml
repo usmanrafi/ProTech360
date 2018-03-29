@@ -59,9 +59,9 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Mobile Number"
-                android:id="@+id/connNumber"
-                android:inputType="phone"
+                android:hint="Email"
+                android:id="@+id/connEmail"
+                android:inputType="textEmailAddress"
                 android:maxLines="1"/>
 
         </android.support.design.widget.TextInputLayout>
@@ -74,21 +74,27 @@
             android:layout_marginBottom="10dp"
             android:text="How would you like to track this device?"/>
 
-        <RadioButton
-            android:id="@+id/radioButton"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="One-way Tracking" />
+            android:id="@+id/connType">
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="One-way Tracking" />
 
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="Two-way Tracking" />
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="Two-way Tracking" />
 
-        <CheckBox
+        </RadioGroup>
+
+        <!--<CheckBox
             android:id="@+id/checkBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -125,7 +131,7 @@
             android:layout_marginTop="10dp"
             android:max="10"
             android:progress="3" />
-
+        -->
 
     </LinearLayout>
 
@@ -188,6 +194,7 @@
 
         </android.support.design.widget.TextInputLayout>
 
+        <!--
         <CheckBox
             android:id="@+id/checkBox3"
             android:layout_width="match_parent"
@@ -206,7 +213,7 @@
             android:layout_marginTop="10dp"
             android:max="10"
             android:progress="3" />
-
+           -->
 
     </LinearLayout>
 

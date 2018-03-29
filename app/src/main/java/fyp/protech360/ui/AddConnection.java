@@ -2,22 +2,40 @@ package fyp.protech360.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import fyp.protech360.R;
+import fyp.protech360.classes.Request;
+import fyp.protech360.classes.User;
+import fyp.protech360.utils.Global;
 
 
 public class AddConnection extends Fragment {
     View myView;
-    LinearLayout l1, l2;
-    Button b1, b2;
+    LinearLayout smartPhoneList, wearableDeviceList;
+    Button pair, cancel;
+    TabLayout tabLayout;
 
     @Nullable
     @Override
@@ -25,21 +43,43 @@ public class AddConnection extends Fragment {
         myView = inflater.inflate(R.layout.addconnection,container,false);
         ((Homepage) getActivity()).setActionBarTitle("Add a Device");
 
-        l1 = (LinearLayout) myView.findViewById(R.id.smartphoneList);
-        l2 = (LinearLayout) myView.findViewById(R.id.wearableList);
+        smartPhoneList = (LinearLayout) myView.findViewById(R.id.smartphoneList);
+        wearableDeviceList = (LinearLayout) myView.findViewById(R.id.wearableList);
 
-        b1 = (Button) myView.findViewById(R.id.connAddButton);
-        b2 = (Button) myView.findViewById(R.id.connCancelButton);
+        pair = (Button) myView.findViewById(R.id.connAddButton);
+        cancel = (Button) myView.findViewById(R.id.connCancelButton);
+        tabLayout = (TabLayout) myView.findViewById(R.id.tab);
 
-        b1.setOnClickListener(new View.OnClickListener() {
+        pair.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //TODO: Add a connection
+                int selectedTab = tabLayout.getSelectedTabPosition();
+                if(selectedTab == 0){
+                    EditText connectionName = (EditText) smartPhoneList.findViewById(R.id.connName);
+                    EditText connectionEmail = (EditText) smartPhoneList.findViewById(R.id.connEmail);
+                    RadioGroup connectionType = (RadioGroup) smartPhoneList.findViewById(R.id.connType);
+                    int selectedRadioButton = connectionType.getCheckedRadioButtonId();
+                    int trackingType;
+                    if(selectedRadioButton == R.id.radioButton) trackingType = 0;
+                    else trackingType = 1;
+                    Log.d("Sajjad_Ali"," SmartPhone Stuff :" +  connectionEmail.getText().toString() + ", " + connectionName.getText().toString() + ", " + trackingType);
+
+                    requestPairing(connectionEmail.getText().toString(),connectionName.getText().toString(),trackingType);
+
+                }
+                else{
+                    //TODO: ADD WEARABLE DEVICE
+                    Log.d("Sajjad_Ali"," Wearable Stuff");
+
+                }
                 Toast.makeText(getActivity(),"Pairing request has been sent",Toast.LENGTH_SHORT).show();
                 ((Homepage) getActivity()).setFragment(new ConnectedDevices());
             }
         });
 
-        b2.setOnClickListener(new View.OnClickListener() {
+        cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Add Connection Cancelled",Toast.LENGTH_SHORT).show();
@@ -47,21 +87,20 @@ public class AddConnection extends Fragment {
             }
         });
 
-        l1.setVisibility(View.VISIBLE);
-        l2.setVisibility(View.GONE);
+        smartPhoneList.setVisibility(View.VISIBLE);
+        wearableDeviceList.setVisibility(View.GONE);
 
-        TabLayout tabLayout = (TabLayout) myView.findViewById(R.id.tab);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0){
-                    l1.setVisibility(View.VISIBLE);
-                    l2.setVisibility(View.GONE);
+                    smartPhoneList.setVisibility(View.VISIBLE);
+                    wearableDeviceList.setVisibility(View.GONE);
                 }
                 else{
-                    l2.setVisibility(View.VISIBLE);
-                    l1.setVisibility(View.GONE);
+                    wearableDeviceList.setVisibility(View.VISIBLE);
+                    smartPhoneList.setVisibility(View.GONE);
                 }
             }
 
@@ -78,5 +117,42 @@ public class AddConnection extends Fragment {
 
 
         return myView;
+    }
+
+    private void requestPairing(final String email, final String name, final int trackingType) {
+
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference usersRef = rootRef.child("Users");
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    User info = ds.getValue(User.class);
+                    Log.d("Sajjad_Ali",info.getEmail());
+                    if(info.getEmail().equals(email)){
+                        Log.d("Sajjad_Ali","Email Found");
+                        String requestID = info.getUuid()+" "+ Global.currentUser.getUuid();
+                        Request newRequest = new Request(requestID,name,trackingType);
+                        Log.d("Sajjad_Ali","Request Object Created");
+                        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests");
+                        requestRef.setValue(newRequest)
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Log.d("Sajjad_Ali","Request Added");
+                                    }
+
+                                });
+                        break;
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        };
+        usersRef.addListenerForSingleValueEvent(eventListener);
+
     }
 }
