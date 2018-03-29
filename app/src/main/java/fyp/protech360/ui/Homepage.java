@@ -34,11 +34,14 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
 import java.util.UUID;
+
+import javax.microedition.khronos.opengles.GL;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.dal.DatabaseHelper;
@@ -311,6 +314,12 @@ public class Homepage extends AppCompatActivity
 
                 mFirebaseAuth.signOut();
                 Toast.makeText(getApplicationContext(),"SignOut Successful",Toast.LENGTH_SHORT).show();
+
+                DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                        .getReference("Emergency Details").child(Global.currentUser.getUuid());
+                dbRef.setValue(Global.currentUser.getEmergencyDetails());
+
+                Global.currentUser = null;
 
                 Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
                 startActivity(intent);
