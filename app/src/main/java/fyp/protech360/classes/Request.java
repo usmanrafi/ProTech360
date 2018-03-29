@@ -4,22 +4,22 @@ package fyp.protech360.classes;
 
 public class Request {
 
-    private String requestID;
+    private String requestUID;
     private String requestName;
     private int requestType;
 
     public Request(String requestID, String requestName, int requestType) {
-        this.requestID = requestID;
+        this.requestUID = requestID;
         this.requestName = requestName;
         this.requestType = requestType;
     }
 
-    public String getRequestID() {
-        return requestID;
+    public String getRequestUID() {
+        return requestUID;
     }
 
-    public void setRequestID(String requestID) {
-        this.requestID = requestID;
+    public void setRequestUID(String requestID) {
+        this.requestUID = requestID;
     }
 
     public String getRequestName() {

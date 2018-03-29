@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
@@ -23,6 +24,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import fyp.protech360.R;
 import fyp.protech360.utils.Global;
@@ -52,8 +57,15 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
             @Override
             public void onLocationChanged(Location location) {
-                
-               // Toast.makeText(getActivity(), "Speed: " + location.getSpeed() + " Altitude: " + location.getAltitude(), Toast.LENGTH_LONG).show();
+                String latLng = String.valueOf(location.getLatitude()).substring(0,9) + "," + String.valueOf(location.getLongitude()).substring(0,9);
+                DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
+                firebaseDatabase.setValue(latLng)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("Sajjad Ali","Location Updated");
+                            }
+                        });
             }
 
             @Override

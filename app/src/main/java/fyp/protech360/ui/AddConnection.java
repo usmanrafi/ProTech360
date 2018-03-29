@@ -131,10 +131,10 @@ public class AddConnection extends Fragment {
                     Log.d("Sajjad_Ali",info.getEmail());
                     if(info.getEmail().equals(email)){
                         Log.d("Sajjad_Ali","Email Found");
-                        String requestID = info.getUuid()+" "+ Global.currentUser.getUuid();
+                        String requestID = Global.currentUser.getUuid();
                         Request newRequest = new Request(requestID,name,trackingType);
                         Log.d("Sajjad_Ali","Request Object Created");
-                        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests");
+                        DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests").child(info.getUuid()).child(requestID);
                         requestRef.setValue(newRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
