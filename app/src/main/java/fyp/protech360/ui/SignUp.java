@@ -242,6 +242,9 @@ public class SignUp extends Fragment {
                                     }
                                 });
 
+                                DatabaseReference dbRef = FirebaseDatabase.getInstance()
+                                        .getReference("Emergency Details").child(mFirebaseAuth.getCurrentUser().getUid());
+                                dbRef.setValue(user.getEmergencyDetails());
 
                                 Intent intent = new Intent(getActivity(), VerificationActivity.class);
                                 startActivity(intent);

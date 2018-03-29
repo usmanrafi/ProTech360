@@ -24,9 +24,16 @@ public class EmergencyDetails {
 
     public String getMessage(){return this.message;}
 
-    public String[] getNumbers(){
-        String[] nums = {this.num1, this.num2, this.num3};
-        return nums;
+    public String getNum1() {
+        return num1;
+    }
+
+    public String getNum2() {
+        return num2;
+    }
+
+    public String getNum3() {
+        return num3;
     }
 
     public void setMessage(String msg){
@@ -50,11 +57,23 @@ public class EmergencyDetails {
         return true;
     }
 
-    public void setNumbers(String[] nums){
+    public void setNum1(String num1) {
+        this.num1 = num1;
+    }
+
+    public void setNum2(String num2) {
+        this.num2 = num2;
+    }
+
+    public void setNum3(String num3) {
+        this.num3 = num3;
+    }
+
+    /*public void setNumbers(String[] nums){
         this.num1 = nums[0];
         this.num2 = nums[1];
         this.num3 = nums[2];
-    }
+    }*/
 
     public void sendPanicAlert(String latitude, String longitude){
 

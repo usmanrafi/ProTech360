@@ -79,7 +79,7 @@ public class Homepage extends AppCompatActivity
         setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = DatabaseHelper.getInstance(this);
 
         permissions();
 
@@ -245,7 +245,7 @@ public class Homepage extends AppCompatActivity
         final EditText num2 = new EditText(this);
         final EditText num3 = new EditText(this);
 
-        String[] nums = Global.currentUser.getEmergencyDetails().getNumbers();
+        String[] nums = {Global.currentUser.getEmergencyDetails().getNum1(),Global.currentUser.getEmergencyDetails().getNum2(),Global.currentUser.getEmergencyDetails().getNum3()};
         num1.setText(nums[0]);
         num2.setText(nums[1]);
         num3.setText(nums[2]);

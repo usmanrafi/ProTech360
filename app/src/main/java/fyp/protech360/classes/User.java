@@ -29,7 +29,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.image = image;
-
+        this.emergencyDetails = new EmergencyDetails("Help!","0","0","0");
         this.meetings = new ArrayList<>();
         this.rooms = new ArrayList<>();
 

@@ -139,7 +139,7 @@ public class LocationBasedProfiles extends Fragment {
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setLoiteringDelay(10000)
+                .setLoiteringDelay(2000)
                 .build();
     }
 

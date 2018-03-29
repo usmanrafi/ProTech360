@@ -13,6 +13,8 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,34 +41,16 @@ public class LocationBasedProfileService extends IntentService {
         }
 
         @Override
-        protected void onHandleIntent(Intent intent) {
+        protected void onHandleIntent(final Intent intent) {
 
-            GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
-
-            int code = intent.getIntExtra("Code",0);
-
-            if (geofencingEvent.hasError()) {
-                Log.e(IDENTIFIER, "" + getErrorString(geofencingEvent.getErrorCode()));
-                return;
-            }
-
-            Log.i(IDENTIFIER, geofencingEvent.toString());
-
-            int geofenceTransition = geofencingEvent.getGeofenceTransition();
-
-            if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                    geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
-
-                List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-
-                String transitionDetails = getGeofenceTransitionInfo(
-                        triggeringGeofences);
-
-                String transitionType = getTransitionString(geofenceTransition);
-
-
-                notifyLocationAlert(code);
-            }
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    int code = intent.getIntExtra("Code",0);
+                    notifyLocationAlert(code);
+                }
+            });
         }
 
         private String getGeofenceTransitionInfo(List<Geofence> triggeringGeofences) {
@@ -88,6 +72,7 @@ public class LocationBasedProfileService extends IntentService {
                 double lng = Double.parseDouble(strs[1]);
 
                 locationName = getLocationNameGeocoder(lat, lng);
+
             }
             if (locationName != null) {
                 return locationName;

@@ -1,8 +1,10 @@
 package fyp.protech360.ui;
 
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
@@ -23,7 +25,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import fyp.protech360.R;
 
 
-public class ConnectionDetails extends Fragment implements OnMapReadyCallback{
+public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
 
     View myView;
     MapView myMapView;
@@ -80,30 +82,18 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback{
         myMap.addMarker(new MarkerOptions().position(destination).title("Sajjad"));
 
 
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.5204,74.3587),10));
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.5204, 74.3587), 10));
 
 
         dir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                myMap.addPolyline(new PolylineOptions()
-                .add(new LatLng(31.4820022,74.3025007))
-                .add(new LatLng(31.4834161,74.3063229))
-                .add(new LatLng(31.4867392,74.30468379999999))
-                .add(new LatLng(31.4871349,74.30483529999999))
-                .add(new LatLng(31.5002922,74.3171364))
-                .add(new LatLng(31.502941,74.3262769))
-                .add(new LatLng(31.5057629,74.3348426))
-                .add(new LatLng(31.5101101, 74.3403089))
-                .add(new LatLng(31.5114741,74.3410411))
-                .add(new LatLng(31.5230457,74.3476297))
-                .add(new LatLng(31.52297669999999,74.34786989999999))
-                .add(new LatLng(31.5214012,74.34703619999999))
-                .add(new LatLng(31.5209553,74.3510512))
-                .add(new LatLng(31.5232865,74.3550096))
-                .add(new LatLng(31.520362,74.35872239999999)).color(Color.BLUE));
+
+                Uri gmmIntentUri = Uri.parse("google.navigation:q=31.5204, 74.3587");
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
     }
-
 }

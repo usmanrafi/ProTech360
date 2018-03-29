@@ -104,7 +104,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
                     String messageToSend = Global.currentUser.getEmergencyDetails().getMessage() +
                             "\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
 
-                    String[] numbers = Global.currentUser.getEmergencyDetails().getNumbers();
+                    String[] numbers = {Global.currentUser.getEmergencyDetails().getNum1(),Global.currentUser.getEmergencyDetails().getNum2(),Global.currentUser.getEmergencyDetails().getNum3()};
 
                     if (numbers[0] != null)
                         SmsManager.getDefault().sendTextMessage(numbers[0], null, messageToSend, null, null);

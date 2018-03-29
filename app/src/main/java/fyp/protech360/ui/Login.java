@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.os.Bundle;
@@ -114,8 +115,8 @@ public class Login extends Fragment {
             }
         });
 
-        DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
-        Global.currentUser.setEmergencyDetails(dbHelper.getEmergencyDetails());
+        //DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+        //Global.currentUser.setEmergencyDetails(dbHelper.getEmergencyDetails());
     }
 
     private void authenticate(String e, String p) {
@@ -159,6 +160,10 @@ public class Login extends Fragment {
                                                     mFirebaseUser.getUid()).getValue(EmergencyDetails.class);
 
                                             Global.currentUser.setEmergencyDetails(details);
+                                            DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+                                            String[] arr = {details.getNum1(),details.getNum2(),details.getNum3()};
+                                            dbHelper.insertEmergencyDetails(details.getMessage(),arr[0],arr[1],arr[2]);
+
                                         }
 
                                         @Override

@@ -24,6 +24,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_EMAIL = "Email";
     public static final String COL_IMAGE = "Image";
     public static final String COL_UID = "UserID";
+    SQLiteDatabase db = this.getWritableDatabase();
 
 
     private static DatabaseHelper dbHelper = null;
@@ -53,7 +54,6 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean insertUserDetails(String UserID,String Name,String Email,String Image){
-        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_UID,UserID);
         contentValues.put(COL_NAME,Name);
@@ -64,13 +64,11 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor getUserData(String UserID){
-        SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.query(TABLE_USER_DETAILS,new String[]{COL_NAME,COL_EMAIL,COL_IMAGE},COL_UID + " = ?",new String[]{UserID},null,null,null);
         return res;
     }
 
     public boolean insertEmergencyDetails(String message,String num1, String num2, String num3) {
-        SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_ID,1);
         contentValues.put(COL_MESSAGE,message);
