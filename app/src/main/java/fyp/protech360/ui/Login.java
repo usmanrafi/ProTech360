@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import javax.microedition.khronos.opengles.GL;
+
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
@@ -110,6 +112,9 @@ public class Login extends Fragment {
 
             }
         });
+
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+        Global.currentUser.setEmergencyDetails(dbHelper.getEmergencyDetails());
     }
 
     private void authenticate(String e, String p) {
