@@ -30,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import javax.microedition.khronos.opengles.GL;
 
 import fyp.protech360.R;
+import fyp.protech360.classes.EmergencyDetails;
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.utils.Global;
@@ -135,6 +136,8 @@ public class Login extends Fragment {
                                         public void onDataChange(com.google.firebase.database.DataSnapshot dataSnapshot) {
                                             User info = dataSnapshot.child(uid).getValue(User.class);
                                             databaseHelper.insertUserDetails(info.getUuid(),info.getName(),info.getEmail(),info.getImage());
+
+                                            Global.currentUser = info;
                                         }
 
                                         @Override
@@ -147,7 +150,23 @@ public class Login extends Fragment {
                                     Intent i = new Intent(getActivity(), Homepage.class);
                                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
-//               TODO: getLoggedInUser();
+                                    db = FirebaseDatabase.getInstance()
+                                            .getReference("Emergency Details");
+                                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                                            EmergencyDetails details = dataSnapshot.child(
+                                                    mFirebaseUser.getUid()).getValue(EmergencyDetails.class);
+
+                                            Global.currentUser.setEmergencyDetails(details);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+
                                     startActivity(i);
                                     getActivity().finish();
                                 } else {
