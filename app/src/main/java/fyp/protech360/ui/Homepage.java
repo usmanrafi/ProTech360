@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -280,6 +281,7 @@ public class Homepage extends AppCompatActivity
                         n1, n2, n3
                 ));
 
+                DatabaseHelper dbHelper = DatabaseHelper.getInstance();
 
 
 

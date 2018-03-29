@@ -32,7 +32,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
-    public DatabaseHelper getInstance(Context context){
+    public static DatabaseHelper getInstance(Context context){
         if(dbHelper == null)
             dbHelper = new DatabaseHelper(context);
 
