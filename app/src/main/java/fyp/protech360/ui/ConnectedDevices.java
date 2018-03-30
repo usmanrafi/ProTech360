@@ -4,10 +4,12 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,9 +18,13 @@ import fyp.protech360.R;
 import fyp.protech360.classes.User;
 import fyp.protech360.utils.ConnectionAdapter;
 
-public class ConnectedDevices extends Fragment{
+public class ConnectedDevices extends Fragment {
     View myView;
-    ListView listView;
+
+    LinearLayout devicesView, requestsView;
+    TabLayout mTabLayout;
+
+    ListView devicesList, requestsList;
     ArrayList<User> connections = new ArrayList<>();
     ConnectionAdapter deviceAdapter;
     FloatingActionButton fab;
@@ -29,18 +35,62 @@ public class ConnectedDevices extends Fragment{
         deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
         myView = inflater.inflate(R.layout.connected_devices,container,false);
         ((Homepage) getActivity()).setActionBarTitle("Devices");
-        fab = (FloatingActionButton) myView.findViewById(R.id.addConnection);
-        listView = (ListView) myView.findViewById(R.id.connectionsList);
-        listView.setClickable(true);
-        listView.setAdapter(deviceAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        devicesView = myView.findViewById(R.id.devicesView);
+        requestsView = myView.findViewById(R.id.requestsView);
+        mTabLayout = myView.findViewById(R.id.tab);
+
+        fab =  myView.findViewById(R.id.addConnection);
+        devicesList = myView.findViewById(R.id.devicesList);
+        devicesList.setClickable(true);
+        devicesList.setAdapter(deviceAdapter);
+
+        devicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ((Homepage) getActivity()).setFragment(new ConnectionDetails());
             }
         });
 
+
+        requestsList = myView.findViewById(R.id.requestsList);
+        requestsList.setClickable(true);
+//        requestsList.setAdapter(requestAdapter);
+//
+        requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // open dialog to confirm
+            }
+        });
+
+        devicesList.setVisibility(View.VISIBLE);
+        requestsList.setVisibility(View.GONE);
+
+
+        mTabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition() == 0){
+                    devicesList.setVisibility(View.VISIBLE);
+                    requestsList.setVisibility(View.GONE);
+                }
+                else{
+                    requestsList.setVisibility(View.VISIBLE);
+                    devicesList.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
 
         return myView;
     }

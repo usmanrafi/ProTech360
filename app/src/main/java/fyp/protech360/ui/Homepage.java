@@ -31,6 +31,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseUser;
@@ -123,9 +124,15 @@ public class Homepage extends AppCompatActivity
         while (res.moveToNext()){
             name.setText(res.getString(0));
             email.setText(res.getString(1));
-            byte[] decodedString = Base64.decode(res.getString(2), Base64.DEFAULT);
-            Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            image.setImageBitmap(decodedByte);
+
+            try {
+                byte[] decodedString = Base64.decode(res.getString(2), Base64.DEFAULT);
+                Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                image.setImageBitmap(decodedByte);
+            }
+            catch (NullPointerException ne){
+                image.setImageResource(R.drawable.add);
+            }
         }
     }
 
@@ -172,7 +179,8 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
                 break;
             case R.id.nav_connected_devices:
-                fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
+                startActivity(new Intent(this, Activity_Connections.class));
+//                fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;
             case R.id.nav_trackrooms:
                fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRoom()).commit();

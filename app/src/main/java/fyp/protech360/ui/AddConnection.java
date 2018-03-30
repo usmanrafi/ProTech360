@@ -1,6 +1,7 @@
 package fyp.protech360.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -78,6 +79,9 @@ public class AddConnection extends Fragment {
                 }
                 Toast.makeText(getActivity(),"Pairing request has been sent",Toast.LENGTH_SHORT).show();
                 ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+
+//                startActivity(new Intent(getActivity(), Activity_Connections.class));
+//                getActivity().finish();
             }
         });
 
@@ -86,6 +90,8 @@ public class AddConnection extends Fragment {
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Add Connection Cancelled",Toast.LENGTH_SHORT).show();
                 ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+//                startActivity(new Intent(getActivity(), Activity_Connections.class));
+//                getActivity().finish();
             }
         });
 
