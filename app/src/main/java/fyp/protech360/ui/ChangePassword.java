@@ -93,10 +93,21 @@ public class ChangePassword extends Fragment {
         if(Requestchoice){
 
             //ASSUMING THAT WE HAVE A REQUEST OBJECT
+
             DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
             dbRef.setValue("Insert Request Object here").addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
+                    if("requesttype == 1" == "which means if two-way"){
+                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child("INSERT requestUID from Request class here").child(Global.currentUser.getUuid());
+                        dbRef.setValue("Insert Request Object here (modified) where requestID should be the current user now").addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("Sajjad_Ali","It's two-way baby");
+                            }
+                        });
+
+                    }
                     DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
                     db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

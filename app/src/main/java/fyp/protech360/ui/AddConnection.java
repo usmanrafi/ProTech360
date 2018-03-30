@@ -25,6 +25,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import javax.microedition.khronos.opengles.GL;
+
 import fyp.protech360.R;
 import fyp.protech360.classes.Request;
 import fyp.protech360.classes.User;
@@ -129,7 +131,7 @@ public class AddConnection extends Fragment {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     User info = ds.getValue(User.class);
                     Log.d("Sajjad_Ali",info.getEmail());
-                    if(info.getEmail().equals(email)){
+                    if(info.getEmail().equals(email) && !info.getEmail().equals(Global.currentUser.getEmail())){
                         Log.d("Sajjad_Ali","Email Found");
                         String requestID = Global.currentUser.getUuid();
                         Request newRequest = new Request(requestID,name,trackingType);
