@@ -52,8 +52,6 @@ public class ConnectionAdapter extends ArrayAdapter {
     }
 
 
-
-
     static class DeviceHolder{
         CircleImageView image;
         CheckBox box;
