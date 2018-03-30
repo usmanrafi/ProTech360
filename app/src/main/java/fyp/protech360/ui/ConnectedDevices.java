@@ -1,6 +1,8 @@
 package fyp.protech360.ui;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -72,48 +75,75 @@ public class ConnectedDevices extends Fragment {
         requestsList = myView.findViewById(R.id.requestsList);
         requestsList.setClickable(true);
         requestsList.setAdapter(requestAdapter);
-//
+
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Request req = (Request) requestAdapter.getItem(position);
-                String reqID = req.getRequestUID();
-                Request req2 = new Request(Global.currentUser.getUuid(),req.getRequestName(),req.getRequestType());
-                // open dialog to confirm
-                // inside Dialog ->
-//                    boolean Requestchoice = true;
-//
-//                    if(Requestchoice){
-//
-//                        //ASSUMING THAT WE HAVE A REQUEST OBJECT
-//                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child(reqID);
-//                        dbRef.setValue(req).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                    if(req.getRequestType() == 1){
-//                                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(Global.currentUser.getUuid());
-//                                        dbRef.setValue(req2).addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                            @Override
-//                                            public void onComplete(@NonNull Task<Void> task) {
-//                                                Log.d("Sajjad_Ali","It's two-way baby");
-//                                            }
-//                                        });
-//                                DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
-//                                db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> task) {
-//                                        Log.d("Sajjad_Ali","It is done");
-//                                    }
-//                                });
-//                            }
-//                        });
-//                    }
-//                    else{
-//                        Log.d("Sajjad_Ali","Rejected");
-//                    }
+                final Request req = (Request) requestAdapter.getItem(position);
+                final String reqID = req.getRequestUID();
+                final Request req2 = new Request(Global.currentUser.getUuid(),req.getRequestName(),req.getRequestType());
+
+                AlertDialog.Builder confirm = new AlertDialog.Builder(getActivity());
+                confirm.setTitle("Connection Request");
+
+                //Todo: Add Email in Request
+
+                final TextView name = new TextView(getActivity());
+                name.setText("Name: \t\t" + req.getRequestName());
+
+                final TextView type = new TextView(getActivity());
+                type.setText("Type: \t\t" + req.getRequestType());
+
+                final LinearLayout layout = new LinearLayout(getActivity());
+                layout.setOrientation(LinearLayout.VERTICAL);
+                layout.addView(name);
+                layout.addView(type);
+
+                confirm.setView(layout);
+
+                confirm.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("Usman", "OnClick Confirm Request");
+                        boolean Requestchoice = true;
+
+                        if(Requestchoice){
+
+                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child(reqID);
+                            dbRef.setValue(req).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (req.getRequestType() == 1) {
+                                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(Global.currentUser.getUuid());
+                                        dbRef.setValue(req2).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Log.d("Usman", "Two-way");
+                                            }
+                                        });
+                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
+                                        db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                Log.d("Usman", "It is done");
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                        else{
+                            Log.d("Usman","Rejected");
+                        }
+
+                    }
+                });
+
+                confirm.show();
             }
         });
+
 
         devicesList.setVisibility(View.VISIBLE);
         requestsList.setVisibility(View.GONE);
@@ -127,6 +157,7 @@ public class ConnectedDevices extends Fragment {
                     requestsList.setVisibility(View.GONE);
                 }
                 else{
+                    fab.setVisibility(View.GONE);
                     requestsList.setVisibility(View.VISIBLE);
                     devicesList.setVisibility(View.GONE);
                 }
