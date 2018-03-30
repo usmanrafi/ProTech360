@@ -78,6 +78,14 @@ public class Room {
         return this.title;
     }
 
+    public void setMembers(ArrayList<User> members) {
+        this.members = members;
+    }
+
+    public void setAdmins(ArrayList<User> admins) {
+        this.admins = admins;
+    }
+
     public ArrayList<User> getMembers() {
         return this.members;
     }
