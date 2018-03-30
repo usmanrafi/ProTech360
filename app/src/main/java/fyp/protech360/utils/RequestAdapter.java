@@ -33,6 +33,7 @@ public class RequestAdapter extends ArrayAdapter {
             convertView = mActivity.getLayoutInflater().inflate(resource, parent, false);
         }
         requestHolder.txt = (TextView) convertView.findViewById(R.id.requestTitle);
+        requestHolder.id = (TextView) convertView.findViewById(R.id.requestID);
 
         Request rem = requests.get(position);
         requestHolder.txt.setText(rem.getRequestName());
@@ -42,6 +43,7 @@ public class RequestAdapter extends ArrayAdapter {
 
     static class RequestHolder{
         TextView txt;
+        TextView id;
     }
 
 

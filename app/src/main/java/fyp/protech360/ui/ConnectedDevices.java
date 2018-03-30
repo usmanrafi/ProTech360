@@ -76,6 +76,10 @@ public class ConnectedDevices extends Fragment {
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Request req = (Request) requestAdapter.getItem(position);
+                String reqID = req.getRequestUID();
+                Request req2 = new Request(Global.currentUser.getUuid(),req.getRequestName(),req.getRequestType());
                 // open dialog to confirm
                 // inside Dialog ->
 //                    boolean Requestchoice = true;
@@ -83,11 +87,19 @@ public class ConnectedDevices extends Fragment {
 //                    if(Requestchoice){
 //
 //                        //ASSUMING THAT WE HAVE A REQUEST OBJECT
-//                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
-//                        dbRef.setValue("Insert Request Object here").addOnCompleteListener(new OnCompleteListener<Void>() {
+//                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child(reqID);
+//                        dbRef.setValue(req).addOnCompleteListener(new OnCompleteListener<Void>() {
 //                            @Override
 //                            public void onComplete(@NonNull Task<Void> task) {
-//                                DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
+//                                    if(req.getRequestType() == 1){
+//                                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(Global.currentUser.getUuid());
+//                                        dbRef.setValue(req2).addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                            @Override
+//                                            public void onComplete(@NonNull Task<Void> task) {
+//                                                Log.d("Sajjad_Ali","It's two-way baby");
+//                                            }
+//                                        });
+//                                DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
 //                                db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
 //                                    @Override
 //                                    public void onComplete(@NonNull Task<Void> task) {

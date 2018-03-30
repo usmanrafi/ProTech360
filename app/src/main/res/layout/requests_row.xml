@@ -11,4 +11,10 @@
         android:layout_marginLeft="20dp"
         android:textSize="20dp"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/requestID"
+        android:visibility="gone"/>
+
 </android.support.constraint.ConstraintLayout>
