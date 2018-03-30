@@ -2,9 +2,11 @@ package fyp.protech360.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +14,19 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import fyp.protech360.R;
+import fyp.protech360.classes.Request;
 import fyp.protech360.classes.User;
 import fyp.protech360.utils.ConnectionAdapter;
+import fyp.protech360.utils.Global;
+import fyp.protech360.utils.RequestAdapter;
 
 public class ConnectedDevices extends Fragment {
     View myView;
@@ -26,15 +36,19 @@ public class ConnectedDevices extends Fragment {
 
     ListView devicesList, requestsList;
     ArrayList<User> connections = new ArrayList<>();
+    ArrayList<Request> requestees = new ArrayList<>();
     ConnectionAdapter deviceAdapter;
+    RequestAdapter requestAdapter;
     FloatingActionButton fab;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
         myView = inflater.inflate(R.layout.connected_devices,container,false);
-        ((Homepage) getActivity()).setActionBarTitle("Devices");
+//        ((Homepage) getActivity()).setActionBarTitle("Devices");
+
+        deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
+        requestAdapter = new RequestAdapter(getActivity(), R.layout.connectionslist_row,requestees);
 
         devicesView = myView.findViewById(R.id.devicesView);
         requestsView = myView.findViewById(R.id.requestsView);
@@ -55,12 +69,35 @@ public class ConnectedDevices extends Fragment {
 
         requestsList = myView.findViewById(R.id.requestsList);
         requestsList.setClickable(true);
-//        requestsList.setAdapter(requestAdapter);
+        requestsList.setAdapter(requestAdapter);
 //
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // open dialog to confirm
+                // inside Dialog ->
+//                    boolean Requestchoice = true;
+//
+//                    if(Requestchoice){
+//
+//                        //ASSUMING THAT WE HAVE A REQUEST OBJECT
+//                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
+//                        dbRef.setValue("Insert Request Object here").addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
+//                                db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task) {
+//                                        Log.d("Sajjad_Ali","It is done");
+//                                    }
+//                                });
+//                            }
+//                        });
+//                    }
+//                    else{
+//                        Log.d("Sajjad_Ali","Rejected");
+//                    }
             }
         });
 

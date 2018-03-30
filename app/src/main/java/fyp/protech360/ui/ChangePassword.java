@@ -86,30 +86,5 @@ public class ChangePassword extends Fragment {
             }
         });
     }
-
-    public void forUsman(){
-        boolean Requestchoice = true;
-
-        if(Requestchoice){
-
-            //ASSUMING THAT WE HAVE A REQUEST OBJECT
-            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
-            dbRef.setValue("Insert Request Object here").addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child("INSERT requestUID from Request class here");
-                    db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                           Log.d("Sajjad_Ali","It is done");
-                        }
-                    });
-                }
-            });
-        }
-        else{
-            Log.d("Sajjad_Ali","Rejected");
-        }
-    }
 }
 
