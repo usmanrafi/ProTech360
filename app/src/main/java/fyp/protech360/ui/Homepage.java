@@ -179,8 +179,7 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
                 break;
             case R.id.nav_connected_devices:
-                startActivity(new Intent(this, Activity_Connections.class));
-//                fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame,new ConnectedDevices()).commit();
                 break;
             case R.id.nav_trackrooms:
                fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRoom()).commit();

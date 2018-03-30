@@ -2,6 +2,7 @@ package fyp.protech360.ui;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,8 +17,11 @@ import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -31,7 +35,7 @@ import fyp.protech360.utils.RequestAdapter;
 public class ConnectedDevices extends Fragment {
     View myView;
 
-    LinearLayout devicesView, requestsView;
+    //LinearLayout devicesView, requestsView;
     TabLayout mTabLayout;
 
     ListView devicesList, requestsList;
@@ -48,10 +52,8 @@ public class ConnectedDevices extends Fragment {
 //        ((Homepage) getActivity()).setActionBarTitle("Devices");
 
         deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
-        requestAdapter = new RequestAdapter(getActivity(), R.layout.connectionslist_row,requestees);
+        requestAdapter = new RequestAdapter(getActivity(), R.layout.requests_row,requestees);
 
-        devicesView = myView.findViewById(R.id.devicesView);
-        requestsView = myView.findViewById(R.id.requestsView);
         mTabLayout = myView.findViewById(R.id.tab);
 
         fab =  myView.findViewById(R.id.addConnection);
@@ -135,6 +137,7 @@ public class ConnectedDevices extends Fragment {
     @Override
     public void onResume() {
         connections.clear();
+        requestees.clear();
         addList();
         super.onResume();
     }
@@ -142,6 +145,25 @@ public class ConnectedDevices extends Fragment {
     public void addList()
     {
         //Add list of connections from FIREBASE here
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid());
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Request req = ds.getValue(Request.class);
+                    requestees.add(req);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        dbRef.addListenerForSingleValueEvent(valueEventListener);
+
+
 
         //connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
         //connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));

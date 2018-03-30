@@ -14,6 +14,9 @@ public class Request {
         this.requestType = requestType;
     }
 
+    public Request() {
+    }
+
     public String getRequestUID() {
         return requestUID;
     }
