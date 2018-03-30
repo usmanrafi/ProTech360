@@ -1,6 +1,9 @@
 package fyp.protech360.utils;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +15,8 @@ import java.util.ArrayList;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
+
+import static android.util.Base64.DEFAULT;
 
 public class ConnectionAdapter extends ArrayAdapter {
 
@@ -46,6 +51,15 @@ public class ConnectionAdapter extends ArrayAdapter {
             deviceHolder.name.setText(user.getName());
             if(user.getImage() != null) {
                 //deviceHolder.image.setImageBitmap(user.getImage());
+
+                try {
+                    byte[] decodedString = Base64.decode(user.getImage(), Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    deviceHolder.image.setImageBitmap(decodedByte);
+                }
+                catch (NullPointerException ne){
+                    deviceHolder.image.setImageResource(R.drawable.add);
+                }
             }
 
         return convertView;

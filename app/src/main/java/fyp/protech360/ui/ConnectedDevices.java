@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import fyp.protech360.R;
 import fyp.protech360.classes.Request;
 import fyp.protech360.classes.User;
+import fyp.protech360.dal.FirebaseHelper;
 import fyp.protech360.utils.ConnectionAdapter;
 import fyp.protech360.utils.Global;
 import fyp.protech360.utils.RequestAdapter;
@@ -206,6 +207,8 @@ public class ConnectedDevices extends Fragment {
         };
         dbRef.addListenerForSingleValueEvent(valueEventListener);
 
+        FirebaseHelper.loadUsers();
+        this.connections = Global.currentUser.getConnections();
 
 
         //connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
