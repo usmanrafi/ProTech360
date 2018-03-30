@@ -38,4 +38,5 @@
         <item> Do Not Track </item>
         <item> Do Not Disturb </item>
     </string-array>
+    <string name="title_activity__connections">Connections</string>
 </resources>

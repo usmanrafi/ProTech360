@@ -11,10 +11,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
-    <uses-permission android:name="android.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -27,7 +27,6 @@
             android:name=".ui.VerificationActivity"
             android:label="ProTech360"
             android:screenOrientation="portrait">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,35 +40,39 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key"
-            />
+            android:value="@string/google_maps_key" />
 
         <activity
             android:name=".ui.TrackroomDetails"
             android:label="@string/title_activity_trackroom_details"
-            android:theme="@style/AppTheme.NoActionBar"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.MeetingDetails"
             android:label="MeetingDetails"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.AddReminder"
             android:label="AddReminder"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ui.AddScheduledProfile"
             android:label="AddScheduledProfile"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".services.TimeBasedReminderReceiver"/>
-        <receiver android:name=".services.TimeBasedProfileReceiver"/>
-        <service android:name=".services.LocationBasedProfileService"/>
-        <service android:name=".services.LocationBasedReminderService"/>
+        <receiver android:name=".services.TimeBasedReminderReceiver" />
+        <receiver android:name=".services.TimeBasedProfileReceiver" />
+
+        <service android:name=".services.LocationBasedProfileService" />
+        <service android:name=".services.LocationBasedReminderService" />
+
+        <activity
+            android:name=".ui.Activity_Connections"
+            android:label="@string/title_activity__connections"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

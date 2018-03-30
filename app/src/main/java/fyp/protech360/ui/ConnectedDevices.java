@@ -16,7 +16,7 @@ import fyp.protech360.R;
 import fyp.protech360.classes.User;
 import fyp.protech360.utils.ConnectionAdapter;
 
-public class ConnectedDevices extends Fragment{
+public class ConnectedDevices extends android.support.v4.app.Fragment {
     View myView;
     ListView listView;
     ArrayList<User> connections = new ArrayList<>();
@@ -28,7 +28,7 @@ public class ConnectedDevices extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
         myView = inflater.inflate(R.layout.connected_devices,container,false);
-        ((Homepage) getActivity()).setActionBarTitle("Devices");
+//        ((Homepage) getActivity()).setActionBarTitle("Devices");
         fab = (FloatingActionButton) myView.findViewById(R.id.addConnection);
         listView = (ListView) myView.findViewById(R.id.connectionsList);
         listView.setClickable(true);
