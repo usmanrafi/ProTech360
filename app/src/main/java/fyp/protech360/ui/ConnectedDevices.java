@@ -123,14 +123,15 @@ public class ConnectedDevices extends Fragment {
                                                 Log.d("Usman", "Two-way");
                                             }
                                         });
-                                        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
-                                        db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                Log.d("Usman", "It is done");
-                                            }
-                                        });
+
                                     }
+                                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
+                                    db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            Log.d("Usman", "It is done");
+                                        }
+                                    });
                                 }
                             });
                         }
@@ -154,6 +155,7 @@ public class ConnectedDevices extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 if(tab.getPosition() == 0){
+                    fab.setVisibility(View.VISIBLE);
                     devicesList.setVisibility(View.VISIBLE);
                     requestsList.setVisibility(View.GONE);
                 }
