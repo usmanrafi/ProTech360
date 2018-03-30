@@ -76,10 +76,10 @@ public class AddConnection extends Fragment {
 
                 }
                 Toast.makeText(getActivity(),"Pairing request has been sent",Toast.LENGTH_SHORT).show();
-//                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
 
-                startActivity(new Intent(getActivity(), Activity_Connections.class));
-                getActivity().finish();
+//                startActivity(new Intent(getActivity(), Activity_Connections.class));
+//                getActivity().finish();
             }
         });
 
@@ -87,10 +87,9 @@ public class AddConnection extends Fragment {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"Add Connection Cancelled",Toast.LENGTH_SHORT).show();
-//                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
-//                ((Homepage) getActivity()).setFragment(new Activity_Connections());
-                startActivity(new Intent(getActivity(), Activity_Connections.class));
-                getActivity().finish();
+                ((Homepage) getActivity()).setFragment(new ConnectedDevices());
+//                startActivity(new Intent(getActivity(), Activity_Connections.class));
+//                getActivity().finish();
             }
         });
 
