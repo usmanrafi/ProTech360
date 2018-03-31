@@ -1,12 +1,14 @@
 package fyp.protech360.ui;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -18,6 +20,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,6 +49,12 @@ public class Home extends Fragment implements OnMapReadyCallback {
     MapView myMapView;
     View myView;
 
+    private LocationRequest mLocationRequest;
+
+    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
+    private long FASTEST_INTERVAL = 2000; /* 2 sec */
+
+
     Button panicButton;
 
     @Nullable
@@ -50,41 +65,49 @@ public class Home extends Fragment implements OnMapReadyCallback {
         myView = inflater.inflate(R.layout.home, container, false);
         ((Homepage) getActivity()).setActionBarTitle("Home");
 
-        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        LocationListener l = new LocationListener() {
+        startLocationUpdates();
 
-            private Location lastLoc = null;
-
-            @Override
-            public void onLocationChanged(Location location) {
-                String latLng = String.valueOf(location.getLatitude()).substring(0,9) + "," + String.valueOf(location.getLongitude()).substring(0,9);
-                DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
-                firebaseDatabase.setValue(latLng)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Log.d("Sajjad Ali","Location Updated");
-                            }
-                        });
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        lm.requestLocationUpdates("gps", 500, 10, l);
+//        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        FusedLocationProviderClient client;
+//
+//        LocationListener l = new LocationListener() {
+//
+//
+//
+//            private Location lastLoc = null;
+//
+//            @Override
+//            public void onLocationChanged(Location location) {
+//                Log.d("Sajjad Ali","Location Changed");
+//
+//                String latLng = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
+//                DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
+//                firebaseDatabase.setValue(latLng)
+//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                            @Override
+//                            public void onComplete(@NonNull Task<Void> task) {
+//                                Log.d("Sajjad Ali","Location Updated");
+//                            }
+//                        });
+//            }
+//
+//            @Override
+//            public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderEnabled(String provider) {
+//
+//            }
+//
+//            @Override
+//            public void onProviderDisabled(String provider) {
+//
+//            }
+//        };
+//
+//        lm.requestLocationUpdates("gps", 500,10,l);
 
 
         panicButton = (Button) myView.findViewById(R.id.btn_panic);
@@ -134,6 +157,60 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
         return myView;
     }
+
+    @SuppressLint("RestrictedApi")
+    private void startLocationUpdates() {
+
+        //TODO: Make a service so that the location updates even if the app isn't running
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        // do work here
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
+
+
+    }
+
+    public void onLocationChanged(Location location) {
+        // New location has now been determined
+        try {
+            String msg = Double.toString(location.getLatitude()) + "," + Double.toString(location.getLongitude());
+            DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
+            firebaseDatabase.setValue(msg)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    });
+
+            // You can now create a LatLng Object for use with maps
+            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        catch(NullPointerException e){
+            Log.d("Sajjad Ali","Nullpointer Scene");
+        }
+    }
+
+
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

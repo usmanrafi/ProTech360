@@ -123,15 +123,19 @@ public class User {
         this.rooms = rooms;
     }
 
+    public void initConnections(){
+        this.connections = new ArrayList<>();
+    }
+
     public void addConnection(User user){
         boolean alreadyExists = false;
+         for (User u : connections)
+                if (u.getUuid().equals(this.uuid))
+                    alreadyExists = true;
 
-        for(User u: connections)
-            if(u.getUuid().equals(this.uuid))
-                alreadyExists = true;
+            if (!alreadyExists)
+                this.connections.add(user);
 
-        if(!alreadyExists)
-            this.connections.add(user);
     }
 
     public ArrayList<User> getConnections() {

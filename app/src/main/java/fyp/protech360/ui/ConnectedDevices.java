@@ -3,6 +3,7 @@ package fyp.protech360.ui;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
@@ -16,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fyp.protech360.R;
 import fyp.protech360.classes.Request;
@@ -35,6 +39,8 @@ import fyp.protech360.dal.FirebaseHelper;
 import fyp.protech360.utils.ConnectionAdapter;
 import fyp.protech360.utils.Global;
 import fyp.protech360.utils.RequestAdapter;
+
+import static fyp.protech360.utils.Global.currentUser;
 
 public class ConnectedDevices extends Fragment {
     View myView;
@@ -48,6 +54,8 @@ public class ConnectedDevices extends Fragment {
     ConnectionAdapter deviceAdapter;
     RequestAdapter requestAdapter;
     FloatingActionButton fab;
+    User user = Global.currentUser;
+
 
     @Nullable
     @Override
@@ -55,15 +63,13 @@ public class ConnectedDevices extends Fragment {
         myView = inflater.inflate(R.layout.connected_devices,container,false);
 //        ((Homepage) getActivity()).setActionBarTitle("Devices");
 
-        deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
-        requestAdapter = new RequestAdapter(getActivity(), R.layout.requests_row,requestees);
+
 
         mTabLayout = myView.findViewById(R.id.tab);
 
         fab =  myView.findViewById(R.id.addConnection);
         devicesList = myView.findViewById(R.id.devicesList);
         devicesList.setClickable(true);
-        devicesList.setAdapter(deviceAdapter);
 
         devicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -75,15 +81,22 @@ public class ConnectedDevices extends Fragment {
 
         requestsList = myView.findViewById(R.id.requestsList);
         requestsList.setClickable(true);
+
+        deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row, connections);
+        devicesList.setAdapter(deviceAdapter);
+
+
+        requestAdapter = new RequestAdapter(getActivity(), R.layout.requests_row,requestees);
         requestsList.setAdapter(requestAdapter);
+
 
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
 
                 final Request req = (Request) requestAdapter.getItem(position);
                 final String reqID = req.getRequestUID();
-                final Request req2 = new Request(Global.currentUser.getUuid(),req.getRequestName(),req.getRequestType());
+                final Request req2 = new Request(currentUser.getUuid(),req.getRequestName(),req.getRequestType());
 
                 AlertDialog.Builder confirm = new AlertDialog.Builder(getActivity());
                 confirm.setTitle("Connection Request");
@@ -91,10 +104,10 @@ public class ConnectedDevices extends Fragment {
                 //Todo: Add Email in Request
 
                 final TextView name = new TextView(getActivity());
-                name.setText("Name: \t\t" + req.getRequestName());
+                name.setText("Name: \t\t" + req.getRequestName() + "\n\n");
 
                 final TextView type = new TextView(getActivity());
-                type.setText("Type: \t\t" + req.getRequestType());
+                type.setText("Type: \t\t" + trackingType(req.getRequestType()));
 
                 final LinearLayout layout = new LinearLayout(getActivity());
                 layout.setOrientation(LinearLayout.VERTICAL);
@@ -107,16 +120,15 @@ public class ConnectedDevices extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Log.d("Usman", "OnClick Confirm Request");
-                        boolean Requestchoice = true;
 
-                        if(Requestchoice){
-
-                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(Global.currentUser.getUuid()).child(reqID);
+                            requestees.remove(position);
+                            requestAdapter.notifyDataSetChanged();
+                            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(currentUser.getUuid());
                             dbRef.setValue(req).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (req.getRequestType() == 1) {
-                                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(Global.currentUser.getUuid());
+                                        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(currentUser.getUuid()).child(reqID);
                                         dbRef.setValue(req2).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -125,7 +137,7 @@ public class ConnectedDevices extends Fragment {
                                         });
 
                                     }
-                                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid()).child(reqID);
+                                    DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(currentUser.getUuid()).child(reqID);
                                     db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
@@ -135,12 +147,30 @@ public class ConnectedDevices extends Fragment {
                                 }
                             });
                         }
-                        else{
-                            Log.d("Usman","Rejected");
-                        }
+                });
+
+                confirm.setNegativeButton("Reject", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        requestees.remove(position);
+                        requestAdapter.notifyDataSetChanged();
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Requests").child(currentUser.getUuid()).child(reqID);
+                        db.removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Log.d("Usman", "It is done");
+                            }
+                        });
+                    }
+                });
+
+                confirm.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
 
                     }
                 });
+
 
                 confirm.show();
             }
@@ -182,48 +212,103 @@ public class ConnectedDevices extends Fragment {
 
     @Override
     public void onResume() {
-        connections.clear();
-        requestees.clear();
         addList();
+
         super.onResume();
     }
 
+
+
     public void addList()
     {
-        //Add list of connections from FIREBASE here
+        loadUsers();
+        loadRequests();
+    }
 
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Requests").child(Global.currentUser.getUuid());
-        ValueEventListener valueEventListener = new ValueEventListener() {
+    private void loadRequests() {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Requests").child(currentUser.getUuid());
+        dbRef.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                requestees.clear();
+                ArrayList<Request> requests = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     Request req = ds.getValue(Request.class);
-                    requestees.add(req);
+                    requests.add(req);
                 }
+                requestees.addAll(requests);
+                TabLayout.Tab tab = mTabLayout.getTabAt(1);
+                tab.setText("Requests - " + requestees.size());
+                Log.d("Sajjad_Ali","Size: " +requestees.size());
+                requestAdapter.notifyDataSetChanged();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        };
-        dbRef.addListenerForSingleValueEvent(valueEventListener);
-
-        FirebaseHelper.loadUsers();
-        this.connections = Global.currentUser.getConnections();
-
-
-        //connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
-        //connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));
-        //connections.add(new User("Kashif Ahmed","7-12-2017","00:56",null));
-        //connections.add(new User("Osama Haroon","6-12-2017","00:10",null));
-        //connections.add(new User("Saad Mujeeb","4-12-2017","23:22",null));
-        //connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45",null));
-        //connections.add(new User("Syeda Zainab Bukhari","4-12-2017","06:04",null));
-        //connections.add(new User("Tahir Ali","3-12-2017","03:58",null));
-        //connections.add(new User("Usama Aslam","29-11-2017","18:11",null));
-        //connections.add(new User("Usman Mohammad Rafi","27-11-2017","15:11",null));
-        //connections.add(new User("Zainab Saif","25-11-2017","08:59",null));
+        });
     }
+
+    public String trackingType(int type){
+        if(type == 0){
+            return "One-way Tracking";
+        }
+        else{
+            return "Two-way Tracking";
+        }
+    }
+
+
+    public void loadUsers(){
+
+
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections")
+                .child(user.getUuid());
+
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                final ArrayList<String> uids = new ArrayList<>();
+
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    uids.add(ds.getKey());
+                }
+
+                DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("Users");
+                userRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        user.initConnections();
+                        for (DataSnapshot ds : dataSnapshot.getChildren()){
+                            User users = ds.getValue(User.class);
+                            if(uids.indexOf(users.getUuid()) != -1) {
+                                user.addConnection(users);
+                            }
+                        }
+
+                        connections.clear();
+                        connections.addAll(user.getConnections());
+                        TabLayout.Tab tab = mTabLayout.getTabAt(0);
+                        tab.setText("Connections - " + connections.size());
+                        deviceAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
 
 }

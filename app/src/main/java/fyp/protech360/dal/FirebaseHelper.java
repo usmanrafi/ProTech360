@@ -1,5 +1,7 @@
 package fyp.protech360.dal;
 
+import android.util.Log;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,6 +27,7 @@ public class FirebaseHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    Log.d("Syed_Sajjad",ds.getKey());
                     uids.add(ds.getKey());
                 }
 
@@ -34,8 +37,10 @@ public class FirebaseHelper {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot ds : dataSnapshot.getChildren()){
                             User user = ds.getValue(User.class);
-                            if(uids.indexOf(user.getUuid()) != -1)
+                            if(uids.indexOf(user.getUuid()) != -1) {
+                                Log.d("Syed_Sajjad",user.getUuid());
                                 Global.currentUser.addConnection(user);
+                            }
                         }
                     }
 

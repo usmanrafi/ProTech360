@@ -67,7 +67,6 @@ public class AddConnection extends Fragment {
                     int trackingType;
                     if(selectedRadioButton == R.id.radioButton) trackingType = 0;
                     else trackingType = 1;
-                    Log.d("Sajjad_Ali"," SmartPhone Stuff :" +  connectionEmail.getText().toString() + ", " + connectionName.getText().toString() + ", " + trackingType);
 
                     requestPairing(connectionEmail.getText().toString(),connectionName.getText().toString(),trackingType);
 
@@ -136,12 +135,9 @@ public class AddConnection extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     User info = ds.getValue(User.class);
-                    Log.d("Sajjad_Ali",info.getEmail());
                     if(info.getEmail().equals(email) && !info.getEmail().equals(Global.currentUser.getEmail())){
-                        Log.d("Sajjad_Ali","Email Found");
                         String requestID = Global.currentUser.getUuid();
                         Request newRequest = new Request(requestID,name,trackingType);
-                        Log.d("Sajjad_Ali","Request Object Created");
                         DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests").child(info.getUuid()).child(requestID);
                         requestRef.setValue(newRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
