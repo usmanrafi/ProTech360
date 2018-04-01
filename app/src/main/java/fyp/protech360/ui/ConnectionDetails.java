@@ -30,6 +30,7 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
     View myView;
     MapView myMapView;
     GoogleMap myMap;
+    String location;
 
     FloatingActionButton dir;
 
@@ -42,6 +43,8 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        location = getArguments().getString("User");
+
         myView = inflater.inflate(fyp.protech360.R.layout.fragment_connection_details, container, false);
         return myView;
     }
@@ -66,9 +69,11 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        LatLng origin, destination;
+        final LatLng origin, destination;
 
-        destination = new LatLng(31.5204, 74.3587);
+
+        String[] latLng = location.split(",");
+        destination = new LatLng(Double.valueOf(latLng[0]),Double.valueOf(latLng[1]));
 
         MapsInitializer.initialize(getActivity());
 
@@ -89,7 +94,7 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
             @Override
             public void onClick(View view) {
 
-                Uri gmmIntentUri = Uri.parse("google.navigation:q=31.5204, 74.3587");
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+destination);
                 Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                 mapIntent.setPackage("com.google.android.apps.maps");
                 startActivity(mapIntent);

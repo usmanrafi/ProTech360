@@ -72,12 +72,33 @@ public class ConnectedDevices extends Fragment {
         devicesList.setClickable(true);
 
         devicesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ((Homepage) getActivity()).setFragment(new ConnectionDetails());
-            }
-        });
+                                               @Override
+                                               public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                   User selectedUser = (User) deviceAdapter.getItem(position);
 
+                                                   final ConnectionDetails connectionDetails = new ConnectionDetails();
+                                                   final Bundle args = new Bundle();
+                                                   final DatabaseReference locationReference = FirebaseDatabase.getInstance().getReference("Status").child(selectedUser.getUuid());
+                                                   ValueEventListener listener = new ValueEventListener() {
+                                                       @Override
+                                                       public void onDataChange(DataSnapshot dataSnapshot) {
+                                                           String Location = dataSnapshot.getValue(String.class);
+                                                           args.putString("User", Location);
+                                                           connectionDetails.setArguments(args);
+                                                           ((Homepage) getActivity()).setFragment(connectionDetails);
+                                                       }
+
+                                                       @Override
+                                                       public void onCancelled(DatabaseError databaseError) {
+
+                                                       }
+
+                                                   };
+
+                                                   locationReference.addValueEventListener(listener);
+
+                                               }
+                                           });
 
         requestsList = myView.findViewById(R.id.requestsList);
         requestsList.setClickable(true);
@@ -86,9 +107,8 @@ public class ConnectedDevices extends Fragment {
         devicesList.setAdapter(deviceAdapter);
 
 
-        requestAdapter = new RequestAdapter(getActivity(), R.layout.requests_row,requestees);
+        requestAdapter = new RequestAdapter(getActivity(), R.layout.requests_row, requestees);
         requestsList.setAdapter(requestAdapter);
-
 
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
