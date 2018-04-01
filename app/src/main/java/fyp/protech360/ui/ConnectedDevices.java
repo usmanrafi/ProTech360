@@ -3,6 +3,7 @@ package fyp.protech360.ui;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -35,6 +36,7 @@ import java.util.List;
 import fyp.protech360.R;
 import fyp.protech360.classes.Request;
 import fyp.protech360.classes.User;
+import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.dal.FirebaseHelper;
 import fyp.protech360.utils.ConnectionAdapter;
 import fyp.protech360.utils.Global;
@@ -54,7 +56,7 @@ public class ConnectedDevices extends Fragment {
     ConnectionAdapter deviceAdapter;
     RequestAdapter requestAdapter;
     FloatingActionButton fab;
-    User user = Global.currentUser;
+    User user;
 
 
     @Nullable
@@ -63,7 +65,7 @@ public class ConnectedDevices extends Fragment {
         myView = inflater.inflate(R.layout.connected_devices,container,false);
 //        ((Homepage) getActivity()).setActionBarTitle("Devices");
 
-
+        user = Global.currentUser;
 
         mTabLayout = myView.findViewById(R.id.tab);
 
@@ -82,6 +84,41 @@ public class ConnectedDevices extends Fragment {
                                                    ((Homepage) getActivity()).setFragment(connectionDetails);
                                                }
                                            });
+
+        devicesList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+                alert.setTitle("Remove Device");
+                final User user = (User) deviceAdapter.getItem(position);
+                alert.setMessage("Do you want to remove " + user.getName() + " from your connections?");
+
+                alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+
+                        // Do something with value!
+                        Log.d("Aliyan","User Removed");
+                        removeConnection(Global.currentUser.getUuid(),user.getUuid());
+                        removeConnection(user.getUuid(),Global.currentUser.getUuid());
+
+                        connections.remove(position);
+                        deviceAdapter.notifyDataSetChanged();
+                    }
+                });
+
+                alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        // Canceled.
+                        Log.d("Aliyan","User Not Removed");
+                    }
+                });
+
+                alert.show();
+
+                return true;
+            }
+        });
 
         requestsList = myView.findViewById(R.id.requestsList);
         requestsList.setClickable(true);
@@ -211,6 +248,11 @@ public class ConnectedDevices extends Fragment {
         });
 
         return myView;
+    }
+
+    private void removeConnection(String conn1, String conn2) {
+        DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Connections").child(conn1).child(conn2);
+        dbref.removeValue();
     }
 
     @Override
