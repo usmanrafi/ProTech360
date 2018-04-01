@@ -12,6 +12,7 @@
         android:id="@+id/map"
         />
 
+    <!--
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/getDirections"
         android:layout_width="56dp"
@@ -22,5 +23,5 @@
         android:elevation="8dp"
         android:src="@drawable/ic_subdirectory_arrow_right_black_36dp"
         />
-    
+    -->
 </FrameLayout>

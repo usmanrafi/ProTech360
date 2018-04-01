@@ -75,28 +75,11 @@ public class ConnectedDevices extends Fragment {
                                                @Override
                                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                    User selectedUser = (User) deviceAdapter.getItem(position);
-
-                                                   final ConnectionDetails connectionDetails = new ConnectionDetails();
-                                                   final Bundle args = new Bundle();
-                                                   final DatabaseReference locationReference = FirebaseDatabase.getInstance().getReference("Status").child(selectedUser.getUuid());
-                                                   ValueEventListener listener = new ValueEventListener() {
-                                                       @Override
-                                                       public void onDataChange(DataSnapshot dataSnapshot) {
-                                                           String Location = dataSnapshot.getValue(String.class);
-                                                           args.putString("User", Location);
-                                                           connectionDetails.setArguments(args);
-                                                           ((Homepage) getActivity()).setFragment(connectionDetails);
-                                                       }
-
-                                                       @Override
-                                                       public void onCancelled(DatabaseError databaseError) {
-
-                                                       }
-
-                                                   };
-
-                                                   locationReference.addValueEventListener(listener);
-
+                                                   ConnectionDetails connectionDetails = new ConnectionDetails();
+                                                   Bundle args = new Bundle();
+                                                   args.putString("User", selectedUser.getUuid());
+                                                   connectionDetails.setArguments(args);
+                                                   ((Homepage) getActivity()).setFragment(connectionDetails);
                                                }
                                            });
 

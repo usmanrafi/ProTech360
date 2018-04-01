@@ -3,7 +3,6 @@ package fyp.protech360.ui;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -23,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import javax.microedition.khronos.opengles.GL;
@@ -60,7 +58,6 @@ public class AddConnection extends Fragment {
                 //TODO: Add a connection
                 int selectedTab = tabLayout.getSelectedTabPosition();
                 if(selectedTab == 0){
-                    EditText connectionName = (EditText) smartPhoneList.findViewById(R.id.connName);
                     EditText connectionEmail = (EditText) smartPhoneList.findViewById(R.id.connEmail);
                     RadioGroup connectionType = (RadioGroup) smartPhoneList.findViewById(R.id.connType);
                     int selectedRadioButton = connectionType.getCheckedRadioButtonId();
@@ -68,7 +65,7 @@ public class AddConnection extends Fragment {
                     if(selectedRadioButton == R.id.radioButton) trackingType = 0;
                     else trackingType = 1;
 
-                    requestPairing(connectionEmail.getText().toString(),connectionName.getText().toString(),trackingType);
+                    requestPairing(connectionEmail.getText().toString(),trackingType);
 
                 }
                 else{
@@ -126,7 +123,7 @@ public class AddConnection extends Fragment {
         return myView;
     }
 
-    private void requestPairing(final String email, final String name, final int trackingType) {
+    private void requestPairing(final String email, final int trackingType) {
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference usersRef = rootRef.child("Users");
@@ -137,7 +134,7 @@ public class AddConnection extends Fragment {
                     User info = ds.getValue(User.class);
                     if(info.getEmail().equals(email) && !info.getEmail().equals(Global.currentUser.getEmail())){
                         String requestID = Global.currentUser.getUuid();
-                        Request newRequest = new Request(requestID,name,trackingType);
+                        Request newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType);
                         DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests").child(info.getUuid()).child(requestID);
                         requestRef.setValue(newRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
