@@ -15,9 +15,10 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingTop="30dp">
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:id="@+id/editImage"
                 android:src="@drawable/side_nav_bar"
                 />
             <EditText
@@ -33,7 +34,7 @@
                 android:padding="10dp"
                 android:id="@+id/editNameButton"
                 android:src="@drawable/edit"
-                android:onClick="editName"/>
+                />
         </LinearLayout>
 
         <LinearLayout

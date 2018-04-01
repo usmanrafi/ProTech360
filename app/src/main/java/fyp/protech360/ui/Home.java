@@ -67,48 +67,6 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
         startLocationUpdates();
 
-//        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-//        FusedLocationProviderClient client;
-//
-//        LocationListener l = new LocationListener() {
-//
-//
-//
-//            private Location lastLoc = null;
-//
-//            @Override
-//            public void onLocationChanged(Location location) {
-//                Log.d("Sajjad Ali","Location Changed");
-//
-//                String latLng = String.valueOf(location.getLatitude()) + "," + String.valueOf(location.getLongitude());
-//                DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
-//                firebaseDatabase.setValue(latLng)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                Log.d("Sajjad Ali","Location Updated");
-//                            }
-//                        });
-//            }
-//
-//            @Override
-//            public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderEnabled(String provider) {
-//
-//            }
-//
-//            @Override
-//            public void onProviderDisabled(String provider) {
-//
-//            }
-//        };
-//
-//        lm.requestLocationUpdates("gps", 500,10,l);
-
 
         panicButton = (Button) myView.findViewById(R.id.btn_panic);
 
@@ -118,15 +76,9 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
 
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
+
                 myMap.setMyLocationEnabled(true);
                 Location myLocation = myMap.getMyLocation();
 
@@ -134,8 +86,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
                     String Lat = String.valueOf(myLocation.getLatitude());
                     String Long = String.valueOf(myLocation.getLongitude());
                     String Url = "http://www.google.com/maps/place/" + Lat + "," + Long;
-//                    String messageToSend = "ALERT!!! I am in trouble, please help me.\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
-
+//
                     String messageToSend = Global.currentUser.getEmergencyDetails().getMessage() +
                             "\nMy current location is: " + Url + ".\nPlease hurry up!\n\nSent via ProTech360";
 
@@ -234,13 +185,6 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
             return;
         }
         myMap.setMyLocationEnabled(true);

@@ -141,4 +141,8 @@ public class User {
     public ArrayList<User> getConnections() {
         return connections;
     }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 }

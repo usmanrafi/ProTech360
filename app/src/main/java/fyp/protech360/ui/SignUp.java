@@ -38,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
 import fyp.protech360.classes.User;
 import fyp.protech360.utils.Global;
+import fyp.protech360.utils.ImageEncoderDecoder;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -170,21 +171,9 @@ public class SignUp extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 3 && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getActivity().getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
-            cursor.close();
-            bmp = BitmapFactory.decodeFile(picturePath);
-            bmp = Bitmap.createScaledBitmap(bmp, 200, 200, false);
+            bmp = ImageEncoderDecoder.getImageFromGallery(data,this.getActivity());
             photo.setImageBitmap(bmp);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-            byte[] byteArray = byteArrayOutputStream .toByteArray();
-            encoded = Base64.encodeToString(byteArray, Base64.DEFAULT);
-
+            encoded = ImageEncoderDecoder.encodeImage(bmp);
         }
     }
 

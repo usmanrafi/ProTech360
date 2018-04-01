@@ -59,7 +59,7 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_NAME,Name);
         contentValues.put(COL_EMAIL,Email);
         contentValues.put(COL_IMAGE,Image);
-        long result = db.insert(TABLE_USER_DETAILS,"0",contentValues);
+        long result = db.insertWithOnConflict(TABLE_USER_DETAILS,"0",contentValues,SQLiteDatabase.CONFLICT_REPLACE);
         return (result != -1);
     }
 

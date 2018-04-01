@@ -55,8 +55,7 @@ public class ConnectionAdapter extends ArrayAdapter {
                 //deviceHolder.image.setImageBitmap(user.getImage());
 
                 try {
-                    byte[] decodedString = Base64.decode(user.getImage(), Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    Bitmap decodedByte = ImageEncoderDecoder.decodeImage(user.getImage());
                     deviceHolder.image.setImageBitmap(decodedByte);
                 }
                 catch (NullPointerException ne){
