@@ -121,7 +121,7 @@ public class LocationBasedProfiles extends Fragment {
     private PendingIntent getGeofencePendingIntent(int code) {
         Intent intent = new Intent(getContext(), LocationBasedProfileService.class);
         intent.putExtra("Code",code);
-        return PendingIntent.getService(getContext(), 0, intent,
+        return PendingIntent.getService(getContext(), Global.locationBasedReminderID++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
     private GeofencingRequest getGeofencingRequest(Geofence geofence) {

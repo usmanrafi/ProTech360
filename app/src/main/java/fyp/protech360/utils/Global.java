@@ -14,6 +14,7 @@ public class Global {
     public static User currentUser;
 
     public static DatabaseHelper dbHelper;
+
     // ID to uniquely identify reminder alarms
     public static int timeBasedReminderID;
     public static int timeBasedReminderReceiverID;

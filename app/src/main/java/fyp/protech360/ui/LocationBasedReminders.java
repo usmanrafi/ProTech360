@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.Task;
 import fyp.protech360.R;
 import fyp.protech360.services.LocationBasedProfileService;
 import fyp.protech360.services.LocationBasedReminderService;
+import fyp.protech360.utils.Global;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -117,7 +118,7 @@ public class LocationBasedReminders extends Fragment{
     private PendingIntent getGeofencePendingIntent() {
         Intent intent = new Intent(getContext(), LocationBasedReminderService.class);
         intent.putExtra("Title",rTitle);
-        return PendingIntent.getService(getContext(), 0, intent,
+        return PendingIntent.getService(getContext(), Global.locationBasedReminderID++, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
     private GeofencingRequest getGeofencingRequest(Geofence geofence) {
@@ -135,7 +136,7 @@ public class LocationBasedReminders extends Fragment{
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
                         Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setLoiteringDelay(1000)
+                .setLoiteringDelay(10000)
                 .build();
     }
 
