@@ -100,7 +100,6 @@ public class LocationService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
         user = intent.getStringExtra("user_name");
-        Log.d("Problem","Strating Again");
         startLocationUpdates();
         return START_REDELIVER_INTENT;
     }
@@ -113,7 +112,10 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
+
         super.onDestroy();
+
+        Log.d("Usman","Service Stopped");
     }
 
 

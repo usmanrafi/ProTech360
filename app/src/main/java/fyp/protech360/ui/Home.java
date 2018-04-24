@@ -113,9 +113,9 @@ public class Home extends Fragment implements OnMapReadyCallback {
 
     private void handleLocationService() {
         if(Global.currentUser != null && !isMyServiceRunning(LocationService.class)) {
-            Intent intent = new Intent(getActivity(), LocationService.class);
-            intent.putExtra("user_name", Global.currentUser.getUuid());
-            getActivity().startService(intent);
+            Global.setLocationIntent(getActivity());
+            Global.LocationIntent.putExtra("user_name", Global.currentUser.getUuid());
+            getActivity().startService(Global.LocationIntent);
         }
     }
 
@@ -123,6 +123,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if(locationServiceClass.getName().equals(service.service.getClassName())){
+
                 return true;
             }
         }

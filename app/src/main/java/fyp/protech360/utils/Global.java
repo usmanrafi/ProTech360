@@ -2,12 +2,17 @@ package fyp.protech360.utils;
 
 // A class to cater global variables
 
+import android.content.Context;
+import android.content.Intent;
 import android.provider.ContactsContract;
 
 import java.util.ArrayList;
 
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
+import fyp.protech360.services.LocationService;
+import fyp.protech360.ui.Home;
+import fyp.protech360.ui.Homepage;
 
 public class Global {
 
@@ -35,11 +40,19 @@ public class Global {
     public static final int PROFILE_DONOTTRACK_ON = 51;
     public static final int PROFILE_DONOTTRACK_OFF = 50;
 
+    public static Intent LocationIntent;
 
     static {
         timeBasedReminderID = 0;
         locationBasedReminderID = 0;
         timeBasedReminderReceiverID = 0;
         locationBasedReminderReceiverID = 0;
+
+        LocationIntent = null;
+    }
+
+    public static void setLocationIntent(Context context){
+        if(LocationIntent != null)
+            LocationIntent = new Intent(context, LocationService.class);
     }
 }
