@@ -34,6 +34,7 @@ import fyp.protech360.R;
 import fyp.protech360.classes.EmergencyDetails;
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
+import fyp.protech360.services.LocationService;
 import fyp.protech360.utils.Global;
 
 public class Login extends Fragment {
@@ -105,6 +106,7 @@ public class Login extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Global.currentUser = dataSnapshot.getValue(User.class);
                 Log.d("Usman_Login", "Current User updated"+Global.currentUser.getName());
+
             }
 
             @Override
@@ -115,6 +117,7 @@ public class Login extends Fragment {
 
         startActivity(new Intent(getActivity().getApplicationContext(), Homepage.class));
         getActivity().finish();
+
 
         //DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
         //Global.currentUser.setEmergencyDetails(dbHelper.getEmergencyDetails());

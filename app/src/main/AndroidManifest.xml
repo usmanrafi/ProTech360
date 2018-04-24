@@ -65,7 +65,7 @@
 
         <receiver android:name=".services.TimeBasedReminderReceiver" />
         <receiver android:name=".services.TimeBasedProfileReceiver" />
-
+        <service android:name=".services.LocationService" />
         <service android:name=".services.LocationBasedProfileService" />
         <service android:name=".services.LocationBasedReminderService" />
 

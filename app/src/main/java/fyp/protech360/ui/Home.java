@@ -2,7 +2,10 @@ package fyp.protech360.ui;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
 import android.app.Fragment;
+import android.app.Service;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -39,6 +42,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import fyp.protech360.R;
+import fyp.protech360.services.LocationService;
 import fyp.protech360.utils.Global;
 
 import android.content.Context;
@@ -48,13 +52,6 @@ public class Home extends Fragment implements OnMapReadyCallback {
     GoogleMap myMap;
     MapView myMapView;
     View myView;
-
-    private LocationRequest mLocationRequest;
-
-    private long UPDATE_INTERVAL = 10 * 1000;  /* 10 secs */
-    private long FASTEST_INTERVAL = 2000; /* 2 sec */
-
-
     Button panicButton;
 
     @Nullable
@@ -65,8 +62,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         myView = inflater.inflate(R.layout.home, container, false);
         ((Homepage) getActivity()).setActionBarTitle("Home");
 
-        startLocationUpdates();
-
+        handleLocationService();
 
         panicButton = (Button) myView.findViewById(R.id.btn_panic);
 
@@ -109,59 +105,29 @@ public class Home extends Fragment implements OnMapReadyCallback {
         return myView;
     }
 
-    @SuppressLint("RestrictedApi")
-    private void startLocationUpdates() {
-
-        //TODO: Make a service so that the location updates even if the app isn't running
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
-
-        // Create LocationSettingsRequest object using location request
-        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
-        builder.addLocationRequest(mLocationRequest);
-        LocationSettingsRequest locationSettingsRequest = builder.build();
-
-        // Check whether location settings are satisfied
-        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
-        SettingsClient settingsClient = LocationServices.getSettingsClient(getActivity());
-        settingsClient.checkLocationSettings(locationSettingsRequest);
-
-        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
-        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(mLocationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        // do work here
-                        onLocationChanged(locationResult.getLastLocation());
-                    }
-                },
-                Looper.myLooper());
-
-
+    @Override
+    public void onDestroyView() {
+        handleLocationService();
+        super.onDestroyView();
     }
 
-    public void onLocationChanged(Location location) {
-        // New location has now been determined
-        try {
-            String msg = Double.toString(location.getLatitude()) + "," + Double.toString(location.getLongitude());
-            DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(Global.currentUser.getUuid());
-            firebaseDatabase.setValue(msg)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                        }
-                    });
-
-            // You can now create a LatLng Object for use with maps
-            LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        }
-        catch(NullPointerException e){
-            Log.d("Sajjad Ali","Nullpointer Scene");
+    private void handleLocationService() {
+        if(Global.currentUser != null && !isMyServiceRunning(LocationService.class)) {
+            Intent intent = new Intent(getActivity(), LocationService.class);
+            intent.putExtra("user_name", Global.currentUser.getUuid());
+            getActivity().startService(intent);
         }
     }
 
-
+    private boolean isMyServiceRunning(Class<LocationService> locationServiceClass) {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if(locationServiceClass.getName().equals(service.service.getClassName())){
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
