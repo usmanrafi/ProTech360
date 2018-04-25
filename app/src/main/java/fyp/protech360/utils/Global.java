@@ -52,7 +52,7 @@ public class Global {
     }
 
     public static void setLocationIntent(Context context){
-        if(LocationIntent != null)
+        if(LocationIntent == null)
             LocationIntent = new Intent(context, LocationService.class);
     }
 }

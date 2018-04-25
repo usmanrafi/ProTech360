@@ -25,9 +25,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import fyp.protech360.utils.Global;
 
 
-/**
- * Created by Aliyan on 4/23/2018.
- */
 
 public class LocationService extends Service {
 
@@ -101,6 +98,8 @@ public class LocationService extends Service {
         super.onStartCommand(intent, flags, startId);
         user = intent.getStringExtra("user_name");
         startLocationUpdates();
+
+        Log.d("Usman", "Service Started");
         return START_REDELIVER_INTENT;
     }
 
