@@ -76,7 +76,7 @@ public class LocationService extends Service {
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Log.d("Sajjad Ali", "On Scene");
+                            Log.d("Usman", "On Scene");
                         }
                     });
         }
@@ -100,7 +100,7 @@ public class LocationService extends Service {
         startLocationUpdates();
 
         Log.d("Usman", "Service Started");
-        return START_REDELIVER_INTENT;
+        return START_NOT_STICKY;
     }
 
     @Override
@@ -111,10 +111,8 @@ public class LocationService extends Service {
 
     @Override
     public void onDestroy() {
-
-        super.onDestroy();
-
-        Log.d("Usman","Service Stopped");
+        user = null;
+        Log.d("Usman", "Service Stopped");
     }
 
 
