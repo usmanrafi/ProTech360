@@ -14,8 +14,10 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -43,6 +45,9 @@ public class Settings extends Fragment {
     Bitmap bmp;
     String encoded;
 
+    Switch doNotTrack;
+    Switch doNotDisturb;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,6 +62,21 @@ public class Settings extends Fragment {
         name.setText(Global.currentUser.getName());
         Bitmap decodedByte = ImageEncoderDecoder.decodeImage(Global.currentUser.getImage());
         photo.setImageBitmap(decodedByte);
+
+        doNotDisturb = myView.findViewById(R.id.switch_do_not_disturb);
+        doNotTrack = myView.findViewById(R.id.switch_do_not_track);
+
+        doNotTrack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if(isChecked)
+                    getActivity().stopService(Global.LocationIntent);
+                else{
+                    Global.LocationIntent.putExtra("user_name", Global.currentUser.getUuid());
+                    getActivity().startService(Global.LocationIntent);
+                }
+            }
+        });
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
