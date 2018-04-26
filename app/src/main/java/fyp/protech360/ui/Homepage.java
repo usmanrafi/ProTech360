@@ -332,6 +332,7 @@ public class Homepage extends AppCompatActivity
 
 
                 Global.currentUser = null;
+
                 stopService(Global.LocationIntent);
 
                 Intent intent = new Intent(getApplicationContext(),VerificationActivity.class);
