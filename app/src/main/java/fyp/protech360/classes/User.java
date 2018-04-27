@@ -12,6 +12,7 @@ public class User {
     private String phoneNumber;
     private String email;
     private String image;
+    private boolean tracking;
 
     private EmergencyDetails emergencyDetails;
 
@@ -29,6 +30,7 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.image = image;
+        this.tracking = true;
         this.emergencyDetails = new EmergencyDetails("Help!","0","0","0");
         this.meetings = new ArrayList<>();
         this.rooms = new ArrayList<>();
@@ -45,7 +47,7 @@ public class User {
         this.email = email;
         this.image = image;
         this.emergencyDetails = det;
-
+        this.tracking = true;
         this.meetings = new ArrayList<>();
         this.rooms = new ArrayList<>();
 
@@ -78,6 +80,14 @@ public class User {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public boolean isTracking() {
+        return tracking;
+    }
+
+    public void setTracking(boolean tracking) {
+        this.tracking = tracking;
     }
 
     public String getName()

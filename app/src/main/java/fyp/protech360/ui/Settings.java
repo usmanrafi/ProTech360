@@ -1,6 +1,8 @@
 package fyp.protech360.ui;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -18,6 +20,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -66,14 +69,46 @@ public class Settings extends Fragment {
         doNotDisturb = myView.findViewById(R.id.switch_do_not_disturb);
         doNotTrack = myView.findViewById(R.id.switch_do_not_track);
 
+        doNotTrack.setChecked(Global.currentUser.isTracking());
+
         doNotTrack.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if(isChecked)
-                    getActivity().stopService(Global.LocationIntent);
+                if(isChecked){
+                    if(!Global.currentUser.isTracking()) {
+                        Global.currentUser.setTracking(true);
+                        DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(Global.currentUser.getUuid()).child("tracking");
+                        db.setValue(Global.currentUser.isTracking());
+                        Global.setLocationIntent(getActivity());
+                        Global.LocationIntent.putExtra("user_name", Global.currentUser.getUuid());
+                        getActivity().startService(Global.LocationIntent);
+                    }
+                }
                 else{
-                    Global.LocationIntent.putExtra("user_name", Global.currentUser.getUuid());
-                    getActivity().startService(Global.LocationIntent);
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+
+                    alert.setTitle("Disable Tracking");
+                    alert.setMessage("Are you sure you want to disable tracking?");
+
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            getActivity().stopService(Global.LocationIntent);
+                            Global.currentUser.setTracking(false);
+                            DatabaseReference db = FirebaseDatabase.getInstance().getReference("Users").child(Global.currentUser.getUuid()).child("tracking");
+                            db.setValue(Global.currentUser.isTracking());
+                        }
+                    });
+
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            doNotTrack.setChecked(true);
+                            Toast.makeText(getActivity(),"Cancelled",Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    alert.show();
+
                 }
             }
         });
@@ -111,6 +146,7 @@ public class Settings extends Fragment {
 
         return myView;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

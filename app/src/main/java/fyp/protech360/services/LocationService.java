@@ -100,12 +100,11 @@ public class LocationService extends Service {
         startLocationUpdates();
 
         Log.d("Usman", "Service Started");
-        return START_NOT_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onCreate() {
-
 
     }
 
@@ -113,6 +112,7 @@ public class LocationService extends Service {
     public void onDestroy() {
         user = null;
         Log.d("Usman", "Service Stopped");
+        stopSelf();
     }
 
 
