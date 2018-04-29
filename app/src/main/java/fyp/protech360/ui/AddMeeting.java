@@ -2,6 +2,7 @@ package fyp.protech360.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -46,6 +47,13 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
     NumberPicker n1,n2,n3,n4,n5,n6,n7;
     Button b1,b2,locationPicker;
     ImageView iv;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+    }
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -105,7 +113,11 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
         iv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((Homepage) getActivity()).setFragment(new SelectParticipant());
+                Bundle b = new Bundle();
+                b.putString("Caller","Meeting");
+                Fragment fragment = new SelectParticipant();
+                fragment.setArguments(b);
+                ((Homepage) getActivity()).setFragment(fragment);
             }
         });
 

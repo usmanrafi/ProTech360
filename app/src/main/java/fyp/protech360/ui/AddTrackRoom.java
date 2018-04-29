@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,9 +32,15 @@ import fyp.protech360.utils.Global;
 public class AddTrackRoom extends Fragment {
     View myView;
     Button addRoom,cancel;
+    ImageView addParticipants;
     EditText roomTitle;
     ArrayList<User> roomMembers;
     ArrayList<User> admins;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+    }
 
     @Nullable
     @Override
@@ -44,6 +51,8 @@ public class AddTrackRoom extends Fragment {
         roomTitle = (EditText) myView.findViewById(R.id.roomName);
         addRoom = (Button) myView.findViewById(R.id.roomAddButton);
         cancel = (Button) myView.findViewById(R.id.roomCancelButton);
+        addParticipants = (ImageView) myView.findViewById(R.id.addParticipants);
+
         roomMembers = new ArrayList<>();
         admins = new ArrayList<>();
 
@@ -53,15 +62,24 @@ public class AddTrackRoom extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Room trackRoom = new Room(roomTitle.getText().toString(),roomMembers,admins);
-                DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Rooms").child(trackRoom.getUuid().toString());
-                dbRef.setValue(trackRoom).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getActivity(),"Track Room has been successfully created",Toast.LENGTH_SHORT).show();
-                        ((Homepage) getActivity()).setFragment(new TrackRoom());
-                    }
-                });
+                if(roomMembers.size() == 0)
+                {
+                    Toast.makeText(getActivity(),"Add Participants before creating the room",Toast.LENGTH_LONG).show();
+                }
+                else
+                {
+                    roomMembers.add(Global.currentUser);
+                    Room trackRoom = new Room(roomTitle.getText().toString(),roomMembers,admins);
+                    DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Rooms").child(trackRoom.getUuid().toString());
+                    dbRef.setValue(trackRoom).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getActivity(),"Track Room has been successfully created",Toast.LENGTH_SHORT).show();
+                            ((Homepage) getActivity()).setFragment(new TrackRoom());
+                        }
+                    });
+                }
+
             }
         });
 
@@ -73,16 +91,25 @@ public class AddTrackRoom extends Fragment {
             }
         });
 
+        addParticipants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bundle b = new Bundle();
+                b.putString("Caller","TrackRoom");
+                Fragment fragment = new SelectParticipant();
+                fragment.setArguments(b);
+                ((Homepage) getActivity()).setFragment(fragment);
+            }
+        });
 
 
         return myView;
     }
 
     public void populateMembers(){
-        roomMembers.add(new User(UUID.randomUUID().toString(),"Amir Khan","+923331234567","abc@gmail.com","a"));
-        roomMembers.add(new User(UUID.randomUUID().toString(),"Sajjad Ali","+923331234576","abcd@gmail.com","b"));
-        roomMembers.add(new User(UUID.randomUUID().toString(),"Zainab Saif","+923331234587","abcde@gmail.com","v"));
-        roomMembers.add(new User(UUID.randomUUID().toString(),"Zainab Bukhari","+923331234578","abcder@gmail.com","d"));
+        if(getArguments() != null){
+            roomMembers = (ArrayList<User>) getArguments().getSerializable("Selected");
+        }
         admins.add(Global.currentUser);
     }
 }

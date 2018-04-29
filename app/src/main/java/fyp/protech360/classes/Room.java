@@ -5,28 +5,28 @@ import java.util.UUID;
 
 public class Room {
 
-    private UUID uuid;
+    private String Roomid;
 
     private String title;
     private ArrayList<User> members;
     private ArrayList<User> admins;
 
     public Room(){
-        this.uuid = UUID.randomUUID();
+        this.Roomid = UUID.randomUUID().toString();
         this.title = "Room";
         this.members = new ArrayList<>();
         this.admins = new ArrayList<>();
     }
 
     public Room(String title, ArrayList<User> members, ArrayList<User> admins){
-        this.uuid = UUID.randomUUID();
+        this.Roomid = UUID.randomUUID().toString();
         this.title = title;
         this.members = members;
         this.admins = admins;
     }
 
     public Room(String title, User admin){
-        this.uuid = UUID.randomUUID();
+        this.Roomid = UUID.randomUUID().toString();
         this.title = title;
         this.members = new ArrayList<>();
         this.admins = new ArrayList<>();
@@ -62,12 +62,12 @@ public class Room {
         return false;
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public String getUuid() {
+        return Roomid;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setUuid(String Roomid) {
+        this.Roomid = Roomid;
     }
 
     public void setTitle(String title){

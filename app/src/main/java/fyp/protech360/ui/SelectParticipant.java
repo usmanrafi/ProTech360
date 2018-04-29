@@ -1,6 +1,7 @@
 package fyp.protech360.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -34,8 +36,15 @@ public class SelectParticipant extends Fragment {
     ListView listView;
     ProgressBar pb;
     ArrayList<User> connections = new ArrayList<>();
+    ArrayList<User> selected = new ArrayList<>();
     ConnectionAdapter deviceAdapter;
     Button b;
+    String caller;
+
+    @Override
+    public void setArguments(Bundle args) {
+        super.setArguments(args);
+    }
 
     @Nullable
     @Override
@@ -43,6 +52,8 @@ public class SelectParticipant extends Fragment {
         deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.select_participant_row,connections);
         myView = inflater.inflate(R.layout.select_participants,container,false);
         ((Homepage) getActivity()).setActionBarTitle("Select Participants");
+
+        caller = getArguments().getString("Caller");
 
         pb = myView.findViewById(R.id.progressSelection);
 
@@ -58,8 +69,35 @@ public class SelectParticipant extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Participants have been added",Toast.LENGTH_SHORT).show();
-                ((Homepage) getActivity()).setFragment(new AddMeeting());
+
+                for(int i = 0; i < connections.size(); i++)
+                {
+                    if((CheckBox) listView.getChildAt(i).findViewById(R.id.delete_check2) != null)
+                    {
+                        CheckBox cb = listView.getChildAt(i).findViewById(R.id.delete_check2);
+                        if(cb.isChecked())
+                        {
+                            selected.add((User)deviceAdapter.getItem(i));
+                        }
+                    }
+                }
+
+                Bundle b = new Bundle();
+                b.putSerializable("Selected",selected);
+
+                if(caller.equals("Meeting"))
+                {
+                    Fragment addMeeting = new AddMeeting();
+                    addMeeting.setArguments(b);
+                    ((Homepage) getActivity()).setFragment(addMeeting);
+                }
+                else
+                {
+                    Fragment addRoom = new AddTrackRoom();
+                    addRoom.setArguments(b);
+                    ((Homepage) getActivity()).setFragment(addRoom);
+                }
+
             }
         });
 
