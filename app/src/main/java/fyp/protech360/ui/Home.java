@@ -124,7 +124,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
         }
         if(Global.currentUser != null && !isMyMonitoringServiceRunning(ConnectionLocationMonitoringService.class))
         {
-            getActivity().startService(new Intent(getActivity(),ConnectionLocationMonitoringService.class));
+            //getActivity().startService(new Intent(getActivity(),ConnectionLocationMonitoringService.class));
         }
     }
 

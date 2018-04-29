@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -57,7 +58,7 @@ public class ConnectedDevices extends Fragment {
     RequestAdapter requestAdapter;
     FloatingActionButton fab;
     User user;
-
+    ProgressBar pb;
 
     @Nullable
     @Override
@@ -65,6 +66,8 @@ public class ConnectedDevices extends Fragment {
         myView = inflater.inflate(R.layout.connected_devices,container,false);
 //        ((Homepage) getActivity()).setActionBarTitle("Devices");
 
+        pb = myView.findViewById(R.id.devicesProgress);
+        pb.setVisibility(View.VISIBLE);
         user = Global.currentUser;
 
         mTabLayout = myView.findViewById(R.id.tab);
@@ -338,7 +341,9 @@ public class ConnectedDevices extends Fragment {
                         connections.addAll(user.getConnections());
                         TabLayout.Tab tab = mTabLayout.getTabAt(0);
                         tab.setText("Connections - " + connections.size());
+                        pb.setVisibility(View.GONE);
                         deviceAdapter.notifyDataSetChanged();
+
                     }
 
                     @Override

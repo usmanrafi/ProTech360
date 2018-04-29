@@ -13,11 +13,13 @@ import android.support.v4.app.NotificationCompat;
 
 public class SafetyRangeService extends IntentService {
 
+    private static final String IDENTIFIER = "SafetyRangeIS";
+
     private String title;
     private int requestCount = 0;
 
-    public SafetyRangeService(String name) {
-        super(name);
+    public SafetyRangeService() {
+        super(IDENTIFIER);
     }
 
     @Override
