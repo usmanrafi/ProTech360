@@ -7,11 +7,27 @@ public class Request {
     private String requestUID;
     private String requestName;
     private int requestType;
+    private int requestRange;
 
     public Request(String requestID, String requestName, int requestType) {
         this.requestUID = requestID;
         this.requestName = requestName;
         this.requestType = requestType;
+    }
+
+    public Request(String requestUID, String requestName, int requestType, int requestRange) {
+        this.requestUID = requestUID;
+        this.requestName = requestName;
+        this.requestType = requestType;
+        this.requestRange = requestRange;
+    }
+
+    public int getRequestRange() {
+        return requestRange;
+    }
+
+    public void setRequestRange(int requestRange) {
+        this.requestRange = requestRange;
     }
 
     public Request() {

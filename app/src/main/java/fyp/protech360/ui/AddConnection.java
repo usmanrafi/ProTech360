@@ -11,9 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +41,10 @@ public class AddConnection extends Fragment {
     LinearLayout smartPhoneList, wearableDeviceList;
     Button pair, cancel;
     TabLayout tabLayout;
+    SeekBar mSeekbar;
+    TextView mSeekText;
+    Switch mSafetySwitch;
+
 
     @Nullable
     @Override
@@ -50,6 +58,44 @@ public class AddConnection extends Fragment {
         pair = (Button) myView.findViewById(R.id.connAddButton);
         cancel = (Button) myView.findViewById(R.id.connCancelButton);
         tabLayout = (TabLayout) myView.findViewById(R.id.tab);
+        mSafetySwitch = (Switch) myView.findViewById(R.id.safetySwitch);
+        mSeekbar = (SeekBar) myView.findViewById(R.id.safetySeekbar);
+        mSeekText = (TextView) myView.findViewById(R.id.seekText);
+
+        mSafetySwitch.setChecked(false);
+        mSeekbar.setEnabled(false);
+
+        mSafetySwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    mSeekbar.setEnabled(true);
+                    mSeekbar.setProgress(0);
+                    mSeekText.setText("0");
+                }
+                else{
+                    mSeekbar.setEnabled(false);
+                    mSeekText.setText("N/A");
+                }
+            }
+        });
+
+        mSeekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mSeekText.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
 
         pair.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,7 +180,10 @@ public class AddConnection extends Fragment {
                     User info = ds.getValue(User.class);
                     if(info.getEmail().equals(email) && !info.getEmail().equals(Global.currentUser.getEmail())){
                         String requestID = Global.currentUser.getUuid();
-                        Request newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType);
+                        Request newRequest;
+                        if(mSeekText.getText() == "N/A")
+                            newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType);
+                        else newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType, Integer.parseInt(mSeekText.getText().toString()));
                         DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests").child(info.getUuid()).child(requestID);
                         requestRef.setValue(newRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {

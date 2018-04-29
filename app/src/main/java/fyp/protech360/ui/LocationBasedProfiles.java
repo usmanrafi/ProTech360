@@ -143,11 +143,6 @@ public class LocationBasedProfiles extends Fragment {
                 .build();
     }
 
-
-
-
-
-
     private int getSpinnerCode() {
         int code;
 

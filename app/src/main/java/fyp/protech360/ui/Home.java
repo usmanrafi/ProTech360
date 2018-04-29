@@ -42,10 +42,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import fyp.protech360.R;
+import fyp.protech360.services.ConnectionLocationMonitoringService;
 import fyp.protech360.services.LocationService;
 import fyp.protech360.utils.Global;
 
 import android.content.Context;
+
+import javax.microedition.khronos.opengles.GL;
 
 public class Home extends Fragment implements OnMapReadyCallback {
 
@@ -112,19 +115,37 @@ public class Home extends Fragment implements OnMapReadyCallback {
     }
 
     private void handleLocationService() {
-        if(Global.currentUser != null && !isMyServiceRunning(LocationService.class)) {
+        if(Global.currentUser != null && !isMyLocationServiceRunning(LocationService.class)) {
             if(Global.currentUser.isTracking()) {
                 Global.setLocationIntent(getActivity());
                 Global.LocationIntent.putExtra("user_name", Global.currentUser.getUuid());
                 getActivity().startService(Global.LocationIntent);
             }
         }
+        if(Global.currentUser != null && !isMyMonitoringServiceRunning(ConnectionLocationMonitoringService.class))
+        {
+            getActivity().startService(new Intent(getActivity(),ConnectionLocationMonitoringService.class));
+        }
     }
 
-    private boolean isMyServiceRunning(Class<LocationService> locationServiceClass) {
+
+
+    private boolean isMyLocationServiceRunning(Class<LocationService> locationServiceClass) {
         ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if(locationServiceClass.getName().equals(service.service.getClassName())){
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isMyMonitoringServiceRunning(Class<ConnectionLocationMonitoringService> monitoringServiceClass)
+    {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if(monitoringServiceClass.getName().equals(service.service.getClassName())){
 
                 return true;
             }
