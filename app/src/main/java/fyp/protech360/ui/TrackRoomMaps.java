@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,23 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import fyp.protech360.R;
+import fyp.protech360.classes.Room;
+import fyp.protech360.classes.User;
+import fyp.protech360.utils.Global;
+
 
 
 public class TrackRoomMaps extends Fragment implements OnMapReadyCallback {
@@ -25,12 +39,23 @@ public class TrackRoomMaps extends Fragment implements OnMapReadyCallback {
     View myView;
     MapView myMapView;
     GoogleMap myMap;
+    ArrayList<Marker> markers = new ArrayList<>();
+    ArrayList<Room> thisRoom = new ArrayList<>();
+    Double latitude,longitude;
+    boolean firstTimeMapLoad;
+    int count;
+    Room r;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_trackroom_map, container, false);
 //        ((TrackroomDetails) getActivity()).setActionBarTitle("TrackRoom");
+
+        firstTimeMapLoad = true;
+        Bundle b = getArguments();
+        thisRoom = (ArrayList<Room>) b.getSerializable("room");
+        r = thisRoom.get(0);
 
         return myView;
     }
@@ -51,10 +76,6 @@ public class TrackRoomMaps extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        LatLng origin, destination;
-
-        destination = new LatLng(31.5204, 74.3587);
-
         MapsInitializer.initialize(getActivity());
 
         myMap = googleMap;
@@ -64,16 +85,45 @@ public class TrackRoomMaps extends Fragment implements OnMapReadyCallback {
 
         myMap.setMyLocationEnabled(true);
 
-        myMap.addMarker(new MarkerOptions().position(destination).title("Sajjad"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5214, 74.3577)).title("Zainab"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5224, 74.3597)).title("Haroon"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5234, 74.3547)).title("Osama"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5244, 74.3557)).title("Hussam"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5254, 74.3595)).title("Saad"));
-        myMap.addMarker(new MarkerOptions().position( new LatLng(31.5264, 74.3544)).title("Ahmed"));
+        markers.clear();
+        for(int i = 0; i < r.getMembers().size(); i++)
+        {
+            count = i;
+            final User thisUser = r.getMembers().get(i);
+            MarkerOptions marker;
+            marker =  new MarkerOptions().position(new LatLng(10,11)).title(thisUser.getName());
+            markers.add(myMap.addMarker(marker));
+
+            DatabaseReference loc = FirebaseDatabase.getInstance().getReference("Status").child(thisUser.getUuid());
+            loc.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    Log.d("Pak",dataSnapshot.toString());
+                    String[] location = dataSnapshot.getValue().toString().split(",");
+                    Double lat = Double.parseDouble(location[0]);
+                    Double lng = Double.parseDouble(location[1]);
+                    if(!thisUser.equals(Global.currentUser)){
+                        markers.get(count).setPosition(new LatLng(lat,lng));
+                    }
+                    else{
+                        latitude = lat;
+                        longitude = lng;
+                        if(firstTimeMapLoad) {
+                            myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitude, longitude), 10));
+                            firstTimeMapLoad = false;
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
 
 
-        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(31.5204,74.3587),10));
 
     }
 

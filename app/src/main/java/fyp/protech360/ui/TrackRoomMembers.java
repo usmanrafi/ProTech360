@@ -3,13 +3,21 @@ package fyp.protech360.ui;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
+import fyp.protech360.classes.Room;
 import fyp.protech360.classes.User;
 import fyp.protech360.R;
 import fyp.protech360.utils.ConnectionAdapter;
@@ -20,6 +28,8 @@ public class TrackRoomMembers extends Fragment{
     ListView listView;
     ArrayList<User> connections = new ArrayList<>();
     ConnectionAdapter deviceAdapter;
+    ArrayList<Room> rooms = new ArrayList<>();
+    Room r;
 
     View myView;
 
@@ -28,7 +38,6 @@ public class TrackRoomMembers extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         deviceAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row,connections);
         myView = inflater.inflate(R.layout.fragment_trackroom_members, container, false);
-//        ((TrackRoomDetails) getActivity()).setActionBarTitle("TrackRoom");
         listView = (ListView) myView.findViewById(R.id.roomPList);
         listView.setClickable(true);
         listView.setAdapter(deviceAdapter);
@@ -40,20 +49,20 @@ public class TrackRoomMembers extends Fragment{
 
     @Override
     public void onResume() {
+        Log.d("Pak","Fragment Resumed");
+        Bundle b = getArguments();
+        rooms = (ArrayList<Room>) b.getSerializable("room");
+        r = rooms.get(0);
         connections.clear();
+        deviceAdapter.notifyDataSetChanged();
         addList();
         super.onResume();
     }
 
     public void addList()
     {
-        //Add list of members in a particular trackroom from FIREBASE here
-
-        /*connections.add(new User("Asharib Nadeem","7-12-2017","08:11",null));
-        connections.add(new User("Haroon Ahmed","7-12-2017","06:06",null));
-        connections.add(new User("Kashif Ahmed","7-12-2017","00:56",null));
-        connections.add(new User("Syed Sajjad Ali","4-12-2017","19:45",null));
-        connections.add(new User("Zainab Saif","25-11-2017","08:59",null));*/
+        connections.addAll(r.getMembers());
+        deviceAdapter.notifyDataSetChanged();
     }
 
 

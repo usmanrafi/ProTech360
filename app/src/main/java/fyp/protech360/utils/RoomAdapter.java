@@ -43,7 +43,7 @@ public class RoomAdapter extends ArrayAdapter {
         Room room = rooms.get(position);
         roomHolder.Title.setText(room.getTitle());
 
-        roomHolder.numParticipants.setText("5 Participants");
+        roomHolder.numParticipants.setText(String.valueOf(room.getMembers().size())+" Participants");
 
         return convertView;
     }
