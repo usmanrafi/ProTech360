@@ -2,7 +2,9 @@ package fyp.protech360.classes;
 
 import android.telephony.SmsManager;
 
-public class EmergencyDetails {
+import java.io.Serializable;
+
+public class EmergencyDetails implements Serializable{
     private String message;
     private String num1;
     private String num2;

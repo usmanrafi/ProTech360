@@ -2,70 +2,57 @@ package fyp.protech360.classes;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Meeting {
+public class Meeting implements Serializable{
 
-    private UUID uuid;
-
+    private String uuid;
+    private Long time;
     private String name;
     private ArrayList<User> participants;
-    private ArrayList<User> admins;
-    private LatLng location;
+    private String location;
 
-    public Meeting(String name, ArrayList<User> participants, ArrayList<User> admins, LatLng location) {
-        this.uuid = UUID.randomUUID();
+    public Meeting(){}
 
+    public Meeting(String name, Long time, ArrayList<User> participants, String location) {
+        this.uuid = UUID.randomUUID().toString();
         this.name = name;
+        this.time = time;
         this.participants = participants;
-        this.admins = admins;
         this.location = location;
-    }
-
-    public Meeting(String name, User admin, LatLng location){
-        this.uuid = UUID.randomUUID();
-
-        this.name = name;
-        this.location = location;
-        this.participants = new ArrayList<>();
-        this.admins = new ArrayList<>();
-        this.admins.add(admin);
     }
 
     public void addParticipant(User user){
-        if(!(this.isParticipant(user)) && !(this.isAdmin(user)))
             this.participants.add(user);
-    }
-
-    public void makeAdmin(User user){
-        if(!(this.isAdmin(user)) && this.isParticipant(user)) {
-            this.participants.remove(user);
-            this.admins.add(user);
-        }
-    }
-
-    public boolean isAdmin(User user){
-        for(User u : this.admins)
-            if(user.equals(u))
-                return true;
-
-        return false;
     }
 
     public boolean isParticipant(User user){
         for(User u : this.participants)
-            if(user.equals(u))
+            if(user.getUuid().equals(u.getUuid()))
                 return true;
 
         return false;
     }
 
-    public UUID getUuid() {
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
+
+    public void setParticipants(ArrayList<User> participants) {
+        this.participants = participants;
+    }
+
+    public String getUuid() {
         return uuid;
     }
 
-    public void setUuid(UUID uuid) {
+    public void setUuid(String uuid) {
         this.uuid = uuid;
     }
 
@@ -81,15 +68,11 @@ public class Meeting {
         return participants;
     }
 
-    public ArrayList<User> getAdmins() {
-        return admins;
-    }
-
-    public LatLng getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(LatLng location) {
+    public void setLocation(String location) {
         this.location = location;
     }
 }

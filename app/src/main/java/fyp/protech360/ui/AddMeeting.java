@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Toast;
@@ -32,11 +33,16 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.maps.PlacesApi;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 import fyp.protech360.R;
+import fyp.protech360.classes.Meeting;
+import fyp.protech360.classes.User;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -47,6 +53,9 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
     NumberPicker n1,n2,n3,n4,n5,n6,n7;
     Button b1,b2,locationPicker;
     ImageView iv;
+    String location = "";
+    EditText meetingSubject;
+    ArrayList<User> selectedParticipants;
 
     @Override
     public void setArguments(Bundle args) {
@@ -70,6 +79,7 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
 
         initialize();
 
+        meetingSubject = myView.findViewById(R.id.meetingSubject);
         b1 = (Button) myView.findViewById(R.id.meetingAddButton);
         b2 = (Button) myView.findViewById(R.id.meetingCancelButton);
         locationPicker = (Button) myView.findViewById(R.id.location_button);
@@ -81,12 +91,9 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
                 PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
                 try {
                     startActivityForResult(builder.build(((Homepage) getActivity())),PLACE_PICKER_REQUEST);
-                    Toast.makeText(getActivity(),"kjddddddddfs",Toast.LENGTH_LONG).show();
                 } catch (GooglePlayServicesRepairableException e) {
-                    Toast.makeText(getActivity(),"kjdfs",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 } catch (GooglePlayServicesNotAvailableException e) {
-                    Toast.makeText(getActivity(),"kjdfs",Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }
@@ -95,8 +102,25 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
         b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"Meeting has been successfully scheduled",Toast.LENGTH_SHORT).show();
-                ((Homepage) getActivity()).setFragment(new Meetings());
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(
+                        n3.getValue(),n2.getValue()-1,n1.getValue(),n4.getValue(),n5.getValue(),0
+                );
+                Long ms = calendar.getTimeInMillis();
+
+                String title = meetingSubject.getText().toString();
+
+                if(getArguments() != null && !location.equals("") && !title.equals("")){
+                    Meeting meeting = new Meeting(meetingSubject.getText().toString(),ms,(ArrayList<User>)getArguments().getSerializable("Selected"),location);
+                    DatabaseReference addMeeting = FirebaseDatabase.getInstance().getReference("Meetings").child(meeting.getUuid());
+                    addMeeting.setValue(meeting);
+                    ((Homepage) getActivity()).setFragment(new Meetings());
+                }
+                else
+                {
+                    Toast.makeText(getActivity(),"Add all details before adding the meeting",Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -137,6 +161,7 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
             if(resultCode == RESULT_OK){
 
                 place = PlacePicker.getPlace(((Homepage) getActivity()),data);
+                location = String.valueOf(place.getLatLng().latitude)+","+String.valueOf(place.getLatLng().longitude);
                 Toast.makeText(getActivity(),"Meeting has been successfully scheduled",Toast.LENGTH_SHORT).show();
             }
         }

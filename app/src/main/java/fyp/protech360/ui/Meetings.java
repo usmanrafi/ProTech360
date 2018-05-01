@@ -54,6 +54,7 @@ public class Meetings extends Fragment {
     @Override
     public void onResume() {
         meetings.clear();
+        meetingAdapter.notifyDataSetChanged();
         addList();
         super.onResume();
     }
