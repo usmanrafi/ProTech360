@@ -1,9 +1,10 @@
 package fyp.protech360.classes;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class Room {
+public class Room implements Serializable{
 
     private String Roomid;
 
@@ -56,7 +57,7 @@ public class Room {
 
     public boolean isMember(User user){
         for(User u : this.members)
-            if(user.equals(u))
+            if(user.getUuid().equals(u.getUuid()))
                 return true;
 
         return false;

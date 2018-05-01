@@ -53,15 +53,17 @@ public class TrackRoomMembers extends Fragment{
         Bundle b = getArguments();
         rooms = (ArrayList<Room>) b.getSerializable("room");
         r = rooms.get(0);
-        connections.clear();
-        deviceAdapter.notifyDataSetChanged();
         addList();
         super.onResume();
     }
 
     public void addList()
     {
+        connections.clear();
         connections.addAll(r.getMembers());
+        for(User u : connections){
+            Log.d("Pakakaka",u.getName());
+        }
         deviceAdapter.notifyDataSetChanged();
     }
 
