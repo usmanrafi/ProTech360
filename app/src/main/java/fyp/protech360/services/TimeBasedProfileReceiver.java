@@ -16,6 +16,7 @@ public class TimeBasedProfileReceiver extends BroadcastReceiver {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("TimeBasedProfiles", Context.MODE_PRIVATE);
 
+
         Long time = System.currentTimeMillis();
         int code = sharedPreferences.getInt("Prof_"+time.toString().substring(0,9), 0);
 

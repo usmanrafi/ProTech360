@@ -11,6 +11,9 @@ import android.net.Uri;
 import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import fyp.protech360.utils.Global;
 
 public class TimeBasedReminderReceiver extends BroadcastReceiver {
@@ -22,14 +25,18 @@ public class TimeBasedReminderReceiver extends BroadcastReceiver {
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("TimeBasedReminders", Context.MODE_PRIVATE);
 
-        Long time = System.currentTimeMillis();
-        String title = sharedPreferences.getString("Time_"+String.valueOf(time).substring(0,9), null);
+        String Notificationtitle = intent.getStringExtra("Notification_Title");
+
+        String title = intent.getStringExtra("Content");
+
+        String meetingID = intent.getStringExtra("MeetingID");
 
         notificationManager.notify(Global.timeBasedReminderReceiverID++, new NotificationCompat.Builder(context)
                 .setSmallIcon(android.R.drawable.ic_lock_lock)
-                .setContentTitle("ProTech360")
+                .setContentTitle("ProTech360 - " + Notificationtitle)
                 .setContentText(title)
-                .setTicker("Reminder")
+                .setTicker(Notificationtitle)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(title))
                 .setAutoCancel(true)
                 .build()
         );
@@ -47,5 +54,12 @@ public class TimeBasedReminderReceiver extends BroadcastReceiver {
 
         Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(800);
+
+        if(meetingID != null)
+        {
+            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Meetings").child(meetingID);
+            dbRef.removeValue();
+        }
+
     }
 }

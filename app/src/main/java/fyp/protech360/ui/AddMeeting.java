@@ -1,9 +1,14 @@
 package fyp.protech360.ui;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +48,8 @@ import java.util.Calendar;
 import fyp.protech360.R;
 import fyp.protech360.classes.Meeting;
 import fyp.protech360.classes.User;
+import fyp.protech360.services.TimeBasedReminderReceiver;
+import fyp.protech360.utils.Global;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -56,7 +63,7 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
     String location = "";
     EditText meetingSubject;
     ArrayList<User> selectedParticipants;
-
+    AlarmManager mAlarmManager;
     @Override
     public void setArguments(Bundle args) {
         super.setArguments(args);
@@ -68,6 +75,8 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.addmeeting,container,false);
         ((Homepage) getActivity()).setActionBarTitle("Schedule a Meeting");
+
+        mAlarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
 
         n1 = myView.findViewById(R.id.datePicker);
         n2 = myView.findViewById(R.id.monthPicker);
@@ -100,8 +109,12 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
         });
 
         b1.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onClick(View v) {
+
+
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.set(
                         n3.getValue(),n2.getValue()-1,n1.getValue(),n4.getValue(),n5.getValue(),0
@@ -110,8 +123,19 @@ public class AddMeeting extends Fragment implements PlaceSelectionListener {
 
                 String title = meetingSubject.getText().toString();
 
+
                 if(getArguments() != null && !location.equals("") && !title.equals("")){
-                    Meeting meeting = new Meeting(meetingSubject.getText().toString(),ms,(ArrayList<User>)getArguments().getSerializable("Selected"),location);
+                    /*Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
+                    intent.putExtra("Notification_Title","Meeting");
+                    intent.putExtra("Content","It's time for the " + title + " meeting to be started");
+
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, ms,pendingIntent);
+*/
+                    selectedParticipants = (ArrayList<User>) getArguments().getSerializable("Selected");
+                    selectedParticipants.add(Global.currentUser);
+                    Meeting meeting = new Meeting(meetingSubject.getText().toString(),ms,selectedParticipants,location);
                     DatabaseReference addMeeting = FirebaseDatabase.getInstance().getReference("Meetings").child(meeting.getUuid());
                     addMeeting.setValue(meeting);
                     ((Homepage) getActivity()).setFragment(new Meetings());

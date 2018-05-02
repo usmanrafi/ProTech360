@@ -63,13 +63,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver android:name=".services.TimeBasedReminderReceiver" />
-        <receiver android:name=".services.TimeBasedProfileReceiver" />
+        <receiver android:name=".services.TimeBasedReminderReceiver">
+            <intent-filter>
+                <action android:name="android.action.action.TimeReminderbroadcast"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".services.TimeBasedProfileReceiver" >
+            <intent-filter>
+                <action android:name="android.action.action.TimeProfilebroadcast"/>
+            </intent-filter>
+        </receiver>
         <service android:name=".services.LocationService" />
         <service android:name=".services.LocationBasedProfileService" />
         <service android:name=".services.LocationBasedReminderService" />
         <service android:name=".services.SafetyRangeService" />
         <service android:name=".services.ConnectionLocationMonitoringService" />
+        <service android:name=".services.NotifyService" />
 
         <activity
             android:name=".ui.Activity_Connections"

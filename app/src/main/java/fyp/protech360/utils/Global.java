@@ -4,15 +4,11 @@ package fyp.protech360.utils;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.ContactsContract;
-
-import java.util.ArrayList;
 
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.services.LocationService;
-import fyp.protech360.ui.Home;
-import fyp.protech360.ui.Homepage;
+import fyp.protech360.services.NotifyService;
 
 public class Global {
 
@@ -41,6 +37,7 @@ public class Global {
     public static final int PROFILE_DONOTTRACK_OFF = 50;
 
     public static Intent LocationIntent;
+    public static Intent MeetingIntent;
 
     static {
         timeBasedReminderID = 0;
@@ -49,10 +46,16 @@ public class Global {
         locationBasedReminderReceiverID = 0;
 
         LocationIntent = null;
+        MeetingIntent = null;
     }
 
     public static void setLocationIntent(Context context){
         if(LocationIntent == null)
             LocationIntent = new Intent(context, LocationService.class);
+    }
+
+    public static void setMeetingIntent(Context context){
+        if(MeetingIntent == null)
+            MeetingIntent = new Intent(context, NotifyService.class);
     }
 }

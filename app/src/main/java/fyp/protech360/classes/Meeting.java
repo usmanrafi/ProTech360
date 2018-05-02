@@ -75,4 +75,12 @@ public class Meeting implements Serializable{
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public boolean isMember(User currentUser) {
+        for(User u : this.participants)
+            if(currentUser.getUuid().equals(u.getUuid()))
+                return true;
+
+        return false;
+    }
 }

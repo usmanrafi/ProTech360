@@ -8,19 +8,20 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import fyp.protech360.R;
-import fyp.protech360.classes.Schedule;
+import fyp.protech360.classes.Meeting;
 
 
 public class MeetingAdapter extends ArrayAdapter {
     private Activity activity;
-    private ArrayList<Schedule> meetings;
-    private ScheduleHolder scheduleHolder = new ScheduleHolder();
+    private ArrayList<Meeting> meetings;
+    private MeetingHolder MeetingHolder = new MeetingHolder();
     private int resource;
 
 
-    public MeetingAdapter(Activity activity, int resource, ArrayList<Schedule> meetings) {
+    public MeetingAdapter(Activity activity, int resource, ArrayList<Meeting> meetings) {
         super(activity, resource, meetings);
         this.activity = activity;
         this.meetings = meetings;
@@ -35,15 +36,17 @@ public class MeetingAdapter extends ArrayAdapter {
 
         }
 
-        scheduleHolder.subject = convertView.findViewById(R.id.meetingTitle);
-        scheduleHolder.date = convertView.findViewById(R.id.meetingDate);
-        scheduleHolder.time = convertView.findViewById(R.id.meetingTime);
+        MeetingHolder.subject = convertView.findViewById(R.id.meetingTitle);
+        MeetingHolder.date = convertView.findViewById(R.id.meetingDate);
 
 
-        Schedule meeting = meetings.get(position);
-        scheduleHolder.subject.setText(meeting.getSubject());
-        scheduleHolder.date.setText(meeting.getDate());
-        scheduleHolder.time.setText(meeting.getStartTime());
+        Meeting meeting = meetings.get(position);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(meeting.getTime());
+        String date = calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH )+1) + "-" + calendar.get(Calendar.YEAR);
+        String time = calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE);
+        MeetingHolder.subject.setText(meeting.getName());
+        MeetingHolder.date.setText("Schedule: " + date + " at " + time);
 
         return convertView;
     }
@@ -51,10 +54,10 @@ public class MeetingAdapter extends ArrayAdapter {
 
 
 
-    static class ScheduleHolder{
+    static class MeetingHolder{
         TextView subject;
         TextView date;
-        TextView time;
+
     }
 
 }

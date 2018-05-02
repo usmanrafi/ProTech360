@@ -5,23 +5,31 @@ import android.os.Bundle;
 import android.app.Fragment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
 import fyp.protech360.R;
-import fyp.protech360.classes.Schedule;
+import fyp.protech360.classes.Meeting;
+import fyp.protech360.utils.Global;
 import fyp.protech360.utils.MeetingAdapter;
 
 public class Meetings extends Fragment {
 
     View myView;
     ListView listView;
-    ArrayList<Schedule> meetings = new ArrayList<>();
+    ArrayList<Meeting> meetings = new ArrayList<>();
     MeetingAdapter meetingAdapter;
     FloatingActionButton fab;
 
@@ -61,17 +69,29 @@ public class Meetings extends Fragment {
 
     public void addList()
     {
-        meetings.add(new Schedule("Meeting 1","7-1-2018","08:11","e",null));
-        meetings.add(new Schedule("Meeting 2","7-1-2018","06:06","e",null));
-        meetings.add(new Schedule("Meeting 3","7-1-2018","00:56","e",null));
-        meetings.add(new Schedule("Meeting 4","6-1-2018","00:10","e",null));
-        meetings.add(new Schedule("Meeting 5","4-1-2018","23:22","e",null));
-        meetings.add(new Schedule("Meeting 6","4-1-2018","19:45","e",null));
-        meetings.add(new Schedule("Meeting 7","4-1-2018","06:04","e",null));
-        meetings.add(new Schedule("Meeting 8","3-1-2018","03:58","e",null));
-        meetings.add(new Schedule("Meeting 9","29-1-2018","18:11","e",null));
-        meetings.add(new Schedule("Meeting 10","27-2-2018","15:11","e",null));
-        meetings.add(new Schedule("Meeting 11","25-4-2018","08:59","e",null));
+        DatabaseReference roomList = FirebaseDatabase.getInstance().getReference("Meetings");
+        roomList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                meetings.clear();
+                for(DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    Meeting meeting = ds.getValue(Meeting.class);
+                    if(meeting.isMember(Global.currentUser)) {
+                        meetings.add(meeting);
+                        meetingAdapter.notifyDataSetChanged();
+                        listView.requestLayout();
+                        //pb.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
 

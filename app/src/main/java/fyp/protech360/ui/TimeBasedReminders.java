@@ -54,9 +54,6 @@ public class TimeBasedReminders extends Fragment{
 
         mAlarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
 
-        final SharedPreferences.Editor editor = getActivity().getSharedPreferences("TimeBasedReminders",
-                Context.MODE_PRIVATE).edit();
-
         mButton.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -67,14 +64,16 @@ public class TimeBasedReminders extends Fragment{
                         n3.getValue(),n2.getValue()-1,n1.getValue(),n4.getValue(),n5.getValue(),0
                     );
 
+                String text = mEditText.getText().toString().trim();
+
+
                 Intent intent = new Intent(getActivity(), TimeBasedReminderReceiver.class);
+                intent.putExtra("Notification_Title","Reminder");
+                intent.putExtra("Content",text);
+
                 PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), Global.timeBasedReminderID++,intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
-                String text = mEditText.getText().toString().trim();
                 Long ms = calendar.getTimeInMillis();
-
-                editor.putString("Time_"+String.valueOf(ms).substring(0,9), text);
-                editor.commit();
 
                 mAlarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),pendingIntent);
 

@@ -1,18 +1,11 @@
 package fyp.protech360.ui;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Fragment;
-import android.app.Service;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.SmsManager;
@@ -23,32 +16,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import fyp.protech360.R;
 import fyp.protech360.services.ConnectionLocationMonitoringService;
 import fyp.protech360.services.LocationService;
+import fyp.protech360.services.NotifyService;
 import fyp.protech360.utils.Global;
 
 import android.content.Context;
-
-import javax.microedition.khronos.opengles.GL;
 
 public class Home extends Fragment implements OnMapReadyCallback {
 
@@ -111,7 +92,17 @@ public class Home extends Fragment implements OnMapReadyCallback {
     @Override
     public void onDestroyView() {
         handleLocationService();
+        handleMeetings();
         super.onDestroyView();
+    }
+
+    private void handleMeetings() {
+            if(Global.currentUser != null && !isMyServiceRunning(NotifyService.class)) {
+                Global.setMeetingIntent(getActivity());
+                Global.MeetingIntent.putExtra("user_name", Global.currentUser);
+                getActivity().startService(Global.MeetingIntent);
+        }
+
     }
 
     private void handleLocationService() {
@@ -134,6 +125,18 @@ public class Home extends Fragment implements OnMapReadyCallback {
         ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
         for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
             if(locationServiceClass.getName().equals(service.service.getClassName())){
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isMyServiceRunning(Class<NotifyService> meetingNotifyServiceClass)
+    {
+        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
+            if(meetingNotifyServiceClass.getName().equals(service.service.getClassName())){
 
                 return true;
             }
