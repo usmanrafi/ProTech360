@@ -58,6 +58,14 @@ public class TrackRoomMembers extends Fragment{
         deleteRoom = myView.findViewById(R.id.deleteRoom);
         leaveRoom = myView.findViewById(R.id.leaveRoom);
 
+        addMembers.setClickable(true);
+
+        addMembers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         deleteRoom.setOnClickListener(new View.OnClickListener() {
             @Override
