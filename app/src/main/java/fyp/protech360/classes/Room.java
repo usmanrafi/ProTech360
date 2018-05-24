@@ -36,20 +36,20 @@ public class Room implements Serializable{
     }
 
     public void makeAdmin(User user){
-        if(!(this.isAdmin(user)) && this.isMember(user)){
-            this.admins.add(user);
-            this.members.remove(user);
-        }
+        this.admins.add(user);
+    }
+
+    public void removeAdmin(User user){
+        this.admins.remove(user);
     }
 
     public void addUser(User user){
-        if(!(this.isMember(user)) && !(this.isAdmin(user)))
-            this.members.add(user);
+        this.members.add(user);
     }
 
     public boolean isAdmin(User user){
         for(User u : this.admins)
-            if(user.equals(u))
+            if(user.getUuid().equals(u.getUuid()))
                 return true;
 
         return false;

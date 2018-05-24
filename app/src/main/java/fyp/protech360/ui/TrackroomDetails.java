@@ -85,7 +85,6 @@ public class TrackroomDetails extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 r.add(dataSnapshot.getValue(Room.class));
-
             }
 
             @Override

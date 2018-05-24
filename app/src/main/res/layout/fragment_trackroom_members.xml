@@ -4,14 +4,61 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fyp.protech360.ui.TrackroomDetails">
+    tools:context="fyp.protech360.ui.TrackroomDetails"
+    android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/roomPList"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/trackroom_members_Add"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:id="@+id/contactImageShow"
+                android:clickable="false"
+                android:src="@drawable/plus"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                app:civ_border_width="1dp"
+                app:civ_border_color="#FF000000"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/contactNameShow"
+                android:layout_gravity="center"
+                android:layout_marginLeft="30dp"
+                android:textSize="20dp"
+                android:text="Add Participants"/>
+
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/roomPList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+
+
+    </LinearLayout>
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
-
-
+        android:id="@+id/leaveRoom"
+        android:text="Leave Room"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteRoom"
+        android:text="Delete Room"/>
 
 </LinearLayout>

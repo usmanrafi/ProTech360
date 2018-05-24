@@ -68,6 +68,7 @@ public class AddTrackRoom extends Fragment {
                 }
                 else
                 {
+                    addRoom.setClickable(false);
                     roomMembers.add(Global.currentUser);
                     Room trackRoom = new Room(roomTitle.getText().toString(),roomMembers,admins);
                     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Rooms").child(trackRoom.getUuid().toString());
