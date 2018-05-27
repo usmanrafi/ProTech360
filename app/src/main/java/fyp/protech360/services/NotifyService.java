@@ -123,9 +123,27 @@ public class NotifyService extends Service {
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
+                Meeting m = dataSnapshot.getValue(Meeting.class);
+                if(m.isMember(user) && !m.getName().equals("No Meeting")) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Meeting Reminder");
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTimeInMillis(m.getTime());
+                    ArrayList<User> users = m.getParticipants();
+                    String participants = "";
+                    for (User u : users) {
+                        if (!u.getUuid().equals(user.getUuid())) {
+                            participants += ", " + u.getName();
+                        }
+                    }
+                    ThisIntent.putExtra("Content", "Reminder: You have " + m.getName() + " meeting scheduled on " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + " at " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " with " + participants);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                }
             }
 
             @Override

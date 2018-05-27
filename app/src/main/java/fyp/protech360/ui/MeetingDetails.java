@@ -66,7 +66,12 @@ public class MeetingDetails extends Fragment {
         reminder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Remind Participants
+                DatabaseReference remind = FirebaseDatabase.getInstance().getReference("Meetings").child(meeting.getUuid());
+                String name = meeting.getName();
+                meeting.setName("No Meeting");
+                remind.setValue(meeting);
+                meeting.setName(name);
+                remind.setValue(meeting);
             }
         });
 
