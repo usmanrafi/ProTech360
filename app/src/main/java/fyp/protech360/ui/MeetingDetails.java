@@ -57,11 +57,39 @@ public class MeetingDetails extends Fragment {
 
         participantsList.setClickable(true);
 
-        meetingStatus();
         participantsAdapter = new ConnectionAdapter(getActivity(), R.layout.connectionslist_row, participants);
         participantsList.setAdapter(participantsAdapter);
 
 
+        meetingStatus();
+
+        reminder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Remind Participants
+            }
+        });
+
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Update Schedule
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Cancel Meeting
+            }
+        });
+
+        location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: Navigate to the meeting location
+            }
+        });
 
         return myView;
     }
@@ -74,7 +102,9 @@ public class MeetingDetails extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 meeting = dataSnapshot.getValue(Meeting.class);
-        //        participants = meeting.getParticipants();
+                participants.clear();
+                participants.addAll(meeting.getParticipants());
+                participantsAdapter.notifyDataSetChanged();
                 addViews();
             }
 
