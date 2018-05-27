@@ -48,11 +48,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.MeetingDetails"
-            android:label="MeetingDetails"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".ui.AddReminder"
             android:label="AddReminder"
             android:screenOrientation="portrait"

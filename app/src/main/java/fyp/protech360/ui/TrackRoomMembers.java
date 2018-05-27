@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.telephony.gsm.GsmCellLocation;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class TrackRoomMembers extends Fragment{
 
     ListView listView;
     ArrayList<User> connections = new ArrayList<>();
+    ArrayList<User> connectionsNotInRoom = new ArrayList<>();
     ConnectionAdapter deviceAdapter;
     ArrayList<Room> rooms = new ArrayList<>();
     Room r;
@@ -111,7 +113,9 @@ public class TrackRoomMembers extends Fragment{
                         if(r.isAdmin(Global.currentUser))
                         {
                             r.removeAdmin(Global.currentUser);
-                            r.makeAdmin(connections.get(0));
+                            if(connections.size() != 0 && r.getAdmins().size() == 0) {
+                                r.makeAdmin(connections.get(0));
+                            }
                         }
 
 
@@ -170,8 +174,8 @@ public class TrackRoomMembers extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             switch(which) {
                                 case 0:
-                                    r.getMembers().remove(connections.get(position));
-                                    r.removeAdmin(connections.get(position));
+                                    r.getMembers().remove((User) deviceAdapter.getItem(position));
+                                    r.removeAdmin((User) deviceAdapter.getItem(position));
                                     connections.remove(position);
                                     deviceAdapter.notifyDataSetChanged();
                                     DatabaseReference dbref = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("members");
@@ -193,7 +197,7 @@ public class TrackRoomMembers extends Fragment{
 
                                 case 1:
                                     DatabaseReference dbrefAdmin = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("admins");
-                                    r.removeAdmin(connections.get(position));
+                                    r.removeAdmin((User) deviceAdapter.getItem(position));
                                     dbrefAdmin.removeValue();
                                     HashMap<String,Object> mapA = new HashMap<>();
                                     for (int i = 0; i < r.getAdmins().size(); i++)
@@ -216,7 +220,7 @@ public class TrackRoomMembers extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             switch(which) {
                                 case 0:
-                                    r.getMembers().remove(connections.get(position));
+                                    r.getMembers().remove((User) deviceAdapter.getItem(position));
                                     connections.remove(position);
                                     deviceAdapter.notifyDataSetChanged();
                                     DatabaseReference dbrefRemove = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("members");
@@ -230,7 +234,7 @@ public class TrackRoomMembers extends Fragment{
 
                                 case 1:
                                     DatabaseReference dbrefAdmin = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("admins");
-                                    r.makeAdmin(connections.get(position));
+                                    r.makeAdmin((User) deviceAdapter.getItem(position));
                                     dbrefAdmin.removeValue();
                                     HashMap<String,Object> mapA = new HashMap<>();
                                     for (int i = 0; i < r.getAdmins().size(); i++)
@@ -280,7 +284,23 @@ public class TrackRoomMembers extends Fragment{
     {
         connections.clear();
         connections.addAll(r.getMembers());
-        deviceAdapter.notifyDataSetChanged();
+        connectionsNotInRoom = Global.currentUser.getConnections();
+        Log.d("dsdsd",String.valueOf(Global.currentUser.getConnections().size()));
+
+        ArrayList<User> diff = new ArrayList<>();
+        for(User u : connectionsNotInRoom)
+        {
+            if(connections.contains(u))
+            {
+                diff.add(u);
+            }
+        }
+        for(User u : diff)
+        {
+            connectionsNotInRoom.remove(u);
+        }
+      deviceAdapter.notifyDataSetChanged();
+
     }
 
 

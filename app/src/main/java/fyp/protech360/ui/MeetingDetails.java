@@ -1,79 +1,33 @@
 package fyp.protech360.ui;
 
+import android.app.Fragment;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
-import fyp.protech360.R;
+/**
+ * Created by Aliyan on 5/27/2018.
+ */
 
-public class MeetingDetails extends AppCompatActivity {
+public class MeetingDetails extends Fragment {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
+    View myView;
+    String meetingID;
 
-    private ViewPager mViewPager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_meeting_details);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        myView = inflater.inflate(fyp.protech360.R.layout.fragment_connection_details, container, false);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        meetingID = getArguments().getString("Meeting");
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        ((Homepage) getActivity()).setActionBarTitle("Meetings");
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(mViewPager);
 
+        return myView;
     }
-        /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch (position){
-                case 0:
-                    return new MeetingMaps();
-                case 1:
-                    return new MeetingParticipants();
-                default:
-                    return null;
-            }
-        }
 
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position){
-                case 0:
-                    return "Map";
-                case 1:
-                    return "Participants";
-            }
-            return null;
-        }
-
-            @Override
-        public int getCount() {
-            // Show 2 total pages.
-            return 2;
-        }
-    }
 }

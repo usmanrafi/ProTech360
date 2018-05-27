@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import javax.microedition.khronos.opengles.GL;
 
 import fyp.protech360.R;
@@ -100,7 +102,7 @@ public class Login extends Fragment {
 
     public void getLoggedInUser() {
 
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
+        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(mFirebaseUser.getUid());
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

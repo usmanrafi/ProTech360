@@ -22,7 +22,9 @@ public class User implements Serializable{
 
     private ArrayList<User> connections;
 
-    public User(){}
+    public User(){
+     this.connections = new ArrayList<>();
+    }
 
     public User(String uuid, String name, String phoneNumber, String email, String image)
     {
@@ -39,6 +41,20 @@ public class User implements Serializable{
         this.connections = new ArrayList<>();
     }
 
+    public User(String uuid, String name, String phoneNumber, String email, String image, EmergencyDetails det, ArrayList<User> connections)
+    {
+        this.uuid = uuid;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.image = image;
+        this.emergencyDetails = det;
+        this.tracking = true;
+        this.meetings = new ArrayList<>();
+        this.rooms = new ArrayList<>();
+
+        this.connections = connections;
+    }
 
     public User(String uuid, String name, String phoneNumber, String email, String image, EmergencyDetails det)
     {
@@ -136,6 +152,11 @@ public class User implements Serializable{
 
     public void initConnections(){
         this.connections = new ArrayList<>();
+    }
+
+    public void setConnections(ArrayList<User> connections)
+    {
+        this.connections = connections;
     }
 
     public void addConnection(User user){

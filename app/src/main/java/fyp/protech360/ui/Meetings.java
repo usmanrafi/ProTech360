@@ -22,6 +22,7 @@ import java.util.ArrayList;
 
 import fyp.protech360.R;
 import fyp.protech360.classes.Meeting;
+import fyp.protech360.classes.User;
 import fyp.protech360.utils.Global;
 import fyp.protech360.utils.MeetingAdapter;
 
@@ -49,7 +50,13 @@ public class Meetings extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getActivity(),MeetingDetails.class));
+                Meeting selectedMeeting = (Meeting) meetingAdapter.getItem(position);
+                MeetingDetails meetingDetails = new MeetingDetails();
+                Bundle args = new Bundle();
+                args.putString("Meeting", selectedMeeting.getUuid());
+                meetingDetails.setArguments(args);
+                ((Homepage) getActivity()).setFragment(meetingDetails);
+
             }
         });
 
