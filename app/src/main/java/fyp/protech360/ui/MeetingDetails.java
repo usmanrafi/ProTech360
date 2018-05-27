@@ -19,7 +19,7 @@ public class MeetingDetails extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        myView = inflater.inflate(fyp.protech360.R.layout.fragment_connection_details, container, false);
+        myView = inflater.inflate(fyp.protech360.R.layout.fragment_meeting_details, container, false);
 
         meetingID = getArguments().getString("Meeting");
 

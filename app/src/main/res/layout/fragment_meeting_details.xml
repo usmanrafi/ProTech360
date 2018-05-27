@@ -7,38 +7,101 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_marginTop="10dp">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Date"
-            android:textSize="20dp"/>
-        <TextView
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textSize="20dp"
+                android:textColor="#ffffff"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/meeting_date"
+                android:text="12/12/12"
+                android:textSize="20dp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="12/12/12"
-            android:textSize="20dp"/>
+            android:orientation="vertical"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Time"
+                android:textSize="20dp"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/meeting_time"
+                android:text="00:32"
+                android:textSize="20dp"
+                android:textColor="#ffffff"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/meeting_location"
+            android:text="Tap to View Location"
+            android:background="@color/colorPrimary"
+            android:textColor="#ffffff"
+            android:padding="10dp"/>
 
     </LinearLayout>
 
-    <LinearLayout
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Participants"
+        android:textSize="20dp"
+        android:layout_margin="10dp"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:id="@+id/meeting_participants"/>
+
+    <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:id="@+id/meeting_reminder"
+        android:text="Remind Participants"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimaryDark"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Time"
-            android:textSize="20dp"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/meeting_update"
+        android:text="Update Schedule"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimaryDark"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="00:32"
-            android:textSize="20dp"/>
-
-    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/meeting_cancel"
+        android:text="Cancel Meeting"
+        android:layout_marginBottom="10dp"
+        android:background="@color/colorPrimaryDark"/>
 
 </LinearLayout>
