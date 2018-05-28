@@ -6,18 +6,21 @@ public class Request {
 
     private String requestUID;
     private String requestName;
+    private String sentTo;
     private int requestType;
     private int requestRange;
 
-    public Request(String requestID, String requestName, int requestType) {
+    public Request(String requestID, String requestName, String sentTo, int requestType) {
         this.requestUID = requestID;
         this.requestName = requestName;
+        this.sentTo = sentTo;
         this.requestType = requestType;
     }
 
-    public Request(String requestUID, String requestName, int requestType, int requestRange) {
+    public Request(String requestUID, String requestName, String sentTo, int requestType, int requestRange) {
         this.requestUID = requestUID;
         this.requestName = requestName;
+        this.sentTo = sentTo;
         this.requestType = requestType;
         this.requestRange = requestRange;
     }
@@ -31,6 +34,14 @@ public class Request {
     }
 
     public Request() {
+    }
+
+    public String getSentTo() {
+        return sentTo;
+    }
+
+    public void setSentTo(String sentTo) {
+        this.sentTo = sentTo;
     }
 
     public String getRequestUID() {

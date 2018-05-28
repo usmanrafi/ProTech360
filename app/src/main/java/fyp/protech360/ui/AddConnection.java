@@ -182,8 +182,8 @@ public class AddConnection extends Fragment {
                         String requestID = Global.currentUser.getUuid();
                         Request newRequest;
                         if(mSeekText.getText() == "N/A")
-                            newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType);
-                        else newRequest = new Request(requestID,Global.currentUser.getEmail(),trackingType, Integer.parseInt(mSeekText.getText().toString()));
+                            newRequest = new Request(requestID,Global.currentUser.getEmail(), info.getEmail(),trackingType);
+                        else newRequest = new Request(requestID,Global.currentUser.getEmail(),info.getEmail(),trackingType, Integer.parseInt(mSeekText.getText().toString()));
                         DatabaseReference requestRef = FirebaseDatabase.getInstance().getReference("Requests").child(info.getUuid()).child(requestID);
                         requestRef.setValue(newRequest)
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {

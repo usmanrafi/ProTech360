@@ -137,7 +137,7 @@ public class ConnectedDevices extends Fragment {
 
         final Request req = (Request) requestAdapter.getItem(position);
         final String reqID = req.getRequestUID();
-        final Request req2 = new Request(currentUser.getUuid(),req.getRequestName(),req.getRequestType());
+        final Request req2 = new Request(currentUser.getUuid(),req.getRequestName(),req.getSentTo(),req.getRequestType());
 
         AlertDialog.Builder confirm = new AlertDialog.Builder(getActivity());
         confirm.setTitle("Connection Request");
