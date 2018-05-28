@@ -82,12 +82,12 @@ public class User implements Serializable{
         if(((User) obj).getUuid().equals(this.uuid))
             return true;
 
-        if(((User) obj).getEmail().equalsIgnoreCase(this.email))
+/*        if(((User) obj).getEmail().equalsIgnoreCase(this.email))
             return true;
 
         if(((User) obj).getPhoneNumber().equals(this.phoneNumber))
             return true;
-
+*/
         return false;
     }
 

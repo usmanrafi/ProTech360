@@ -118,7 +118,7 @@ public class NotifyService extends Service {
                     ThisIntent2.putExtra("Notification_Title","Meeting");
                     ThisIntent2.putExtra("MeetingID",m.getUuid());
                     ThisIntent2.putExtra("Content","It's time for the " + m.getName() + " meeting to be started");
-                    PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++,ThisIntent2,PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), Integer.parseInt(String.valueOf(m.getTime()).substring(6,12)), ThisIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager2.setExact(AlarmManager.RTC_WAKEUP, m.getTime(),pendingIntent2);
                 }
             }
@@ -127,7 +127,7 @@ public class NotifyService extends Service {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Meeting m = dataSnapshot.getValue(Meeting.class);
-                if(m.isMember(user) && !m.getName().equals("No Meeting")) {
+                if(m.isMember(user) && !m.getName().equals("No Meeting") && !m.getUuid().equals("1")) {
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                     Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                     ThisIntent.putExtra("Notification_Title", "Meeting Reminder");
@@ -146,8 +146,24 @@ public class NotifyService extends Service {
                 }
             }
 
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Meeting m = dataSnapshot.getValue(Meeting.class);
+                if(m.isMember(user) && m.getUuid().equals("1")) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    AlarmManager alarmManager2 = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Meeting");
+
+                    ThisIntent.putExtra("Content", "The meeting " + m.getName() + " has been cancelled");
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), Integer.parseInt(String.valueOf(m.getTime()).substring(6,12)), ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                    alarmManager2.cancel(pendingIntent2);
+                }
 
             }
 

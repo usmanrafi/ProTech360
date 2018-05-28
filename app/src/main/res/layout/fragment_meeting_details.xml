@@ -77,7 +77,7 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="280dp"
         android:id="@+id/meeting_participants"/>
 
     <Button
@@ -85,14 +85,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/meeting_reminder"
         android:text="Remind Participants"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorPrimaryDark"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/meeting_update"
-        android:text="Update Schedule"
         android:layout_marginBottom="10dp"
         android:background="@color/colorPrimaryDark"/>
 

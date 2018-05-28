@@ -1,6 +1,8 @@
 package fyp.protech360.ui;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,7 +36,7 @@ public class MeetingDetails extends Fragment {
     String meetingID;
     Meeting meeting;
     TextView date, time;
-    Button location, reminder, update, cancel;
+    Button location, reminder, cancel;
     ListView participantsList;
     ConnectionAdapter participantsAdapter;
     ArrayList<User> participants = new ArrayList<>();
@@ -51,7 +53,6 @@ public class MeetingDetails extends Fragment {
         time = myView.findViewById(R.id.meeting_time);
         location = myView.findViewById(R.id.meeting_location);
         reminder = myView.findViewById(R.id.meeting_reminder);
-        update = myView.findViewById(R.id.meeting_update);
         cancel = myView.findViewById(R.id.meeting_cancel);
         participantsList = myView.findViewById(R.id.meeting_participants);
 
@@ -75,24 +76,28 @@ public class MeetingDetails extends Fragment {
             }
         });
 
-        update.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: Update Schedule
-            }
-        });
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Cancel Meeting
+                DatabaseReference cancelMeeting = FirebaseDatabase.getInstance().getReference("Meetings").child(meeting.getUuid());
+                meeting.setUuid("1");
+                cancelMeeting.setValue(meeting);
+                cancelMeeting.removeValue();
+                ((Homepage) getActivity()).setFragment(new Meetings());
             }
         });
+
+        location.setClickable(true);
 
         location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Navigate to the meeting location
+                String location = meeting.getLocation();
+                Uri gmmIntentUri = Uri.parse("google.navigation:q="+location);
+                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                mapIntent.setPackage("com.google.android.apps.maps");
+                startActivity(mapIntent);
             }
         });
 

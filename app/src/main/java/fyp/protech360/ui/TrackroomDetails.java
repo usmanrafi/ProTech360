@@ -67,7 +67,7 @@ public class TrackroomDetails extends AppCompatActivity {
                 tabLayout.setupWithViewPager(mViewPager);
 
             }
-        },2000);
+        },5000);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
 

@@ -53,6 +53,7 @@ public class SelectParticipant extends Fragment {
         myView = inflater.inflate(R.layout.select_participants,container,false);
         ((Homepage) getActivity()).setActionBarTitle("Select Participants");
 
+
         caller = getArguments().getString("Caller");
 
         pb = myView.findViewById(R.id.progressSelection);
@@ -70,22 +71,24 @@ public class SelectParticipant extends Fragment {
             @Override
             public void onClick(View v) {
 
-                for(int i = 0; i < connections.size(); i++)
-                {
-                    if((CheckBox) listView.getChildAt(i).findViewById(R.id.delete_check2) != null)
-                    {
+                for (int i = 0; i < connections.size(); i++) {
+                    if ((CheckBox) listView.getChildAt(i).findViewById(R.id.delete_check2) != null) {
                         CheckBox cb = listView.getChildAt(i).findViewById(R.id.delete_check2);
-                        if(cb.isChecked())
-                        {
-                            selected.add((User)deviceAdapter.getItem(i));
+                        if (cb.isChecked()) {
+                            selected.add((User) deviceAdapter.getItem(i));
                         }
                     }
                 }
 
                 Bundle b = new Bundle();
-                b.putSerializable("Selected",selected);
+                b.putSerializable("Selected", selected);
 
-                if(caller.equals("Meeting"))
+                if (caller.equals("Meeting")) {
+                    Fragment addMeeting = new AddMeeting();
+                    addMeeting.setArguments(b);
+                    ((Homepage) getActivity()).setFragment(addMeeting);
+                }
+                else if (caller.equals("Add Member"))
                 {
                     Fragment addMeeting = new AddMeeting();
                     addMeeting.setArguments(b);

@@ -79,6 +79,7 @@
             android:name=".ui.Activity_Connections"
             android:label="@string/title_activity__connections"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.AddMember_Room" />
     </application>
 
 </manifest>

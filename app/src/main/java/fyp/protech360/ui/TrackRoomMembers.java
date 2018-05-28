@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.telephony.gsm.GsmCellLocation;
@@ -65,7 +66,14 @@ public class TrackRoomMembers extends Fragment{
         addMembers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(getActivity(),AddMember_Room.class);
+                Bundle b = new Bundle();
+                b.putSerializable("List",connectionsNotInRoom);
+                b.putSerializable("Connections",connections);
+                b.putString("Room",r.getUuid());
+                intent.putExtra("Bundle",b);
+                startActivity(intent);
+                getActivity().finish();
             }
         });
 
@@ -300,6 +308,8 @@ public class TrackRoomMembers extends Fragment{
             connectionsNotInRoom.remove(u);
         }
       deviceAdapter.notifyDataSetChanged();
+
+
 
     }
 
