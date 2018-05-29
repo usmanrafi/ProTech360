@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.IBinder;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 
@@ -18,9 +19,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 
 import fyp.protech360.classes.Meeting;
 import fyp.protech360.classes.Request;
+import fyp.protech360.classes.Room;
 import fyp.protech360.classes.User;
 import fyp.protech360.utils.Global;
 
@@ -31,7 +34,7 @@ import fyp.protech360.utils.Global;
 public class NotifyService extends Service {
 
     User user;
-    int serviceRunningFirstTime = 3;
+    int serviceRunningFirstTime;
 
     @Nullable
     @Override
@@ -43,12 +46,193 @@ public class NotifyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         user = (User) intent.getSerializableExtra("user_name");
+        serviceRunningFirstTime = 4;
 
+        handleRooms();
         handleMeetings();
         handleRequests();
 
 
         return START_REDELIVER_INTENT;
+    }
+
+    private void handleRooms() {
+        DatabaseReference roomsRef = FirebaseDatabase.getInstance().getReference("Rooms");
+        roomsRef.addChildEventListener(new ChildEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                if(serviceRunningFirstTime <= 0) {
+                    Room r = dataSnapshot.getValue(Room.class);
+                    if(!r.getAdmins().get(0).getUuid().equals(user.getUuid()) && r.isMember(user)) {
+                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                        Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                        ThisIntent.putExtra("Notification_Title", "Track Room");
+                        ThisIntent.putExtra("Content", r.getAdmins().get(0).getName() + " has created a new room -" + r.getTitle() + "- . You were added to the room.");
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                    }
+                }
+                else
+                {
+                    serviceRunningFirstTime--;
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                if(serviceRunningFirstTime <= 0) {
+                    Room r = dataSnapshot.getValue(Room.class);
+                    if(r.isMember(user)) {
+                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                        Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                        ThisIntent.putExtra("Notification_Title", "Track Room");
+                        ThisIntent.putExtra("Content", r.getTitle() + " room has been deleted.");
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                    }
+                }
+                else
+                {
+                    serviceRunningFirstTime--;
+                }
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference leaveRoomRef = FirebaseDatabase.getInstance().getReference("Leave");
+        leaveRoomRef.addChildEventListener(new ChildEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String name = (String) dataSnapshot.child("Name").getValue();
+                String room = (String) dataSnapshot.child("Room").getValue();
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                ThisIntent.putExtra("Notification_Title", "Track Room");
+                ThisIntent.putExtra("Content", name + " left the room " + room);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference adminRef = FirebaseDatabase.getInstance().getReference("AdminManipulation");
+        adminRef.addChildEventListener(new ChildEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String name = (String) dataSnapshot.child("Name").getValue();
+                String room = (String) dataSnapshot.child("Room").getValue();
+                String type = (String) dataSnapshot.child("Type").getValue();
+                String userID = (String) dataSnapshot.child("User").getValue();
+                if(user.getUuid().equals(userID)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Track Room");
+                    ThisIntent.putExtra("Content", name + " " + type + " of the room " + room);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference removeRef = FirebaseDatabase.getInstance().getReference("Remove");
+        removeRef.addChildEventListener(new ChildEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String name = (String) dataSnapshot.child("Name").getValue();
+                String room = (String) dataSnapshot.child("Room").getValue();
+                String username = (String) dataSnapshot.child("User_Name").getValue();
+                String userID = (String) dataSnapshot.child("User").getValue();
+                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                ThisIntent.putExtra("Notification_Title", "Track Room");
+                if(user.getUuid().equals(userID))
+                    ThisIntent.putExtra("Content", name + " removed you from the room " + room);
+                else
+                    ThisIntent.putExtra("Content", name + " removed " + username + " from the room " + room);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     private void handleRequests() {
@@ -60,10 +244,11 @@ public class NotifyService extends Service {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                     if(serviceRunningFirstTime <= 0) {
                         if (dataSnapshot.getKey().equals(user.getUuid())) {
+                            Request r = dataSnapshot.getValue(Request.class);
                             AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                             Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                             ThisIntent.putExtra("Notification_Title", "Request");
-                            ThisIntent.putExtra("Content", "You have a new request");
+                            ThisIntent.putExtra("Content", r.getRequestName() + "has sent you a connection request");
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                             alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                         }

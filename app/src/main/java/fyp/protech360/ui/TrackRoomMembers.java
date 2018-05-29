@@ -149,8 +149,18 @@ public class TrackRoomMembers extends Fragment{
                         memberRoomRef.updateChildren(memberMap);
                         adminRoomRef.updateChildren(adminMap);
 
+                        DatabaseReference leaveRoomRef = FirebaseDatabase.getInstance().getReference("Leave").child(r.getUuid()+Global.currentUser.getUuid());
+                        HashMap<String, Object> leaveMap = new HashMap<>();
+                        leaveMap.put("Name",Global.currentUser.getName());
+                        leaveMap.put("Room",r.getTitle());
+                        leaveRoomRef.setValue(leaveMap);
+
                         Toast.makeText(getContext(),"You are no longer a member of " + r.getTitle(),Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(),Homepage.class);
+
+                        leaveRoomRef.removeValue();
+
+
                         startActivity(intent);
                         getActivity().finish();
                     }
@@ -182,6 +192,16 @@ public class TrackRoomMembers extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             switch(which) {
                                 case 0:
+
+                                    DatabaseReference removeRoomRef = FirebaseDatabase.getInstance().getReference("Remove").child(r.getUuid()+Global.currentUser.getUuid());
+                                    HashMap<String, Object> removeMap = new HashMap<>();
+                                    removeMap.put("Name",Global.currentUser.getName());
+                                    removeMap.put("Room",r.getTitle());
+                                    removeMap.put("User_Name", ((User) deviceAdapter.getItem(position)).getName());
+                                    removeMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
+                                    removeRoomRef.setValue(removeMap);
+
+
                                     r.getMembers().remove((User) deviceAdapter.getItem(position));
                                     r.removeAdmin((User) deviceAdapter.getItem(position));
                                     connections.remove(position);
@@ -190,6 +210,7 @@ public class TrackRoomMembers extends Fragment{
                                     DatabaseReference dbref2 = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("admins");
 
                                     dbref.removeValue();
+
                                     HashMap<String,Object> map = new HashMap<>();
                                     HashMap<String,Object> map2 = new HashMap<>();
                                     for (int i = 0; i < connections.size(); i++)
@@ -203,16 +224,30 @@ public class TrackRoomMembers extends Fragment{
                                     }
                                     dbref2.updateChildren(map2);
 
+                                    removeRoomRef.removeValue();
+
                                 case 1:
                                     DatabaseReference dbrefAdmin = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("admins");
                                     r.removeAdmin((User) deviceAdapter.getItem(position));
                                     dbrefAdmin.removeValue();
+
+                                    DatabaseReference adminRoomRef = FirebaseDatabase.getInstance().getReference("AdminManipulation").child(r.getUuid()+Global.currentUser.getUuid());
+                                    HashMap<String, Object> adminMap = new HashMap<>();
+                                    adminMap.put("Name",Global.currentUser.getName());
+                                    adminMap.put("Room",r.getTitle());
+                                    adminMap.put("Type", "removed you as the admin ");
+                                    adminMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
+                                    adminRoomRef.setValue(adminMap);
+
+
                                     HashMap<String,Object> mapA = new HashMap<>();
                                     for (int i = 0; i < r.getAdmins().size(); i++)
                                     {
                                         mapA.put(String.valueOf(i),r.getAdmins().get(i));
                                     }
                                     dbrefAdmin.updateChildren(mapA);
+
+                                    adminRoomRef.removeValue();
 
                                 default:
                             }
@@ -228,11 +263,22 @@ public class TrackRoomMembers extends Fragment{
                         public void onClick(DialogInterface dialog, int which) {
                             switch(which) {
                                 case 0:
+
+                                    DatabaseReference removeRoomRef = FirebaseDatabase.getInstance().getReference("Remove").child(r.getUuid()+Global.currentUser.getUuid());
+                                    HashMap<String, Object> removeMap = new HashMap<>();
+                                    removeMap.put("Name",Global.currentUser.getName());
+                                    removeMap.put("Room",r.getTitle());
+                                    removeMap.put("User_Name", ((User) deviceAdapter.getItem(position)).getName());
+                                    removeMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
+                                    removeRoomRef.setValue(removeMap);
+
+
                                     r.getMembers().remove((User) deviceAdapter.getItem(position));
                                     connections.remove(position);
                                     deviceAdapter.notifyDataSetChanged();
                                     DatabaseReference dbrefRemove = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("members");
                                     dbrefRemove.removeValue();
+
                                     HashMap<String,Object> map = new HashMap<>();
                                     for (int i = 0; i < connections.size(); i++)
                                     {
@@ -240,16 +286,31 @@ public class TrackRoomMembers extends Fragment{
                                     }
                                     dbrefRemove.updateChildren(map);
 
+                                    removeRoomRef.removeValue();
+
                                 case 1:
                                     DatabaseReference dbrefAdmin = FirebaseDatabase.getInstance().getReference("Rooms").child(r.getUuid()).child("admins");
                                     r.makeAdmin((User) deviceAdapter.getItem(position));
                                     dbrefAdmin.removeValue();
+
+                                    DatabaseReference adminRoomRef = FirebaseDatabase.getInstance().getReference("AdminManipulation").child(r.getUuid()+Global.currentUser.getUuid());
+                                    HashMap<String, Object> adminMap = new HashMap<>();
+                                    adminMap.put("Name",Global.currentUser.getName());
+                                    adminMap.put("Room",r.getTitle());
+                                    adminMap.put("Type", "made you an admin ");
+                                    adminMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
+                                    adminRoomRef.setValue(adminMap);
+
+
                                     HashMap<String,Object> mapA = new HashMap<>();
                                     for (int i = 0; i < r.getAdmins().size(); i++)
                                     {
                                         mapA.put(String.valueOf(i),r.getAdmins().get(i));
                                     }
                                     dbrefAdmin.updateChildren(mapA);
+
+                                    adminRoomRef.removeValue();
+
 
                                 default:
                             }
