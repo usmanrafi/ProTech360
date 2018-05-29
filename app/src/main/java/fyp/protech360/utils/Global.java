@@ -14,6 +14,10 @@ public class Global {
 
     public static User currentUser;
 
+    public static double user_latitude;
+    public static double user_longitude;
+
+
     public static DatabaseHelper dbHelper;
 
     // ID to uniquely identify reminder alarms
