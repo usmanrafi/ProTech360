@@ -236,27 +236,22 @@ public class NotifyService extends Service {
     }
 
     private void handleRequests() {
-        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Requests");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("RequestNotify");
         dbRef.addChildEventListener(new ChildEventListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                    if(serviceRunningFirstTime <= 0) {
-                        if (dataSnapshot.getKey().equals(user.getUuid())) {
-                            Request r = dataSnapshot.getValue(Request.class);
-                            AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                            Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
-                            ThisIntent.putExtra("Notification_Title", "Request");
-                            ThisIntent.putExtra("Content", r.getRequestName() + "has sent you a connection request");
-                            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                            alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
-                        }
-                    }
-                    else
-                    {
-                        serviceRunningFirstTime--;
-                    }
+                String name = (String) dataSnapshot.child("Name").getValue();
+                String uuid = (String) dataSnapshot.child("This").getValue();
+                if(user.getUuid().equals(uuid)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Request");
+                    ThisIntent.putExtra("Content", name + " has sent you a connection request");
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                }
             }
 
             @Override
@@ -280,29 +275,23 @@ public class NotifyService extends Service {
             }
         });
 
-        DatabaseReference reqResponse = FirebaseDatabase.getInstance().getReference("Connections").child(user.getUuid());
+        DatabaseReference reqResponse = FirebaseDatabase.getInstance().getReference("ConnectionNotify");
         reqResponse.addChildEventListener(new ChildEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                Request r = dataSnapshot.getValue(Request.class);
-                if (serviceRunningFirstTime <= 0) {
-                    if (r.getRequestName().equals(user.getEmail())) {
-                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                        Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
-                        ThisIntent.putExtra("Notification_Title", "Request");
-                        ThisIntent.putExtra("Content", r.getSentTo() + " accepted your connection request.");
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
-
-                    }
+                String name = (String) dataSnapshot.child("Name").getValue();
+                String email = (String) dataSnapshot.child("This").getValue();
+                String message = (String) dataSnapshot.child("Message").getValue();
+                if(user.getEmail().equals(email) || user.getUuid().equals(email)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Connection");
+                    ThisIntent.putExtra("Content", name + " has " + message);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
-                else
-                {
-                    serviceRunningFirstTime--;
-                }
-
             }
 
             @Override

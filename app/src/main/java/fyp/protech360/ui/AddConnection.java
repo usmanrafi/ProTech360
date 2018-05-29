@@ -28,6 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+
 import javax.microedition.khronos.opengles.GL;
 
 import fyp.protech360.R;
@@ -177,7 +179,7 @@ public class AddConnection extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    User info = ds.getValue(User.class);
+                    final User info = ds.getValue(User.class);
                     if(info.getEmail().equals(email) && !info.getEmail().equals(Global.currentUser.getEmail())){
                         String requestID = Global.currentUser.getUuid();
                         Request newRequest;
@@ -189,7 +191,13 @@ public class AddConnection extends Fragment {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Log.d("Sajjad_Ali","Request Added");
+                                        DatabaseReference r = FirebaseDatabase.getInstance().getReference("RequestNotify").child(Global.currentUser.getUuid()+info.getUuid());
+                                        HashMap<Object,String> map = new HashMap<>();
+                                        map.put("Name",Global.currentUser.getName());
+                                        map.put("This",info.getUuid());
+                                        r.setValue(map);
+
+                                        r.removeValue();
                                     }
 
                                 });

@@ -32,6 +32,7 @@ package fyp.protech360.ui;
         import com.google.firebase.database.ValueEventListener;
 
         import java.util.ArrayList;
+        import java.util.HashMap;
         import java.util.List;
 
         import fyp.protech360.R;
@@ -102,8 +103,18 @@ public class ConnectedDevices extends Fragment {
 
             // Do something with value!
             Log.d("Aliyan","User Removed");
+
+              DatabaseReference r = FirebaseDatabase.getInstance().getReference("ConnectionNotify").child(Global.currentUser.getUuid()+user.getUuid());
+              HashMap<Object,String> map = new HashMap<>();
+              map.put("Name",Global.currentUser.getName());
+              map.put("This",user.getUuid());
+              map.put("Message"," removed you from the connections");
+              r.setValue(map);
+
             removeConnection(Global.currentUser.getUuid(),user.getUuid());
             removeConnection(user.getUuid(),Global.currentUser.getUuid());
+
+            r.removeValue();
 
             connections.remove(position);
             deviceAdapter.notifyDataSetChanged();
@@ -164,9 +175,21 @@ public class ConnectedDevices extends Fragment {
           public void onClick(DialogInterface dialogInterface, int i) {
             Log.d("Usman", "OnClick Confirm Request");
 
-            requestees.remove(position);
+              DatabaseReference r = FirebaseDatabase.getInstance().getReference("ConnectionNotify").child(Global.currentUser.getUuid()+requestees.get(position).getRequestUID());
+              HashMap<Object,String> map = new HashMap<>();
+              map.put("Name",Global.currentUser.getName());
+              map.put("This",requestees.get(position).getRequestName());
+              map.put("Message","accepted your connection request");
+              r.setValue(map);
+
+
+
+              requestees.remove(position);
             requestAdapter.notifyDataSetChanged();
-            DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(currentUser.getUuid());
+
+
+
+              DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections").child(reqID).child(currentUser.getUuid());
             dbRef.setValue(req).addOnCompleteListener(new OnCompleteListener<Void>() {
               @Override
               public void onComplete(@NonNull Task<Void> task) {
@@ -189,12 +212,26 @@ public class ConnectedDevices extends Fragment {
                 });
               }
             });
+
+            r.removeValue();
+
+
           }
         });
 
         confirm.setNegativeButton("Reject", new DialogInterface.OnClickListener() {
           @Override
           public void onClick(DialogInterface dialog, int which) {
+
+              DatabaseReference r = FirebaseDatabase.getInstance().getReference("ConnectionNotify").child(Global.currentUser.getUuid()+requestees.get(position).getRequestUID());
+              HashMap<Object,String> map = new HashMap<>();
+              map.put("Name",Global.currentUser.getName());
+              map.put("This",requestees.get(position).getRequestName());
+              map.put("Message","declined your connection request");
+              r.setValue(map);
+
+
+
             requestees.remove(position);
             requestAdapter.notifyDataSetChanged();
 
@@ -205,6 +242,8 @@ public class ConnectedDevices extends Fragment {
                 Log.d("Usman", "It is done");
               }
             });
+
+              r.removeValue();
           }
         });
 
