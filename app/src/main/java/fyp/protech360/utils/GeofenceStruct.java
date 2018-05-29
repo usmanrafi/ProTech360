@@ -13,6 +13,10 @@ public class GeofenceStruct {
     private double latitude;
     private double longitude;
 
+    public GeofenceStruct(String uuid){
+        this.uuid = uuid;
+    }
+
     public GeofenceStruct(String uuid, int range, double latitude, double longitude) {
         this.uuid = uuid;
         this.range = range;
