@@ -63,7 +63,7 @@ public class ConnectedDevices extends Fragment {
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     myView = inflater.inflate(R.layout.connected_devices,container,false);
-//        ((Homepage) getActivity()).setActionBarTitle("Devices");
+    ((Homepage) getActivity()).setActionBarTitle("Devices");
 
     pb = myView.findViewById(R.id.devicesProgress);
     pb.setVisibility(View.VISIBLE);
@@ -81,6 +81,8 @@ public class ConnectedDevices extends Fragment {
         ConnectionDetails connectionDetails = new ConnectionDetails();
         Bundle args = new Bundle();
         args.putString("User", selectedUser.getUuid());
+        args.putString("Username",selectedUser.getName()+ " (" + selectedUser.getEmail() + ")");
+        args.putString("Image",selectedUser.getImage());
         connectionDetails.setArguments(args);
         ((Homepage) getActivity()).setFragment(connectionDetails);
       }

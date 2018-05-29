@@ -12,6 +12,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -28,7 +29,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
+import fyp.protech360.utils.ImageEncoderDecoder;
 
 
 public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
@@ -36,11 +39,13 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
     View myView;
     MapView myMapView;
     GoogleMap myMap;
-    String userID;
+    String userID, username, image;
     MarkerOptions marker;
     String destinationCoordinates;
     Marker marker1;
     boolean firstTimeMapLoad;
+    TextView userName;
+    CircleImageView imageView;
 
     //FloatingActionButton dir;
 
@@ -54,9 +59,22 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         userID = getArguments().getString("User");
+        username = getArguments().getString("Username");
+        image = getArguments().getString("Image");
+
+        ((Homepage) getActivity()).setActionBarTitle("Connection Details");
+
         firstTimeMapLoad = true;
 
         myView = inflater.inflate(fyp.protech360.R.layout.fragment_connection_details, container, false);
+
+        userName = myView.findViewById(R.id.connection_name_field);
+        imageView = myView.findViewById(R.id.connection_image);
+
+        userName.setText(username);
+
+        imageView.setImageBitmap(ImageEncoderDecoder.decodeImage(image));
+
         return myView;
     }
 
@@ -88,7 +106,7 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
         myMap.setMyLocationEnabled(true);
         MapsInitializer.initialize(getActivity());
 
-        marker = new MarkerOptions().position(new LatLng(50,6)).title(userID);
+        marker = new MarkerOptions().position(new LatLng(50,6)).title(username);
         marker1 = myMap.addMarker(marker);
 
         updateRealtimeLocation();
