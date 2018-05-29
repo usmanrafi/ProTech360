@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import fyp.protech360.classes.AlertDetail;
 import fyp.protech360.R;
@@ -54,15 +55,22 @@ public class CustomAdapter extends ArrayAdapter implements Filterable {
 
             holder.message = (TextView) convertView.findViewById(R.id.alertMessage);
             holder.date = (TextView) convertView.findViewById(R.id.alertTime);
-            holder.checked = (CheckBox) convertView.findViewById(R.id.delete_check);
 
             AlertDetail a = filteredAlerts.get(position);
             holder.message.setText(a.getMessage());
 
-            if (a.isToday()) {
-                holder.date.setText(a.getTime());
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(Long.parseLong(a.getTime()));
+            int yy = c.get(Calendar.YEAR);
+            int mm = c.get(Calendar.MONTH) + 1;
+            int dd = c.get(Calendar.DAY_OF_MONTH);
+            int hh = c.get(Calendar.HOUR_OF_DAY);
+            int min = c.get(Calendar.MINUTE);
+
+            if (a.isToday(Long.parseLong(a.getTime()))) {
+                holder.date.setText(hh + ":" + min);
             } else {
-                holder.date.setText(a.getDate());
+                holder.date.setText(dd+"/"+mm+"/"+yy);
             }
 
 
@@ -73,7 +81,6 @@ public class CustomAdapter extends ArrayAdapter implements Filterable {
     static class AlertHolder{
         TextView message;
         TextView date;
-        CheckBox checked;
     }
 
     @Override

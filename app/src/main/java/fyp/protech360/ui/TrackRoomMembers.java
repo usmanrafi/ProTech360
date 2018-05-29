@@ -152,7 +152,7 @@ public class TrackRoomMembers extends Fragment{
                         DatabaseReference leaveRoomRef = FirebaseDatabase.getInstance().getReference("Leave").child(r.getUuid()+Global.currentUser.getUuid());
                         HashMap<String, Object> leaveMap = new HashMap<>();
                         leaveMap.put("Name",Global.currentUser.getName());
-                        leaveMap.put("Room",r.getTitle());
+                        leaveMap.put("Room",r);
                         leaveRoomRef.setValue(leaveMap);
 
                         Toast.makeText(getContext(),"You are no longer a member of " + r.getTitle(),Toast.LENGTH_SHORT).show();
@@ -196,7 +196,7 @@ public class TrackRoomMembers extends Fragment{
                                     DatabaseReference removeRoomRef = FirebaseDatabase.getInstance().getReference("Remove").child(r.getUuid()+Global.currentUser.getUuid());
                                     HashMap<String, Object> removeMap = new HashMap<>();
                                     removeMap.put("Name",Global.currentUser.getName());
-                                    removeMap.put("Room",r.getTitle());
+                                    removeMap.put("Room",r);
                                     removeMap.put("User_Name", ((User) deviceAdapter.getItem(position)).getName());
                                     removeMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
                                     removeRoomRef.setValue(removeMap);
@@ -267,7 +267,7 @@ public class TrackRoomMembers extends Fragment{
                                     DatabaseReference removeRoomRef = FirebaseDatabase.getInstance().getReference("Remove").child(r.getUuid()+Global.currentUser.getUuid());
                                     HashMap<String, Object> removeMap = new HashMap<>();
                                     removeMap.put("Name",Global.currentUser.getName());
-                                    removeMap.put("Room",r.getTitle());
+                                    removeMap.put("Room",r);
                                     removeMap.put("User_Name", ((User) deviceAdapter.getItem(position)).getName());
                                     removeMap.put("User", ((User) deviceAdapter.getItem(position)).getUuid());
                                     removeRoomRef.setValue(removeMap);

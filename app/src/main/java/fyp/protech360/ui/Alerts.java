@@ -3,8 +3,12 @@ package fyp.protech360.ui;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,11 +21,20 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 
 import fyp.protech360.classes.AlertDetail;
+import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.utils.CustomAdapter;
 import fyp.protech360.R;
+import fyp.protech360.utils.Global;
 
 public class Alerts extends Fragment {
     View myView;
@@ -79,6 +92,24 @@ public class Alerts extends Fragment {
 
     public void addList()
     {
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Alerts").child(Global.currentUser.getUuid());
+        dbRef.orderByValue().addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot d : dataSnapshot.getChildren())
+                {
+                    AlertDetail a = d.getValue(AlertDetail.class);
+                    alerts.add(a);
+                    alertAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
         //Add list of alerts from FIREBASE/Local DB here
 
         /*alerts.add(new AlertDetail("Sajjad has gone out of safety range","7-12-2017","08:11"));

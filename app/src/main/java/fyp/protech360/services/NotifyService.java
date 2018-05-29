@@ -20,11 +20,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
+import fyp.protech360.classes.AlertDetail;
 import fyp.protech360.classes.Meeting;
 import fyp.protech360.classes.Request;
 import fyp.protech360.classes.Room;
 import fyp.protech360.classes.User;
+import fyp.protech360.dal.DatabaseHelper;
 import fyp.protech360.utils.Global;
 
 /**
@@ -35,6 +38,8 @@ public class NotifyService extends Service {
 
     User user;
     int serviceRunningFirstTime;
+    DatabaseHelper dbhelper;
+
 
     @Nullable
     @Override
@@ -46,7 +51,8 @@ public class NotifyService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         user = (User) intent.getSerializableExtra("user_name");
-        serviceRunningFirstTime = 4;
+
+        dbhelper = Global.dbHelper;
 
         handleRooms();
         handleMeetings();
@@ -57,26 +63,21 @@ public class NotifyService extends Service {
     }
 
     private void handleRooms() {
-        DatabaseReference roomsRef = FirebaseDatabase.getInstance().getReference("Rooms");
+        DatabaseReference roomsRef = FirebaseDatabase.getInstance().getReference("TempRooms");
         roomsRef.addChildEventListener(new ChildEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                if(serviceRunningFirstTime <= 0) {
                     Room r = dataSnapshot.getValue(Room.class);
                     if(!r.getAdmins().get(0).getUuid().equals(user.getUuid()) && r.isMember(user)) {
                         AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                         Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                         ThisIntent.putExtra("Notification_Title", "Track Room");
-                        ThisIntent.putExtra("Content", r.getAdmins().get(0).getName() + " has created a new room -" + r.getTitle() + "- . You were added to the room.");
+                        String data = r.getAdmins().get(0).getName() + " has created a new room -" + r.getTitle() + "- . You were added to the room.";
+                        ThisIntent.putExtra("Content", data);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                     }
-                }
-                else
-                {
-                    serviceRunningFirstTime--;
-                }
             }
 
             @Override
@@ -87,20 +88,44 @@ public class NotifyService extends Service {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                if(serviceRunningFirstTime <= 0) {
-                    Room r = dataSnapshot.getValue(Room.class);
-                    if(r.isMember(user)) {
-                        AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                        Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
-                        ThisIntent.putExtra("Notification_Title", "Track Room");
-                        ThisIntent.putExtra("Content", r.getTitle() + " room has been deleted.");
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                        alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
-                    }
-                }
-                else
-                {
-                    serviceRunningFirstTime--;
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        DatabaseReference removeRoom = FirebaseDatabase.getInstance().getReference("Rooms");
+        removeRoom.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                Room r = dataSnapshot.getValue(Room.class);
+                if(r.isMember(user)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Track Room");
+                    String data = r.getTitle() + " room has been deleted.";
+                    ThisIntent.putExtra("Content", data);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
             }
 
@@ -121,14 +146,16 @@ public class NotifyService extends Service {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String name = (String) dataSnapshot.child("Name").getValue();
-                String room = (String) dataSnapshot.child("Room").getValue();
-                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
-                ThisIntent.putExtra("Notification_Title", "Track Room");
-                ThisIntent.putExtra("Content", name + " left the room " + room);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
-
+                Room room = dataSnapshot.child("Room").getValue(Room.class);
+                if(room.isMember(user) && user.getName().equals(name)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Track Room");
+                    String data = name + " left the room " + room.getTitle();
+                    ThisIntent.putExtra("Content", data);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                }
             }
 
             @Override
@@ -165,7 +192,8 @@ public class NotifyService extends Service {
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                     Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                     ThisIntent.putExtra("Notification_Title", "Track Room");
-                    ThisIntent.putExtra("Content", name + " " + type + " of the room " + room);
+                    String data = name + " " + type + " of the room " + room;
+                    ThisIntent.putExtra("Content", data);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
@@ -198,19 +226,27 @@ public class NotifyService extends Service {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 String name = (String) dataSnapshot.child("Name").getValue();
-                String room = (String) dataSnapshot.child("Room").getValue();
+                Room room =  dataSnapshot.child("Room").getValue(Room.class);
                 String username = (String) dataSnapshot.child("User_Name").getValue();
                 String userID = (String) dataSnapshot.child("User").getValue();
-                AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
-                Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
-                ThisIntent.putExtra("Notification_Title", "Track Room");
-                if(user.getUuid().equals(userID))
-                    ThisIntent.putExtra("Content", name + " removed you from the room " + room);
-                else
-                    ThisIntent.putExtra("Content", name + " removed " + username + " from the room " + room);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
-
+                if(room.isMember(user)) {
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Track Room");
+                    String data;
+                    if (user.getUuid().equals(userID))
+                    {
+                        data = name + " removed you from the room " + room.getTitle();
+                        ThisIntent.putExtra("Content", data);
+                    }
+                    else
+                    {
+                        data = name + " removed " + username + " from the room " + room.getTitle();
+                        ThisIntent.putExtra("Content", data);
+                    }
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+                }
             }
 
             @Override
@@ -248,7 +284,8 @@ public class NotifyService extends Service {
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                     Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                     ThisIntent.putExtra("Notification_Title", "Request");
-                    ThisIntent.putExtra("Content", name + " has sent you a connection request");
+                    String data = name + " has sent you a connection request";
+                    ThisIntent.putExtra("Content", data);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
@@ -288,7 +325,8 @@ public class NotifyService extends Service {
                     AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
                     Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                     ThisIntent.putExtra("Notification_Title", "Connection");
-                    ThisIntent.putExtra("Content", name + " has " + message);
+                    String data = name + " has " + message;
+                    ThisIntent.putExtra("Content", data);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
@@ -337,7 +375,8 @@ public class NotifyService extends Service {
                                 participants += ", " + u.getName();
                             }
                         }
-                        ThisIntent.putExtra("Content", "You have " + m.getName() + " meeting scheduled on " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + " at " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " with " + participants);
+                        String data1 = "You have " + m.getName() + " meeting scheduled on " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + " at " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " with " + participants;
+                        ThisIntent.putExtra("Content", data1);
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                         alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
 
@@ -345,7 +384,9 @@ public class NotifyService extends Service {
                         Intent ThisIntent2 = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                         ThisIntent2.putExtra("Notification_Title", "Meeting");
                         ThisIntent2.putExtra("MeetingID", m.getUuid());
-                        ThisIntent2.putExtra("Content", "It's time for the " + m.getName() + " meeting to be started");
+                        String data2 = "It's time for the " + m.getName() + " meeting to be started";
+                        ThisIntent2.putExtra("Content", data2);
+                        DatabaseReference d = FirebaseDatabase.getInstance().getReference("Alerts").child(Global.currentUser.getUuid());
                         PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), Integer.parseInt(String.valueOf(m.getTime()).substring(6, 12)), ThisIntent2, PendingIntent.FLAG_UPDATE_CURRENT);
                         alarmManager2.setExact(AlarmManager.RTC_WAKEUP, m.getTime(), pendingIntent2);
                     }
@@ -373,7 +414,8 @@ public class NotifyService extends Service {
                             participants += ", " + u.getName();
                         }
                     }
-                    ThisIntent.putExtra("Content", "Reminder: You have " + m.getName() + " meeting scheduled on " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + " at " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " with " + participants);
+                    String data = "Reminder: You have " + m.getName() + " meeting scheduled on " + calendar.get(Calendar.DAY_OF_MONTH) + "-" + String.valueOf(calendar.get(Calendar.MONTH) + 1) + "-" + calendar.get(Calendar.YEAR) + " at " + calendar.get(Calendar.HOUR_OF_DAY) + ":" + calendar.get(Calendar.MINUTE) + " with " + participants;
+                    ThisIntent.putExtra("Content", data);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                     alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
                 }
@@ -389,8 +431,8 @@ public class NotifyService extends Service {
 
                     Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
                     ThisIntent.putExtra("Notification_Title", "Meeting");
-
-                    ThisIntent.putExtra("Content", "The meeting " + m.getName() + " has been cancelled");
+                    String data = "The meeting " + m.getName() + " has been cancelled";
+                    ThisIntent.putExtra("Content", data);
                     PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
                     PendingIntent pendingIntent2 = PendingIntent.getBroadcast(getApplicationContext(), Integer.parseInt(String.valueOf(m.getTime()).substring(6,12)), ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);

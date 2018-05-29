@@ -6,27 +6,27 @@ import java.util.Calendar;
 public class AlertDetail {
 
     private String message;
-    private String date;
     private String time;
 
-    public AlertDetail(String message, String date, String time)
+    public AlertDetail(String message, String time)
     {
         this.message = message;
-        this.date = date;
         this.time = time;
     }
 
     public AlertDetail(){}
 
 
-    public boolean isToday()
+    public boolean isToday(long t)
     {
+        Calendar d = Calendar.getInstance();
+        d.setTimeInMillis(t);
         Calendar c = Calendar.getInstance();
         int yy = c.get(Calendar.YEAR);
         int mm = c.get(Calendar.MONTH);
         int dd = c.get(Calendar.DAY_OF_MONTH);
-        String today = (new StringBuilder().append(dd).append("-").append(mm+1).append("-").append(yy)).toString();
-        return date.compareTo(today) == 0;
+
+        return (yy == d.get(Calendar.YEAR) && mm == d.get(Calendar.MONTH) && dd == d.get(Calendar.DAY_OF_MONTH));
     }
 
     public void setMessage(String message)
@@ -34,20 +34,11 @@ public class AlertDetail {
         this.message = message;
     }
 
-    public void setCurrentTime()
-    {
-        time = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
-        date = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-    }
+    public void setTime(String time){ this.time = time; }
 
     public String getMessage()
     {
         return message;
-    }
-
-    public String getDate()
-    {
-        return date;
     }
 
     public String getTime()

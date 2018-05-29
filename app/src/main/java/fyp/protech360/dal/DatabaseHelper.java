@@ -7,6 +7,7 @@ import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.ContactsContract;
+import android.util.Log;
 
 import fyp.protech360.classes.EmergencyDetails;
 
@@ -24,7 +25,14 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_EMAIL = "Email";
     public static final String COL_IMAGE = "Image";
     public static final String COL_UID = "UserID";
+
+    public static final String TABLE_ALERTS = "alerts";
+    public static final String COL_ALERT_MESSAGE = "Message";
+    public static final String COL_TIME = "Time";
+
     SQLiteDatabase db = this.getWritableDatabase();
+
+
 
 
     private static DatabaseHelper dbHelper = null;
@@ -44,12 +52,16 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_EMERGENCY_DETAILS +" (" + COL_NUM1 + " TEXT," + COL_NUM2 + " TEXT," + COL_NUM3+ " TEXT," + COL_MESSAGE + " TEXT,"+ COL_ID +" INT, PRIMARY KEY("+COL_ID+"))");
         db.execSQL("create table " + TABLE_USER_DETAILS +" (" + COL_UID + " TEXT," + COL_NAME + " TEXT," + COL_EMAIL +  " TEXT," + COL_IMAGE +  " TEXT, PRIMARY KEY("+COL_UID+"))");
+        Log.d("The_App","Wow");
+        db.execSQL("create table " + TABLE_ALERTS + " (" + COL_ALERT_MESSAGE + " TEXT," + COL_TIME + " TEXT, PRIMARY KEY("+COL_TIME+"))");
+        Log.d("The_App","Wow1");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_EMERGENCY_DETAILS);
         db.execSQL("DROP TABLE IF EXISTS "+ TABLE_USER_DETAILS);
+        db.execSQL("DROP TABLE IF EXISTS "+ TABLE_ALERTS);
         onCreate(db);
     }
 
@@ -61,6 +73,21 @@ public  class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_IMAGE,Image);
         long result = db.insertWithOnConflict(TABLE_USER_DETAILS,"0",contentValues,SQLiteDatabase.CONFLICT_REPLACE);
         return (result != -1);
+    }
+
+    public boolean insertAlertDetails(String time, String message)
+    {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_ALERT_MESSAGE,message);
+        contentValues.put(COL_TIME,time);
+        long result = db.insert(TABLE_ALERTS,"0",contentValues);
+        Log.d("The_App","done");
+        return (result != -1);
+    }
+
+    public Cursor getAlertData(){
+        Cursor res = db.query(TABLE_ALERTS,new String[]{COL_ALERT_MESSAGE,COL_TIME}, null, null, null, null, COL_TIME);
+        return res;
     }
 
     public Cursor getUserData(String UserID){

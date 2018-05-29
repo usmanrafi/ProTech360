@@ -2,6 +2,7 @@ package fyp.protech360.utils;
 
 // A class to cater global variables
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 
@@ -51,6 +52,12 @@ public class Global {
 
         LocationIntent = null;
         MeetingIntent = null;
+        dbHelper = null;
+
+    }
+
+    public static void initDB(Context context){
+        dbHelper = DatabaseHelper.getInstance(context);
     }
 
     public static void setLocationIntent(Context context){

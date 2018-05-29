@@ -21,11 +21,16 @@ import android.widget.Toast;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.UUID;
 
+import fyp.protech360.classes.AlertDetail;
 import fyp.protech360.utils.Global;
 
 
@@ -132,6 +137,11 @@ public class LocationBasedReminderService extends IntentService {
     }
 
     private void notifyLocationAlert(String title) {
+
+        DatabaseReference d = FirebaseDatabase.getInstance().getReference("Alerts").child(String.valueOf(Calendar.getInstance().getTimeInMillis() * -1));
+        AlertDetail a = new AlertDetail(title,String.valueOf(Calendar.getInstance().getTimeInMillis()));
+        d.setValue(a);
+
 
         Context context = getApplication();
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -71,10 +71,15 @@ public class AddTrackRoom extends Fragment {
                     addRoom.setClickable(false);
                     roomMembers.add(Global.currentUser);
                     Room trackRoom = new Room(roomTitle.getText().toString(),roomMembers,admins);
+
+                    final DatabaseReference roomAddref = FirebaseDatabase.getInstance().getReference("TempRooms").child(trackRoom.getUuid().toString());
+                    roomAddref.setValue(trackRoom);
+
                     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Rooms").child(trackRoom.getUuid().toString());
                     dbRef.setValue(trackRoom).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            roomAddref.removeValue();
                             Toast.makeText(getActivity(),"Track Room has been successfully created",Toast.LENGTH_SHORT).show();
                             ((Homepage) getActivity()).setFragment(new TrackRoom());
                         }

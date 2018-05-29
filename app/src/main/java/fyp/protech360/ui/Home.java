@@ -24,7 +24,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
 import fyp.protech360.R;
-import fyp.protech360.services.ConnectionLocationMonitoringService;
 import fyp.protech360.services.LocationService;
 import fyp.protech360.services.NotifyService;
 import fyp.protech360.utils.Global;
@@ -113,10 +112,7 @@ public class Home extends Fragment implements OnMapReadyCallback {
                 getActivity().startService(Global.LocationIntent);
             }
         }
-        if(Global.currentUser != null && !isMyMonitoringServiceRunning(ConnectionLocationMonitoringService.class))
-        {
-            //getActivity().startService(new Intent(getActivity(),ConnectionLocationMonitoringService.class));
-        }
+
     }
 
 
@@ -144,17 +140,6 @@ public class Home extends Fragment implements OnMapReadyCallback {
         return false;
     }
 
-    private boolean isMyMonitoringServiceRunning(Class<ConnectionLocationMonitoringService> monitoringServiceClass)
-    {
-        ActivityManager manager = (ActivityManager) getActivity().getSystemService(Context.ACTIVITY_SERVICE);
-        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)){
-            if(monitoringServiceClass.getName().equals(service.service.getClassName())){
-
-                return true;
-            }
-        }
-        return false;
-    }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {

@@ -80,8 +80,8 @@ public class Homepage extends AppCompatActivity
         setContentView(R.layout.activity_homepage);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        databaseHelper = DatabaseHelper.getInstance(this);
-
+        Global.initDB(getApplicationContext());
+        databaseHelper = Global.dbHelper;
         permissions();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -192,7 +192,7 @@ public class Homepage extends AppCompatActivity
                 fragmentManager.beginTransaction().replace(R.id.content_frame,new Meetings()).commit();
                 break;
             case R.id.nav_reminders:
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new Reminders()).commit();
+                addReminder(null);
                 break;
             case R.id.nav_scheduled_settings:
                 startActivity(new Intent(this,AddScheduledProfile.class));

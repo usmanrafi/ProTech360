@@ -72,7 +72,6 @@
         <service android:name=".services.LocationBasedProfileService" />
         <service android:name=".services.LocationBasedReminderService" />
         <service android:name=".services.SafetyRangeService" />
-        <service android:name=".services.ConnectionLocationMonitoringService" />
         <service android:name=".services.NotifyService" />
 
         <activity
