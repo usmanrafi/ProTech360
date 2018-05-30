@@ -33,7 +33,7 @@ public class GeofenceStruct {
         return false;
     }
 
-    private double getDistance(double lat1, double long1){
+    public double getDistance(double lat1, double long1){
         double distance;
 
         double R = 6371000; // metres

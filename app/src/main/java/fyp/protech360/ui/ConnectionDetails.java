@@ -6,9 +6,11 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +33,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import fyp.protech360.R;
+import fyp.protech360.utils.GeofenceStruct;
+import fyp.protech360.utils.Global;
 import fyp.protech360.utils.ImageEncoderDecoder;
 
 
@@ -44,7 +48,7 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
     String destinationCoordinates;
     Marker marker1;
     boolean firstTimeMapLoad;
-    TextView userName;
+    TextView userName, status;
     CircleImageView imageView;
 
     //FloatingActionButton dir;
@@ -69,6 +73,7 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
         myView = inflater.inflate(fyp.protech360.R.layout.fragment_connection_details, container, false);
 
         userName = myView.findViewById(R.id.connection_name_field);
+        status = myView.findViewById(R.id.connection_distance);
         imageView = myView.findViewById(R.id.connection_image);
 
         userName.setText(username);
@@ -130,7 +135,44 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 String loc = dataSnapshot.getValue(String.class);
                 destinationCoordinates = loc;
-                String[] latLng = loc.split(",");
+                final String[] latLng = loc.split(",");
+
+                final GeofenceStruct struct = new GeofenceStruct(userID);
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Connections")
+                        .child(Global.currentUser.getUuid())
+                        .child(userID)
+                        .child("requestRange");
+
+                ref.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                int range = Integer.parseInt((String.valueOf(dataSnapshot.getValue())));
+
+                                struct.setRange(range);
+
+                                struct.setLatitude(Double.parseDouble(latLng[0]));
+                                struct.setLongitude(Double.parseDouble(latLng[1]));
+
+                                double distance =
+                                        struct.getDistance(Global.user_latitude, Global.user_longitude);
+
+                                String stat = "";
+                                Log.d("Usman_geofence_range", String.valueOf(range));
+                                Boolean flag = distance > range;
+                                stat = flag ? "Out of" : "In";
+
+                                status.setText("Distance: " + distance +
+                                        " Status: " + stat +
+                                        " range here");
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
+
+
                 LatLng destination = new LatLng(Double.valueOf(latLng[0]),Double.valueOf(latLng[1]));
                 marker1.setPosition(destination);
                 if(firstTimeMapLoad){

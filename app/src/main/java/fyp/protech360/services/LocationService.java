@@ -22,6 +22,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import javax.microedition.khronos.opengles.GL;
+
 import fyp.protech360.utils.Global;
 
 
@@ -71,6 +73,10 @@ public class LocationService extends Service {
         // New location has now been determined
         try {
             String msg = Double.toString(location.getLatitude()) + "," + Double.toString(location.getLongitude());
+
+            Global.user_latitude = location.getLatitude();
+            Global.user_longitude = location.getLongitude();
+
             DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference("Status").child(user);
             firebaseDatabase.setValue(msg)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {

@@ -1,8 +1,10 @@
 package fyp.protech360.ui;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
@@ -18,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -48,6 +51,7 @@ public class TrackRoomMembers extends Fragment{
 
     View myView;
 
+    @SuppressLint("StaticFieldLeak")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -347,6 +351,48 @@ public class TrackRoomMembers extends Fragment{
         {
             addMembers.setVisibility(View.GONE);
             deleteRoom.setVisibility(View.GONE);
+        }
+
+        if(r != null){
+
+            FirebaseDatabase.getInstance().getReference("Rooms")
+                    .child(r.getUuid()).child("members")
+                    .addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            User user = dataSnapshot.getValue(User.class);
+                            if(user.getUuid().equalsIgnoreCase(Global.currentUser.getUuid())){
+                                Intent intent = new Intent(getActivity(), Homepage.class);
+                                intent.putExtra("GotoTrackRoom", true);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+                            else{
+                                connections.remove(user);
+                                deviceAdapter.notifyDataSetChanged();
+                            }
+                        }
+
+                        @Override
+                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
         }
 
         addList();
