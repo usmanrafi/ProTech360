@@ -177,4 +177,8 @@ public class User implements Serializable{
     public void setImage(String image) {
         this.image = image;
     }
+
+    public void clearConnections(){
+        this.connections.clear();
+    }
 }

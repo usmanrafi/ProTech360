@@ -116,7 +116,9 @@ public class Homepage extends AppCompatActivity
         if(getIntent().getBooleanExtra("GotoTrackRoom", false))
             fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRoom())
                     .commit();
-        else if(savedInstanceState == null){
+        else{
+            Global.currentUser.clearConnections();
+            new ConnectedDevices().loadUsers();
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
     }
