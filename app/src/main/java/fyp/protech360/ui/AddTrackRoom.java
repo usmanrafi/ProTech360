@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +36,8 @@ public class AddTrackRoom extends Fragment {
     Button addRoom,cancel;
     ImageView addParticipants;
     EditText roomTitle;
+    ProgressBar add;
+    TextView textView;
     ArrayList<User> roomMembers;
     ArrayList<User> admins;
 
@@ -52,6 +56,11 @@ public class AddTrackRoom extends Fragment {
         addRoom = (Button) myView.findViewById(R.id.roomAddButton);
         cancel = (Button) myView.findViewById(R.id.roomCancelButton);
         addParticipants = (ImageView) myView.findViewById(R.id.addParticipants);
+        add = myView.findViewById(R.id.room_add_progress);
+        textView = myView.findViewById(R.id.room_add_text);
+
+        add.setVisibility(View.GONE);
+        textView.setVisibility(View.GONE);
 
         roomMembers = new ArrayList<>();
         admins = new ArrayList<>();
@@ -69,6 +78,15 @@ public class AddTrackRoom extends Fragment {
                 else
                 {
                     addRoom.setClickable(false);
+                    addRoom.setEnabled(false);
+                    cancel.setEnabled(false);
+                    roomTitle.setEnabled(false);
+                    addParticipants.setClickable(false);
+                    addParticipants.setEnabled(false);
+
+                    add.setVisibility(View.VISIBLE);
+                    textView.setVisibility(View.VISIBLE);
+
                     roomMembers.add(Global.currentUser);
                     Room trackRoom = new Room(roomTitle.getText().toString(),roomMembers,admins);
 
