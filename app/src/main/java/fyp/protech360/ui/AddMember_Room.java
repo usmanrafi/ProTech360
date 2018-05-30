@@ -67,7 +67,11 @@ public class AddMember_Room extends AppCompatActivity {
                 DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Rooms").child(roomId).child("members");
                 dbRef.setValue(selected);
 
-                startActivity(new Intent(getApplication(),Homepage.class));
+
+                Intent intent = new Intent(getApplication(),Homepage.class);
+                intent.putExtra("GotoTrackRoom", true);
+                startActivity(intent);
+
                 finish();
 
             }

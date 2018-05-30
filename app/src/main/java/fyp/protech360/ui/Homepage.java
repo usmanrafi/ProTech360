@@ -113,8 +113,10 @@ public class Homepage extends AppCompatActivity
         email = (TextView) header.findViewById(R.id.usernumber);
         image = (CircleImageView) header.findViewById(R.id.imageView);
 
-        if (savedInstanceState == null)
-        {
+        if(getIntent().getBooleanExtra("GotoTrackRoom", false))
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRoom())
+                    .commit();
+        else if(savedInstanceState == null){
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
     }

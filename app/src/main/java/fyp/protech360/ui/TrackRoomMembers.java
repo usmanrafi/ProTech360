@@ -91,7 +91,10 @@ public class TrackRoomMembers extends Fragment{
                         deleteRoomRef.removeValue();
                         Toast.makeText(getContext(),"Track Room: " + r.getTitle() + " deleted",Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(),Homepage.class);
+                        intent.putExtra("GotoTrackRoom",true);
+
                         startActivity(intent);
+
                         getActivity().finish();
                     }
                 });
@@ -160,6 +163,7 @@ public class TrackRoomMembers extends Fragment{
 
                         leaveRoomRef.removeValue();
 
+                        intent.putExtra("GotoTrackRoom", true);
 
                         startActivity(intent);
                         getActivity().finish();
