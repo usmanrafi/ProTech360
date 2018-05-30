@@ -117,8 +117,8 @@ public class Homepage extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, new TrackRoom())
                     .commit();
         else{
-            Global.currentUser.clearConnections();
-            new ConnectedDevices().loadUsers();
+            //Global.currentUser.clearConnections();
+            //new ConnectedDevices().loadUsers();
             fragmentManager.beginTransaction().replace(R.id.content_frame,new Home()).commit();
         }
     }

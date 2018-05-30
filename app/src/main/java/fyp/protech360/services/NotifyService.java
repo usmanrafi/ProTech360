@@ -54,12 +54,54 @@ public class NotifyService extends Service {
 
         dbhelper = Global.dbHelper;
 
+        handleRange();
         handleRooms();
         handleMeetings();
         handleRequests();
 
 
         return START_REDELIVER_INTENT;
+    }
+
+    private void handleRange() {
+        DatabaseReference rangeRef = FirebaseDatabase.getInstance().getReference("OutOfBounds").child(Global.currentUser.getUuid());
+        rangeRef.addChildEventListener(new ChildEventListener(){
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String userName = dataSnapshot.getKey();
+                    AlarmManager alarmManager = (AlarmManager) getApplicationContext().getSystemService(Context.ALARM_SERVICE);
+                    Intent ThisIntent = new Intent(getApplicationContext(), TimeBasedReminderReceiver.class);
+                    ThisIntent.putExtra("Notification_Title", "Out of Safe Range");
+                    String data = userName + " is out of the Safe Range";
+                    ThisIntent.putExtra("Content", data);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), Global.timeBasedReminderID++, ThisIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, Calendar.getInstance().getTimeInMillis(), pendingIntent);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
     }
 
     private void handleRooms() {

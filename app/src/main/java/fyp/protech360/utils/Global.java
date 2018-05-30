@@ -5,9 +5,11 @@ package fyp.protech360.utils;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import fyp.protech360.classes.User;
 import fyp.protech360.dal.DatabaseHelper;
+import fyp.protech360.services.GeofenceService;
 import fyp.protech360.services.LocationService;
 import fyp.protech360.services.NotifyService;
 
@@ -43,6 +45,7 @@ public class Global {
 
     public static Intent LocationIntent;
     public static Intent MeetingIntent;
+    public static Intent GeofenceIntent;
 
     static {
         timeBasedReminderID = 0;
@@ -52,6 +55,7 @@ public class Global {
 
         LocationIntent = null;
         MeetingIntent = null;
+        GeofenceIntent = null;
         dbHelper = null;
 
     }
@@ -68,5 +72,13 @@ public class Global {
     public static void setMeetingIntent(Context context){
         if(MeetingIntent == null)
             MeetingIntent = new Intent(context, NotifyService.class);
+    }
+
+    public static void setGeofenceIntent(Context context){
+        Log.d("Sajjad_Geofencing","Creating Intent");
+        if(GeofenceIntent == null) {
+            GeofenceIntent = new Intent(context, GeofenceService.class);
+            Log.d("Sajjad_Geofencing","Intent Null");
+        }
     }
 }

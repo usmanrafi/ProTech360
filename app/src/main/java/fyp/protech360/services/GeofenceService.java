@@ -27,9 +27,9 @@ public class GeofenceService extends Service {
 
     private User currentUser;
 
-    private ArrayList<GeofenceStruct> geofenceStructs;
+    private ArrayList<GeofenceStruct> geofenceStructs = new ArrayList<>();
 
-    private FirebaseDatabase mFirebaseDatabase;
+    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
 
     @Nullable
     @Override
@@ -46,7 +46,8 @@ public class GeofenceService extends Service {
 
         Log.d("Usman_Geofencing", "Service started");
 
-        currentUser = Global.currentUser;
+        currentUser = (User) intent.getSerializableExtra("user_name");
+        Log.d("Usman_Geofencing",currentUser.getUuid());
 
         getStructs();
         getUserStatus();
@@ -79,7 +80,7 @@ public class GeofenceService extends Service {
 
 
     private void getStatus(){
-        DatabaseReference dbRef = mFirebaseDatabase.getReference("Status");
+        DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Status");
 
         for(final GeofenceStruct struct: geofenceStructs){
             dbRef.child(struct.getUuid()).addValueEventListener(
@@ -104,7 +105,7 @@ public class GeofenceService extends Service {
     }
 
     private void getUserStatus(){
-        mFirebaseDatabase.getReference("Status")
+        FirebaseDatabase.getInstance().getReference("Status")
                 .child(currentUser.getUuid())
                 .addValueEventListener(new ValueEventListener() {
             @Override
@@ -125,7 +126,7 @@ public class GeofenceService extends Service {
     }
 
     private void getStructs(){
-        final DatabaseReference dbRef = mFirebaseDatabase.getReference("Connections")
+        final DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference("Connections")
                 .child(currentUser.getUuid());
 
         dbRef.addChildEventListener(new ChildEventListener() {
@@ -139,7 +140,7 @@ public class GeofenceService extends Service {
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                struct.setRange((int)dataSnapshot.getValue());
+                                struct.setRange(Integer.parseInt(String.valueOf(dataSnapshot.getValue())));
 
                                 geofenceStructs.add(struct);
                             }
