@@ -153,17 +153,25 @@ public class ConnectionDetails extends Fragment implements OnMapReadyCallback {
                                 struct.setLatitude(Double.parseDouble(latLng[0]));
                                 struct.setLongitude(Double.parseDouble(latLng[1]));
 
-                                double distance =
-                                        struct.getDistance(Global.user_latitude, Global.user_longitude);
+                                int distance =
+                                        (int) struct.getDistance(Global.user_latitude, Global.user_longitude);
+                                String d = String.valueOf(distance);
+
+                                if(distance < 1000)
+                                    d = distance + "m";
+                                else{
+                                    double val = (double)distance / 1000;
+                                    d = val + "km";
+                                }
 
                                 String stat = "";
                                 Log.d("Usman_geofence_range", String.valueOf(range));
                                 Boolean flag = distance > range;
                                 stat = flag ? "Out of" : "In";
 
-                                status.setText("Distance: " + distance +
-                                        " Status: " + stat +
-                                        " range here");
+                                status.setText("Distance: " + d +
+                                        "       Status: " + stat +
+                                        " range");
                             }
 
                             @Override
